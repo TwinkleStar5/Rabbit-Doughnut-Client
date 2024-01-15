@@ -1,7 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Londrina+Shadow&family=Mate:ital@0;1&family=Paytone+One&family=Rubik+Doodle+Shadow&family=Vast+Shadow&family=Work+Sans&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Londrina+Shadow&family=Mate:ital@0;1&family=Paytone+One&family=Rubik+Doodle+Shadow&family=Vast+Shadow&display=swap");
 
 html,
 body {

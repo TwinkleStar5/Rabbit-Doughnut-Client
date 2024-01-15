@@ -18,10 +18,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import { InputBase } from "@mui/material";
 
 export default function Sidenav() {
+  const [isExpanded, setIsExpanded] = React.useState(true);
+
   const [state, setState] = React.useState({
     left: false,
   });
-
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -75,14 +76,23 @@ export default function Sidenav() {
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 350 }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
         <ListItem disablePadding disableGutters>
-          <ListItemButton>
-            <Accordion defaultExpanded>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <ListItemButton
+          // onClick={toggleDrawer(anchor, false)}
+          // onKeyDown={toggleDrawer(anchor, false)}
+          >
+            <Accordion
+              expanded={isExpanded}
+              defaultExpanded
+              sx={{ border: "none", boxShadow: "none" }}
+            >
+              <AccordionSummary
+                on
+                expandIcon={<ExpandMoreIcon />}
+                onClick={() => setIsExpanded(!isExpanded)}
+              >
                 Shop
               </AccordionSummary>
               <AccordionDetails>
@@ -93,10 +103,14 @@ export default function Sidenav() {
         </ListItem>
       </List>
       <List>
-        <ListItemButton>Menu</ListItemButton>
+        <ListItemButton onClick={toggleDrawer(anchor, false)}>
+          Menu
+        </ListItemButton>
       </List>
       <List>
-        <ListItemButton>Our Story </ListItemButton>
+        <ListItemButton onClick={toggleDrawer(anchor, false)}>
+          Our Story{" "}
+        </ListItemButton>
       </List>
       <List>
         <Search>

@@ -12,11 +12,11 @@ import discount from "../../img/discount.webp";
 function Home() {
   return (
     <>
-      <Box sx={{ overflow: 'hidden' }}>
+      <Box sx={{ overflow: "hidden" }}>
         <Grid
           container
           columns={{ md: 10 }}
-          sx={{ bgcolor: "#ADDFB3", pb: 10, px: 3 }}
+          sx={{ bgcolor: "#ADDFB3", pb: 11, pt: 3, px: 3 }}
         >
           <Grid item md={5}>
             <Box>
@@ -28,10 +28,7 @@ function Home() {
               </Typography>
             </Box>
             <Box sx={{ textAlign: "center" }}>
-              <Button
-                variant="contained"
-                sx={{ bgcolor: "#FBECB2", my: 3, width: "300px" }}
-              >
+              <Button variant="button" sx={{ my: 3 }} type="submit">
                 Order Now
               </Button>
             </Box>
@@ -43,7 +40,7 @@ function Home() {
           </Grid>
           <Grid item>
             <Box>
-              <Typography variant="h5" sx={{ mb: 1 }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>
                 We've worked with...
               </Typography>
               <img src={worked_with.src} style={{ width: "580px" }} />
@@ -91,9 +88,9 @@ function Home() {
             <Typography variant="h4" sx={{ fontWeight: "bold" }}>
               GET 20% OFF YOUR FIRST ONLINE ORDER!
             </Typography>
-            <Box sx={{ width: "200px", margin: "auto", my: 3 }}>
+            <Box sx={{ margin: "auto", my: 3 }}>
               <a href="/register">
-                <Button variant="contained">REGISTER NOW</Button>
+                <Button variant="button">REGISTER NOW</Button>
               </a>
             </Box>
             <Typography variant="h5">

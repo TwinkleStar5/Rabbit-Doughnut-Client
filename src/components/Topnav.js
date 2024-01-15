@@ -11,13 +11,13 @@ import logo from "../img/logo3.png";
 
 export default function Topnav() {
   const handleLogoClick = () => {
-    window.location.href = "/"; // Replace "/" with your homepage URL
+    window.location.href = "/home"; 
   };
-  
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ pt: 2 }}>
-        <Toolbar>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton
             size="large"
             edge="start"

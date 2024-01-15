@@ -3,6 +3,6 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const { push } = useRouter();
-  push("/");
+  push("/home");
   return null;
 }

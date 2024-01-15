@@ -13,43 +13,43 @@ function Footer() {
   return (
     <Grid
       container
-      sx={{ bgcolor: "#041E42", color: "white", pt: 3, px: 5, pb: 5 }}
+      sx={{ bgcolor: "#041E42", color: "white", py: 1, px: 2, pb: 2 }}
     >
-      <Grid item md={4} sx={{ mt: 3 }}>
+      <Grid item md={4} sx={{ mt: 3, p: 3 }}>
         <Box>
           <Typography variant="h4" sx={{ mb: 2 }}>
             Operation Hours
           </Typography>
-          <Typography variant="subtitle1">Mon-Fri: 8AM-6PM</Typography>
-          <Typography variant="subtitle1">Sat: 8AM-8PM</Typography>
-          <Typography variant="subtitle1">Sun: Closed</Typography>
+          <Typography variant="h6">Mon-Fri: 8AM-6PM</Typography>
+          <Typography variant="h6">Sat: 8AM-8PM</Typography>
+          <Typography variant="h6">Sun: Closed</Typography>
         </Box>
       </Grid>
-      <Grid item md={4} sx={{ mt: 3 }}>
+      <Grid item md={4} sx={{ mt: 3, p: 3 }}>
         <Box>
           <Typography variant="h4" sx={{ mb: 2 }}>
             Location
           </Typography>
-          <Typography>
+          <Typography variant="h6">
             584, Love Lane, Georgetown, 10200 George Town, Penang
           </Typography>
         </Box>
       </Grid>
-      <Grid item md={4} sx={{ mt: 3 }}>
+      <Grid item md={4} sx={{ mt: 3, p: 3 }}>
         <Box>
           <Typography variant="h4" sx={{ mb: 2 }}>
             Contact Us
           </Typography>
-          <Typography variant="subtitle1">
-            Email:
+          <Typography variant="h6">
+            Email:{"  "}
             <a href="/" style={{ textDecoration: "underline" }}>
               rabbitCircles@gmail.com
             </a>
           </Typography>
-          <Typography variant="subtitle1">
+          <Typography variant="h6">
             Follow us on social media:
           </Typography>
-          <IconButton disableRipple >
+          <IconButton disableRipple>
             <img src={instagram.src} style={{ width: "30px" }} />
           </IconButton>
           <IconButton disableRipple>
@@ -60,7 +60,9 @@ function Footer() {
 
       <Grid item sx={{ mt: 3 }} sm={12}>
         <Box>
-          <Typography>© 2024, Rabbit Doughnuts. Powered by Stripe</Typography>
+          <Typography variant="h6">
+            © 2024, Rabbit Doughnuts. Powered by Stripe
+          </Typography>
         </Box>
         <Box sx={{ display: "flex", width: "30px" }}>
           <img src={american.src} style={{ marginRight: "20px" }} />

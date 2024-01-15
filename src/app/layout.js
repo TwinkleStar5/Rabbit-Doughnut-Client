@@ -3,7 +3,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "./ReactQueryProvider";
-import Home from "./home/page";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Topnav from "@/components/Topnav";
 import Footer from "@/components/Footer";
@@ -27,31 +26,34 @@ const theme = createTheme({
     },
     h2: { fontFamily: "Archivo Black" },
     h3: { fontFamily: "Archivo Black" },
+    h4: { fontFamily: "Archivo Black" },
     h5: { fontFamily: "Archivo Black" },
-    subtitle1: { fontFamily: "Mate" },
+    h6: { fontFamily: "Work Sans" },
     button: {
       fontFamily: "Paytone One",
       fontSize: "20px",
       color: "white",
-      backgroundColor: "#041E42",
+      background: "#041E42 !important",
+      transition: "none",
+      transform: "none",
       borderRadius: "20px",
-      width: "100%",
+      width: "300px",
       disableRipple: true,
     },
   },
 });
+
 export default function RootLayout({ children }) {
   return (
     <ReactQueryProvider>
       <html lang="en">
-        <body className={inter.className}>
-          <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+          <body className={inter.className}>
             <Topnav />
-            <Home />
             {children}
             <Footer />
-          </ThemeProvider>
-        </body>
+          </body>
+        </ThemeProvider>
       </html>
     </ReactQueryProvider>
   );
