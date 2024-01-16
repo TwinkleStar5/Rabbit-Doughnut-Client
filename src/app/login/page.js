@@ -54,7 +54,7 @@ function Login() {
     }
   };
   return (
-    <div style={{ backgroundColor: "#E1DCA7", height: "85dvh" }}>
+    <div style={{ backgroundColor: "#D5C4E7", height: "75dvh" }}>
       <Container
         sx={{
           p: "30px",
@@ -91,7 +91,7 @@ function Login() {
               </Grid>
             </Grid>
             <Button
-              variant="contained"
+              variant="button"
               type="submit"
               sx={{ display: "block", margin: "20px auto" }}
             >

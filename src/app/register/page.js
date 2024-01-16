@@ -47,7 +47,7 @@ function Register() {
     }
   };
   return (
-    <div style={{ backgroundColor: "#A7D3D4", height: "85dvh" }}>
+    <div style={{ backgroundColor: "#92CDF9", height: "105dvh" }}>
       <Container
         sx={{
           p: "30px",
@@ -102,7 +102,7 @@ function Register() {
               </Grid>
             </Grid>
             <Button
-              variant="contained"
+              variant="button"
               type="submit"
               sx={{ display: "block", margin: "20px auto" }}
             >

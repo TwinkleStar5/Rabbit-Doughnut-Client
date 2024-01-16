@@ -1,8 +1,13 @@
 "use client";
 
-import { Box, Button, Container, Typography, Grid } from "@mui/material";
-import AutoplayCarousel from "@/components/AutoplayCarousel";
-import CarouselItem from "@/components/CarouselItem";
+import {
+  Box,
+  Button,
+  Container,
+  Typography,
+  Grid,
+  useTheme,
+} from "@mui/material";
 
 import homeBanner from "../../img/home_banner.webp";
 import worked_with from "../../img/worked-with.webp";
@@ -10,6 +15,7 @@ import choose from "../../img/choose.jpg";
 import discount from "../../img/discount.webp";
 
 function Home() {
+  const theme = useTheme();
   return (
     <>
       <Box sx={{ overflow: "hidden" }}>
@@ -22,13 +28,28 @@ function Home() {
             <Box>
               <Typography
                 variant="h1"
-                sx={{ color: "white", fontSize: "80px" }}
+                sx={{
+                  color: "white",
+                  fontSize: "100px",
+                  [theme.breakpoints.down("md")]: {
+                    fontSize: "80px",
+                  },
+                  [theme.breakpoints.down("sm")]: {
+                    fontSize: "60px",
+                  },
+                }}
               >
                 Choose Your Own Doughnuts
               </Typography>
             </Box>
             <Box sx={{ textAlign: "center" }}>
-              <Button variant="button" sx={{ my: 3 }} type="submit">
+              <Button
+                href="/shopProducts"
+                variant="button"
+                sx={{
+                  my: 3,
+                }}
+              >
                 Order Now
               </Button>
             </Box>
@@ -50,10 +71,29 @@ function Home() {
         <Grid container spacing={3} sx={{ p: 5 }}>
           <Grid item md={8}>
             <Box>
-              <Typography variant="h3" sx={{ mb: 2 }}>
+              <Typography
+                variant="h3"
+                sx={{
+                  mb: 2,
+                  [theme.breakpoints.down("md")]: {
+                    fontSize: "40px",
+                  },
+                  [theme.breakpoints.down("sm")]: {
+                    fontSize: "35px",
+                  },
+                }}
+              >
                 THE MOST INDULGENT, HANDMADE DONUTS!
               </Typography>
-              <Typography sx={{ fontSize: "20px", mb: 2 }}>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  mb: 2,
+                  [theme.breakpoints.down("md")]: {
+                    fontSize: "15px",
+                  },
+                }}
+              >
                 At Rabbit Doughnuts, we want people to indulge in the most
                 high-quality donuts you’ve ever tasted. We guarantee you’ll
                 enjoy our creations as a lot of time and love is put into each
@@ -62,7 +102,14 @@ function Home() {
                 superbly golden, roll them in sugar and stuff with
                 mouth-watering fillings.
               </Typography>
-              <Typography sx={{ fontSize: "20px" }}>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  [theme.breakpoints.down("md")]: {
+                    fontSize: "15px",
+                  },
+                }}
+              >
                 Whether you choose to fill your donut with raspberry jam, creme
                 patisserie or chocolate ganache you will not be disappointed!
                 All the ingredients are of the finest quality, and every bit of
@@ -72,12 +119,16 @@ function Home() {
           </Grid>
 
           <Grid item md={4}>
-            <Box sx={{ paddingLeft: 5, paddingTop: 5 }}>
+            <Box
+              sx={{
+                p: 5,
+              }}
+            >
               <img
                 src={discount.src}
                 style={{
                   width: "300px",
-                  borderRadius: "100%",
+                  borderRadius: "50%",
                 }}
               />
             </Box>
@@ -88,7 +139,12 @@ function Home() {
             <Typography variant="h4" sx={{ fontWeight: "bold" }}>
               GET 20% OFF YOUR FIRST ONLINE ORDER!
             </Typography>
-            <Box sx={{ margin: "auto", my: 3 }}>
+            <Box
+              sx={{
+                margin: "auto",
+                my: 3,
+              }}
+            >
               <a href="/register">
                 <Button variant="button">REGISTER NOW</Button>
               </a>

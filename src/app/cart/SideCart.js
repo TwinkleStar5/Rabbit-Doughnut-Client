@@ -15,13 +15,14 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SearchIcon from "@mui/icons-material/Search";
-import { InputBase, Typography } from "@mui/material";
+import { IconButton, InputBase, Typography } from "@mui/material";
+import cart from "../../img/cart.png";
 
-export default function Sidenav() {
+function SideCart() {
   const [isExpanded, setIsExpanded] = React.useState(true);
 
   const [state, setState] = React.useState({
-    left: false,
+    right: false,
   });
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -86,7 +87,7 @@ export default function Sidenav() {
       role="presentation"
     >
       <List>
-        <ListItem disablePadding >
+        <ListItem disablePadding>
           <ListItemButton
           // onClick={toggleDrawer(anchor, false)}
           // onKeyDown={toggleDrawer(anchor, false)}
@@ -104,7 +105,7 @@ export default function Sidenav() {
                 on
                 expandIcon={<ExpandMoreIcon />}
                 onClick={() => setIsExpanded(!isExpanded)}
-                sx={{backgroundColor: "#F2F2F2"}}
+                sx={{ backgroundColor: "#F2F2F2" }}
               >
                 <Typography
                   variant="h5"
@@ -159,11 +160,11 @@ export default function Sidenav() {
 
   return (
     <div>
-      {["left"].map((anchor) => (
+      {["right"].map((anchor) => (
         <React.Fragment key={anchor}>
-          {/* <Button onClick={toggleDrawer(anchor, true)}> */}
-          <MenuIcon onClick={toggleDrawer(anchor, true)} />
-          {/* </Button> */}
+          <IconButton onClick={toggleDrawer(anchor, true)}>
+            <img src={cart.src} style={{ width: "30px" }} />{" "}
+          </IconButton>
           <Drawer
             anchor={anchor}
             open={state[anchor]}
@@ -176,3 +177,5 @@ export default function Sidenav() {
     </div>
   );
 }
+
+export default SideCart;

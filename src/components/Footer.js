@@ -13,7 +13,7 @@ function Footer() {
   return (
     <Grid
       container
-      sx={{ bgcolor: "#041E42", color: "white", py: 1, px: 2, pb: 2 }}
+      sx={{ bgcolor: "#041E42", color: "white", py: 1, px: 2, pb: 3 }}
     >
       <Grid item md={4} sx={{ mt: 3, p: 3 }}>
         <Box>
@@ -58,7 +58,7 @@ function Footer() {
         </Box>
       </Grid>
 
-      <Grid item sx={{ mt: 3 }} sm={12}>
+      <Grid item sx={{ mt: 3, px:2 }} sm={12}>
         <Box>
           <Typography variant="h6">
             © 2024, Rabbit Doughnuts. Powered by Stripe
