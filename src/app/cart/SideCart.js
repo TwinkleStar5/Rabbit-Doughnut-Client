@@ -9,14 +9,10 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton, Typography } from "@mui/material";
 import cart from "../../img/cart.png";
 import Calendar from "./calendar";
+
 
 function SideCart() {
   const [isExpanded, setIsExpanded] = React.useState(true);
@@ -47,6 +43,7 @@ function SideCart() {
         <Typography variant="h4" sx={{ mb: 3 }}>
           Your Cart
         </Typography>
+      
         <Typography variant="h6">Your cart is currently empty.</Typography>
       </List>
       <List sx={{ p: 4 }}>

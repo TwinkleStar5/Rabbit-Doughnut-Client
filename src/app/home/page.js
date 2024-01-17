@@ -13,8 +13,10 @@ import homeBanner from "../../img/home_banner.webp";
 import worked_with from "../../img/worked-with.webp";
 import choose from "../../img/choose.jpg";
 import discount from "../../img/discount.webp";
+import { useRouter } from "next/navigation";
 
 function Home() {
+  const { push } = useRouter();
   const theme = useTheme();
   return (
     <>
@@ -44,7 +46,7 @@ function Home() {
             </Box>
             <Box sx={{ textAlign: "center" }}>
               <Button
-                href="/shopProducts"
+                onClick={() => push("/shopProducts")}
                 variant="button"
                 sx={{
                   my: 3,

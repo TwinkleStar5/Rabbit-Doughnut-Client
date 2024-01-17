@@ -1,7 +1,14 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
+import "react-datetime/css/react-datetime.css";
 import Datetime from "react-datetime";
 import "../globals.css";
+
+import moment from "moment";
+var yesterday = moment().subtract(1, "day");
+var valid = function (current) {
+  return current.isAfter(yesterday);
+};
 
 function Calendar() {
   return (
@@ -17,7 +24,7 @@ function Calendar() {
         }}
       >
         <Typography variant="h6" sx={{ fontSize: "23px" }}>
-          <Datetime />
+          <Datetime className="calendar" isValidDate={valid} />
         </Typography>
       </Box>
       <Box

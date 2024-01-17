@@ -10,6 +10,7 @@ import user from "../img/user.png";
 import logo from "../img/logo3.png";
 import { useEffect } from "react";
 import Login from "@/app/auth/login";
+import { gapi } from "gapi-script";
 import Logout from "@/app/auth/logout";
 
 const clientId =
@@ -20,15 +21,15 @@ export default function Topnav() {
     window.location.href = "/home";
   };
 
-  // useEffect(() => {
-  //   function start() {
-  //     gapi.client.init({
-  //       clientId: clientId,
-  //       scope: "",
-  //     });
-  //   }
-  //   gapi.load("client:auth2", start);
-  // });
+  useEffect(() => {
+    function start() {
+      gapi.auth2.getAuthInstance({
+        clientId: clientId,
+        scope: "",
+      });
+    }
+    gapi.load("client:auth2", start);
+  });
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -44,24 +45,26 @@ export default function Topnav() {
           >
             <Sidenav />
           </IconButton>
-          <a href="/" onClick={handleLogoClick}>
-            <img
-              src={logo.src}
-              style={{ height: "65px", margin: "auto" }}
-            ></img>
-          </a>
+          <Box>
+            <a href="/" onClick={handleLogoClick}>
+              <img
+                src={logo.src}
+                style={{ height: "65px", margin: "auto" }}
+              ></img>
+            </a>
+          </Box>
           {/* <span></span> */}
           {/* <IconButton>
               <img src={user.src} style={{ width: "30px" }} />
             </IconButton> */}
-          <div style={{ display: "flex" }}>
-            <div style={{ paddingTop: "12px" }}>
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ pt: "12px" }}>
               <Login />
-            </div>
+            </Box>
             <IconButton disableRipple>
               <SideCart />
             </IconButton>
-          </div>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>
