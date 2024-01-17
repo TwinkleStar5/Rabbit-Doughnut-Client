@@ -33,6 +33,7 @@ const theme = createTheme({
     h4: { fontFamily: "Archivo Black" },
     h5: { fontFamily: "Archivo Black" },
     h6: { fontFamily: "Work Sans" },
+    subtitle1: { fontFamily: "Work Sans" },
     button: {
       fontFamily: "Paytone One",
       fontSize: "20px",

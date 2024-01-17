@@ -14,9 +14,9 @@ import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import SearchIcon from "@mui/icons-material/Search";
-import { IconButton, InputBase, Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import cart from "../../img/cart.png";
+import Calendar from "./calendar";
 
 function SideCart() {
   const [isExpanded, setIsExpanded] = React.useState(true);
@@ -35,125 +35,27 @@ function SideCart() {
     setState({ ...state, [anchor]: open });
   };
 
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: "12px",
-
-    backgroundColor: alpha(theme.palette.common.white, 0.15), // Commented out
-    // "&:hover": {
-    //   backgroundColor: alpha(theme.palette.common.white, 0.25),
-    // },
-    marginLeft: 0,
-    width: "100%",
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "300px",
-    },
-  }));
-
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "black",
-    fontWeight: "bold",
-    width: "100%",
-
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "25ch",
-      },
-    },
-  }));
   const list = (anchor) => (
     <Box
       sx={{
-        width: anchor === "top" || anchor === "bottom" ? "auto" : 350,
-        backgroundColor: "#F2F2F2",
+        width: anchor === "top" || anchor === "bottom" ? "auto" : 550,
+        backgroundColor: "#FFFFF",
       }}
       role="presentation"
     >
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton
-          // onClick={toggleDrawer(anchor, false)}
-          // onKeyDown={toggleDrawer(anchor, false)}
-          >
-            <Accordion
-              expanded={isExpanded}
-              defaultExpanded
-              sx={{
-                border: "none",
-                boxShadow: "none",
-                backgroundColor: "#F2F2F2",
-              }}
-            >
-              <AccordionSummary
-                on
-                expandIcon={<ExpandMoreIcon />}
-                onClick={() => setIsExpanded(!isExpanded)}
-                sx={{ backgroundColor: "#F2F2F2" }}
-              >
-                <Typography
-                  variant="h5"
-                  sx={{ fontWeight: "bold", fontSize: "30px" }}
-                >
-                  Shop
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <ListItemButton>
-                  <Typography variant="h6">
-                    <a href="/shopProducts"> Shop Doughnuts</a>
-                  </Typography>
-                </ListItemButton>
-              </AccordionDetails>
-            </Accordion>
-          </ListItemButton>
-        </ListItem>
+      <List sx={{ p: 4 }}>
+        <Typography variant="h4" sx={{ mb: 3 }}>
+          Your Cart
+        </Typography>
+        <Typography variant="h6">Your cart is currently empty.</Typography>
       </List>
-      <List sx={{ paddingLeft: "20px" }}>
-        <ListItemButton onClick={toggleDrawer(anchor, false)}>
-          <a href="/showProducts">
-            <Typography
-              variant="h5"
-              sx={{ fontWeight: "bold", fontSize: "30px" }}
-            >
-              Menu
-            </Typography>
-          </a>
-        </ListItemButton>
-      </List>
-      <List sx={{ paddingLeft: "20px" }}>
-        <ListItemButton onClick={toggleDrawer(anchor, false)}>
-          <Typography
-            variant="h5"
-            sx={{ fontWeight: "bold", fontSize: "30px" }}
-          >
-            Our Story
-          </Typography>
-        </ListItemButton>
-      </List>
-      <List sx={{ paddingLeft: "20px", paddingBottom: "262px" }}>
-        <Search sx={{ bgcolor: "transparent", borderColor: "black" }}>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase placeholder="Search Our Products :)" />
-        </Search>
+      <List sx={{ p: 4 }}>
+        <Typography variant="h4" sx={{ mb: 3 }}>
+          Delivery Date
+        </Typography>
+        <Typography variant="h6">
+          <Calendar />
+        </Typography>
       </List>
     </Box>
   );

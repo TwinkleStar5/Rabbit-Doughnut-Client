@@ -38,7 +38,7 @@ export default function Sidenav() {
     position: "relative",
     borderRadius: "12px",
 
-    backgroundColor: alpha(theme.palette.common.white, 0.15), // Commented out
+    backgroundColor: alpha(theme.palette.common.white, 0.15), 
     // "&:hover": {
     //   backgroundColor: alpha(theme.palette.common.white, 0.25),
     // },
@@ -80,7 +80,7 @@ export default function Sidenav() {
   const list = (anchor) => (
     <Box
       sx={{
-        width: anchor === "top" || anchor === "bottom" ? "auto" : 350,
+        width: anchor === "top" || anchor === "bottom" ? "auto" : 400,
         backgroundColor: "#F2F2F2",
       }}
       role="presentation"
