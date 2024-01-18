@@ -21,17 +21,6 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import CloseIcon from "@mui/icons-material/Close";
 import AddCart from "../cart/AddCart";
 
-const imgCaption = {
-  color: "white",
-  width: "100%",
-  height: "10%",
-  position: "absolute",
-  bottom: "0%",
-  backgroundColor: "white",
-  opacity: "0.5",
-  textAlign: "center",
-  borderRadiusTop: "10px",
-};
 function ColorToggleButton() {
   const [alignment, setAlignment] = React.useState("web");
   const handleChange = (event, newAlignment) => {
@@ -103,7 +92,10 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  maxHeight: "60vh",
+  overflowY: "auto",
+  // width: 800,
+  // height: 350,
   bgcolor: "background.paper",
   borderRadius: "15px",
   boxShadow: 24,
@@ -114,9 +106,11 @@ const label = { inputProps: { "aria-label": "Switch demo" } };
 
 function ShopProducts() {
   const { data, isLoading } = useQuery("products", getProducts);
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [open, setOpen] = React.useState(null);
+  const handleOpen = (id) => {
+    setOpen(id);
+  };
+  const handleClose = () => setOpen(null);
   const theme = useTheme();
   if (isLoading) return <Typography variant="h2">Is Loading...</Typography>;
 
@@ -164,44 +158,111 @@ function ShopProducts() {
                       mb: 3,
                     }}
                   >
-                    <CardActionArea onClick={handleOpen}>
-                      {product?.vegan ? (
-                        <Box sx={{ imgCaption }}>
-                          <CardMedia
-                            height="130"
-                            component="img"
-                            image={`http://localhost:8000/${product.image}`}
-                          />
-                          <Typography
-                            variant="subtitle1"
-                            sx={{
-                              backgroundColor: "white",
-                              opacity: "0.5",
-                              borderRadius: "10px",
-                              padding: "5px",
-                              textAlign: "center",
-                            }}
-                          >
-                            Vegan
-                          </Typography>
-                        </Box>
-                      ) : (
-                        <CardMedia
-                          height="130"
-                          component="img"
-                          image={`http://localhost:8000/${product.image}`}
-                        />
-                      )}
+                    <CardActionArea
+                      onClick={() => handleOpen(product._id)}
+                      sx={{
+                        borderBottomLeftRadius: "0",
+                        borderBottomRightRadius: "0",
+                      }}
+                    >
+                      <Box style={{ position: "relative" }}>
+                        {product.vegan && product.glutenFree ? (
+                          <>
+                            <CardMedia
+                              height="130"
+                              component="img"
+                              image={`http://localhost:8000/${product.image}`}
+                            />
+                            <Typography
+                              variant="subtitle1"
+                              sx={{
+                                bgcolor: "white",
+                                opacity: "0.5",
+                                textAlign: "center",
+                                borderRadius: "20px",
+                                position: "absolute",
+                                bottom: "0",
+                                width: "100%",
+                                borderBottomLeftRadius: "0",
+                                borderBottomRightRadius: "0",
+                              }}
+                            >
+                              Vegan & Gluten Free
+                            </Typography>
+                          </>
+                        ) : product.vegan ? (
+                          <>
+                            <CardMedia
+                              height="130"
+                              component="img"
+                              image={`http://localhost:8000/${product.image}`}
+                            />
+                            <Typography
+                              variant="subtitle1"
+                              sx={{
+                                bgcolor: "white",
+                                opacity: "0.5",
+                                textAlign: "center",
+                                borderRadius: "20px",
+                                position: "absolute",
+                                bottom: "0",
+                                width: "100%",
+                                borderBottomLeftRadius: "0",
+                                borderBottomRightRadius: "0",
+                              }}
+                            >
+                              Vegan
+                            </Typography>
+                          </>
+                        ) : product.glutenFree ? (
+                          <>
+                            <CardMedia
+                              height="130"
+                              component="img"
+                              image={`http://localhost:8000/${product.image}`}
+                            />
+                            <Typography
+                              variant="subtitle1"
+                              sx={{
+                                bgcolor: "white",
+                                opacity: "0.5",
+                                textAlign: "center",
+                                borderRadius: "20px",
+                                position: "absolute",
+                                bottom: "0",
+                                width: "100%",
+                                borderBottomLeftRadius: "0",
+                                borderBottomRightRadius: "0",
+                              }}
+                            >
+                              Gluten Free
+                            </Typography>
+                          </>
+                        ) : (
+                          <>
+                            <CardMedia
+                              height="130"
+                              component="img"
+                              image={`http://localhost:8000/${product.image}`}
+                            />
+                          </>
+                        )}
+                      </Box>
                     </CardActionArea>
                     <CardContent>
                       <Box textAlign="center">
-                        <Typography gutterBottom variant="h5" component="div">
+                        <Typography
+                          gutterBottom
+                          variant="h5"
+                          component="div"
+                          sx={{ fontSize: "20px" }}
+                        >
                           {product.name}
                         </Typography>
                         <Typography
                           variant="body2"
                           color="text.secondary"
-                          onClick={handleOpen}
+                          onClick={() => handleOpen(product._id)}
                           style={{
                             cursor: "pointer",
                             textDecoration: "underline",
@@ -209,36 +270,115 @@ function ShopProducts() {
                         >
                           Allergens
                         </Typography>
-                        {/* <Modal open={open} sx={{ p: 4 }}>
-                        <CloseIcon onClose={handleClose} />
-                          <Grid container spacing={3}>
-                            <Grid item md={6}>
-                              {product.image}
-                            </Grid>
-                            <Grid item md={6}>
-                              <Typography variant="h5">
-                                {product.name}
-                              </Typography>
-                              <Typography
-                                variant="h6"
-                                sx={{ fontWeight: "bold" }}
-                              >
-                                Contains:
-                              </Typography>
-                              <Typography variant="h6">
-                                {product.allergens}
-                              </Typography>
-                            </Grid>
-                          </Grid>
+                        <Modal
+                          open={open == product._id}
+                          sx={{
+                            overflow: "none",
+                          }}
+                        >
                           <Box sx={style}>
-                            <Typography
-                              id="modal-modal-description"
-                              sx={{ mt: 2 }}
-                            >
-                              {product.description}
-                            </Typography>
+                            <CloseIcon
+                              onClick={handleClose}
+                              sx={{
+                                position: "relative",
+                                zIndex: 9999,
+                                cursor: "pointer",
+                              }}
+                            />
+                            <Grid container spacing={3}>
+                              <Grid item md={6}>
+                                <Box
+                                  sx={{
+                                    position: "relative",
+                                    borderRadius: "20px",
+                                    overflow: "hidden",
+                                  }}
+                                >
+                                  <img
+                                    style={{
+                                      padding: "22px",
+                                      borderRadius: "42px",
+                                      marginBottom: "-20px",
+                                    }}
+                                    src={`http://localhost:8000/${product.image}`}
+                                  />
+                                  {product.vegan && product.glutenFree ? (
+                                    <Typography
+                                      variant="subtitle1"
+                                      sx={{
+                                        bgcolor: "white",
+                                        opacity: "0.5",
+                                        textAlign: "center",
+                                        borderRadius: "20px",
+                                        position: "absolute",
+                                        bottom: "0",
+                                        width: "100%",
+                                      }}
+                                    >
+                                      Vegan & Gluten Free
+                                    </Typography>
+                                  ) : product.vegan ? (
+                                    <Typography
+                                      variant="subtitle1"
+                                      sx={{
+                                        bgcolor: "white",
+                                        opacity: "0.5",
+                                        textAlign: "center",
+                                        borderRadius: "20px",
+                                        position: "absolute",
+                                        bottom: "0",
+                                        width: "100%",
+                                      }}
+                                    >
+                                      Vegan
+                                    </Typography>
+                                  ) : product.glutenFree ? (
+                                    <Typography
+                                      variant="subtitle1"
+                                      sx={{
+                                        bgcolor: "white",
+                                        opacity: "0.5",
+                                        textAlign: "center",
+                                        borderRadius: "20px",
+                                        position: "absolute",
+                                        bottom: "0",
+                                        width: "100%",
+                                      }}
+                                    >
+                                      Gluten Free
+                                    </Typography>
+                                  ) : (
+                                    ""
+                                  )}
+                                </Box>
+                              </Grid>
+
+                              <Grid item md={6} sx={{ mt: 3 }}>
+                                <Typography variant="h5" sx={{ mb: 1 }}>
+                                  {product.name}
+                                </Typography>
+                                <Typography
+                                  variant="h6"
+                                  sx={{ mb: 3, lineHeight: "normal" }}
+                                >
+                                  {product.description}
+                                </Typography>
+                                <Typography
+                                  variant="h6"
+                                  sx={{ fontWeight: "bold" }}
+                                >
+                                  Contains:
+                                </Typography>
+                                <Typography
+                                  variant="h6"
+                                  sx={{ lineHeight: "normal" }}
+                                >
+                                  {product.allergens}
+                                </Typography>
+                              </Grid>
+                            </Grid>
                           </Box>
-                        </Modal> */}
+                        </Modal>
                         <Button
                           variant="button"
                           sx={{ mt: 3, width: "180px", borderRadius: "13px" }}

@@ -22,6 +22,7 @@ const theme = createTheme({
     error: { main: "#D85F5F", light: "#F9BABA" }, //red, pink
     warning: { main: "#E1DCA7" }, //yellow
     success: { main: "#A5C9A5" }, //green
+    
     //dark blue: #041E42
   },
   typography: {

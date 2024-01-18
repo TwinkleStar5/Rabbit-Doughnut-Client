@@ -131,7 +131,7 @@ export default function Sidenav() {
               variant="h5"
               sx={{ fontWeight: "bold", fontSize: "30px" }}
             >
-              Menu
+              Our Menu
             </Typography>
           </a>
         </ListItemButton>

@@ -3,6 +3,7 @@ import { Grid, Typography, Box, Button } from "@mui/material";
 import build from "../../img/build_placeholder.webp";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { StyledEngineProvider } from "@mui/material";
 
 function ColorToggleButton() {
   const [alignment, setAlignment] = React.useState("web");
@@ -11,46 +12,66 @@ function ColorToggleButton() {
   };
 
   return (
-    <ToggleButtonGroup
-      color="white"
-      value={alignment}
-      exclusive
-      onChange={handleChange}
-    >
-      <ToggleButton
-        sx={{
-          bgcolor: "transparent",
-          width: "100px",
-          textAlign: "center",
-          borderRadius: "12px",
-          border: "none",
-        }}
+    <StyledEngineProvider injectFirst>
+      <ToggleButtonGroup
+        value={alignment}
+        exclusive
+        onChange={handleChange}
+        aria-label="Platform"
       >
-        <Typography>2 Pack</Typography>
-      </ToggleButton>
-      <ToggleButton
-        sx={{
-          bgcolor: "transparent",
-          width: "100px",
-          textAlign: "center",
-          borderRadius: "12px",
-          border: "none",
-        }}
-      >
-        <Typography>12 Pack</Typography>
-      </ToggleButton>
-      <ToggleButton
-        sx={{
-          bgcolor: "transparent",
-          width: "100px",
-          textAlign: "center",
-          borderRadius: "12px",
-          border: "none",
-        }}
-      >
-        <Typography>24 Pack</Typography>
-      </ToggleButton>
-    </ToggleButtonGroup>
+        <ToggleButton
+          value="2pack"
+          sx={{
+            bgcolor: "white !important",
+            width: "100px",
+            textAlign: "center",
+            borderRadius: "12px",
+            border: "none",
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{ fontSize: "18px", fontWeight: "bold", color: "black" }}
+          >
+            2 Pack
+          </Typography>
+        </ToggleButton>
+        <ToggleButton
+          value="12pack"
+          sx={{
+            bgcolor: "white !important",
+            width: "100px",
+            textAlign: "center",
+            borderRadius: "12px",
+            border: "none",
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{ fontSize: "18px", fontWeight: "bold", color: "black" }}
+          >
+            12 Pack
+          </Typography>
+        </ToggleButton>
+        <ToggleButton
+          value="24pack"
+          sx={{
+            bgcolor: "white !important",
+            width: "100px",
+            textAlign: "center",
+            borderRadius: "12px",
+            border: "none",
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{ fontSize: "18px", fontWeight: "bold", color: "black" }}
+          >
+            24 Pack
+          </Typography>
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </StyledEngineProvider>
   );
 }
 
@@ -60,13 +81,13 @@ function AddCart() {
       <Grid
         sx={{
           bgcolor: "white",
-          borderRadius: "20px",
+          borderRadius: "22px",
           p: 2,
         }}
       >
-        {/* <Box>
+        <Box sx={{ alignItems:'center'}}>
           <ColorToggleButton />
-        </Box> */}
+        </Box>
         <Grid container>
           {[1, 2, 3].map((item) => (
             <Grid item md={4} key={item} sx={{ p: 1 }}>

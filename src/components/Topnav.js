@@ -8,7 +8,7 @@ import SideCart from "@/app/cart/SideCart";
 import PersonIcon from "@mui/icons-material/Person";
 import user from "../img/user.png";
 import logo from "../img/logo3.png";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Login from "@/app/auth/login";
 import { gapi } from "gapi-script";
 import Logout from "@/app/auth/logout";
@@ -20,6 +20,8 @@ export default function Topnav() {
   const handleLogoClick = () => {
     window.location.href = "/home";
   };
+
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     function start() {
@@ -59,7 +61,11 @@ export default function Topnav() {
             </IconButton> */}
           <Box sx={{ display: "flex" }}>
             <Box sx={{ pt: "12px" }}>
-              <Login />
+              {!Object.keys(user).length ? (
+                <Login key={"login"} setUser={setUser} />
+              ) : (
+                <Logout key={"logout"} setUser={setUser} />
+              )}
             </Box>
             <IconButton disableRipple>
               <SideCart />

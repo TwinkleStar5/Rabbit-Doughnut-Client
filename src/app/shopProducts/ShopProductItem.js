@@ -19,7 +19,6 @@ const style = {
 };
 
 function ShopProductItem() {
-    
   return (
     <>
       <Card key={product.id} sx={{ maxWidth: 260 }} onSubmit={onSubmitHandler}>
@@ -28,7 +27,12 @@ function ShopProductItem() {
         </CardActionArea>
         <CardContent>
           <Box textAlign="center">
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography
+              gutterBottom
+              variant="h6"
+              component="div"
+             
+            >
               {product.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
