@@ -41,14 +41,15 @@ function Footer() {
             Contact Us
           </Typography>
           <Typography variant="h6">
-            Email:{"  "}
-            <a href="/" style={{ textDecoration: "underline" }}>
-              rabbitCircles@gmail.com
+            Email:{" "}
+            <a
+              href="mailto:rabbitdoughnuts@gmail.com"
+              style={{ textDecoration: "underline" }}
+            >
+              rabbitdoughnuts@gmail.com
             </a>
           </Typography>
-          <Typography variant="h6">
-            Follow us on social media:
-          </Typography>
+          <Typography variant="h6">Follow us on social media:</Typography>
           <IconButton disableRipple>
             <img src={instagram.src} style={{ width: "30px" }} />
           </IconButton>
@@ -58,9 +59,9 @@ function Footer() {
         </Box>
       </Grid>
 
-      <Grid item sx={{ mt: 3, px:2 }} sm={12}>
+      <Grid item sx={{ mt: 3, px: 2 }} sm={12}>
         <Box>
-          <Typography variant="h6">
+          <Typography variant="h6" >
             © 2024, Rabbit Doughnuts. Powered by Stripe
           </Typography>
         </Box>

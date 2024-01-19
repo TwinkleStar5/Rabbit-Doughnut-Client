@@ -27,30 +27,31 @@ function ColorToggleButton() {
     setAlignment(newAlignment);
   };
   const theme = useTheme();
+  const toggleStyle = {
+    bgcolor: "white !important",
 
+    width: "150px",
+    height: "60px",
+    textAlign: "center",
+    borderRadius: "12px",
+    border: "none",
+    [theme.breakpoints.down("sm")]: {
+      width: "70px",
+    },
+  };
   return (
     <ToggleButtonGroup
-      color="primary"
+      color="shit"
       value={alignment}
       exclusive
       onChange={handleChange}
     >
-      <ToggleButton
-        sx={{
-          bgcolor: "white !important",
-          width: "100px",
-          textAlign: "center",
-          borderRadius: "12px",
-          border: "none",
-          [theme.breakpoints.down("sm")]: {
-            width: "70px",
-          },
-        }}
-      >
+      <ToggleButton sx={toggleStyle} value="All">
         <Typography
           variant="h6"
           sx={{
             fontSize: "16px",
+            fontWeight: "bold",
             [theme.breakpoints.down("sm")]: {
               fontSize: "12px",
             },
@@ -59,28 +60,46 @@ function ColorToggleButton() {
           All
         </Typography>
       </ToggleButton>
-      <ToggleButton
-        sx={{
-          bgcolor: "white !important",
-          width: "100px",
-          textAlign: "center",
-          borderRadius: "12px",
-          border: "none",
-          [theme.breakpoints.down("sm")]: {
-            width: "70px",
-          },
-        }}
-      >
+      <ToggleButton sx={toggleStyle} value="Vegan">
         <Typography
           variant="h6"
           sx={{
             fontSize: "16px",
+            fontWeight: "bold",
             [theme.breakpoints.down("sm")]: {
               fontSize: "12px",
             },
           }}
         >
           Vegan
+        </Typography>
+      </ToggleButton>
+      <ToggleButton sx={toggleStyle} value="Gluten Free">
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: "16px",
+            fontWeight: "bold",
+            [theme.breakpoints.down("sm")]: {
+              fontSize: "12px",
+            },
+          }}
+        >
+          Gluten Free
+        </Typography>
+      </ToggleButton>
+      <ToggleButton sx={toggleStyle} value=" Vegan & Gluten Free">
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: "16px",
+            fontWeight: "bold",
+            [theme.breakpoints.down("sm")]: {
+              fontSize: "12px",
+            },
+          }}
+        >
+          Vegan & Gluten Free
         </Typography>
       </ToggleButton>
     </ToggleButtonGroup>
@@ -133,7 +152,7 @@ function ShopProducts() {
                   },
                 }}
               >
-                <Typography
+                {/* <Typography
                   variant="h6"
                   sx={{
                     [theme.breakpoints.down("sm")]: {
@@ -143,7 +162,7 @@ function ShopProducts() {
                 >
                   Gluten Free
                 </Typography>
-                <Switch {...label} />
+                <Switch {...label} /> */}
               </Box>
             </Box>
             <Grid container spacing={2}>
@@ -166,86 +185,64 @@ function ShopProducts() {
                       }}
                     >
                       <Box style={{ position: "relative" }}>
+                        <CardMedia
+                          height="130"
+                          component="img"
+                          image={`http://localhost:8000/${product.image}`}
+                        />
                         {product.vegan && product.glutenFree ? (
-                          <>
-                            <CardMedia
-                              height="130"
-                              component="img"
-                              image={`http://localhost:8000/${product.image}`}
-                            />
-                            <Typography
-                              variant="subtitle1"
-                              sx={{
-                                bgcolor: "white",
-                                opacity: "0.5",
-                                textAlign: "center",
-                                borderRadius: "20px",
-                                position: "absolute",
-                                bottom: "0",
-                                width: "100%",
-                                borderBottomLeftRadius: "0",
-                                borderBottomRightRadius: "0",
-                              }}
-                            >
-                              Vegan & Gluten Free
-                            </Typography>
-                          </>
+                          <Typography
+                            variant="subtitle1"
+                            sx={{
+                              bgcolor: "white",
+                              opacity: "0.5",
+                              textAlign: "center",
+                              borderRadius: "20px",
+                              position: "absolute",
+                              bottom: "0",
+                              width: "100%",
+                              borderBottomLeftRadius: "0",
+                              borderBottomRightRadius: "0",
+                            }}
+                          >
+                            Vegan & Gluten Free
+                          </Typography>
                         ) : product.vegan ? (
-                          <>
-                            <CardMedia
-                              height="130"
-                              component="img"
-                              image={`http://localhost:8000/${product.image}`}
-                            />
-                            <Typography
-                              variant="subtitle1"
-                              sx={{
-                                bgcolor: "white",
-                                opacity: "0.5",
-                                textAlign: "center",
-                                borderRadius: "20px",
-                                position: "absolute",
-                                bottom: "0",
-                                width: "100%",
-                                borderBottomLeftRadius: "0",
-                                borderBottomRightRadius: "0",
-                              }}
-                            >
-                              Vegan
-                            </Typography>
-                          </>
+                          <Typography
+                            variant="subtitle1"
+                            sx={{
+                              bgcolor: "white",
+                              opacity: "0.5",
+                              textAlign: "center",
+                              borderRadius: "20px",
+                              position: "absolute",
+                              bottom: "0",
+                              width: "100%",
+                              borderBottomLeftRadius: "0",
+                              borderBottomRightRadius: "0",
+                            }}
+                          >
+                            Vegan
+                          </Typography>
                         ) : product.glutenFree ? (
-                          <>
-                            <CardMedia
-                              height="130"
-                              component="img"
-                              image={`http://localhost:8000/${product.image}`}
-                            />
-                            <Typography
-                              variant="subtitle1"
-                              sx={{
-                                bgcolor: "white",
-                                opacity: "0.5",
-                                textAlign: "center",
-                                borderRadius: "20px",
-                                position: "absolute",
-                                bottom: "0",
-                                width: "100%",
-                                borderBottomLeftRadius: "0",
-                                borderBottomRightRadius: "0",
-                              }}
-                            >
-                              Gluten Free
-                            </Typography>
-                          </>
+                          <Typography
+                            variant="subtitle1"
+                            sx={{
+                              bgcolor: "white",
+                              opacity: "0.5",
+                              textAlign: "center",
+                              borderRadius: "20px",
+                              position: "absolute",
+                              bottom: "0",
+                              width: "100%",
+                              borderBottomLeftRadius: "0",
+                              borderBottomRightRadius: "0",
+                            }}
+                          >
+                            Gluten Free
+                          </Typography>
                         ) : (
-                          <>
-                            <CardMedia
-                              height="130"
-                              component="img"
-                              image={`http://localhost:8000/${product.image}`}
-                            />
-                          </>
+                          ""
                         )}
                       </Box>
                     </CardActionArea>

@@ -16,13 +16,13 @@ const metadata = {
 const baseTheme = createTheme();
 
 const theme = createTheme({
-  ...baseTheme,
+  // ...baseTheme,
   palette: {
     primary: { main: "#ADDFB3" }, //green
     error: { main: "#D85F5F", light: "#F9BABA" }, //red, pink
     warning: { main: "#E1DCA7" }, //yellow
     success: { main: "#A5C9A5" }, //green
-    
+    shit: { main: "#041E42" },
     //dark blue: #041E42
   },
   typography: {
@@ -40,15 +40,15 @@ const theme = createTheme({
       fontSize: "20px",
       color: "white",
       background: "#041E42 !important",
-      borderRadius: "20px !important",
+      borderRadius: "40px !important",
       width: "300px",
-      disableRipple: true,
+      // disableRipple: true,
       [baseTheme.breakpoints.down("sm")]: {
         width: "200px",
       },
       "&:hover": {
         width: "200px",
-        TransitionEvent: "2s",
+        transition: "width  2s",
       },
     },
   },
