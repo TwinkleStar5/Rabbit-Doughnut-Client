@@ -15,7 +15,9 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SearchIcon from "@mui/icons-material/Search";
-import { InputBase, Typography } from "@mui/material";
+import { InputBase, Typography, Grid } from "@mui/material";
+import { shopDonut } from "./ShopNav";
+import { Gifting } from "./ShopNav";
 
 export default function Sidenav() {
   const [isExpanded, setIsExpanded] = React.useState(true);
@@ -38,7 +40,7 @@ export default function Sidenav() {
     position: "relative",
     borderRadius: "12px",
 
-    backgroundColor: alpha(theme.palette.common.white, 0.15), 
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
     // "&:hover": {
     //   backgroundColor: alpha(theme.palette.common.white, 0.25),
     // },
@@ -86,7 +88,7 @@ export default function Sidenav() {
       role="presentation"
     >
       <List>
-        <ListItem disablePadding >
+        <ListItem disablePadding>
           <ListItemButton
           // onClick={toggleDrawer(anchor, false)}
           // onKeyDown={toggleDrawer(anchor, false)}
@@ -104,7 +106,7 @@ export default function Sidenav() {
                 on
                 expandIcon={<ExpandMoreIcon />}
                 onClick={() => setIsExpanded(!isExpanded)}
-                sx={{backgroundColor: "#F2F2F2"}}
+                sx={{ backgroundColor: "#F2F2F2" }}
               >
                 <Typography
                   variant="h5"
@@ -115,9 +117,14 @@ export default function Sidenav() {
               </AccordionSummary>
               <AccordionDetails>
                 <ListItemButton>
-                  <Typography variant="h6">
-                    <a href="/shopProducts"> Shop Doughnuts</a>
-                  </Typography>
+                  <Grid container spacing={3}>
+                    <Grid item sm={6}>
+                      <a href="/shopProducts">{shopDonut}</a>
+                    </Grid>
+                    <Grid item sm={6}>
+                      <a href="/">{Gifting}</a>
+                    </Grid>
+                  </Grid>
                 </ListItemButton>
               </AccordionDetails>
             </Accordion>
@@ -147,11 +154,22 @@ export default function Sidenav() {
         </ListItemButton>
       </List>
       <List sx={{ paddingLeft: "20px", paddingBottom: "262px" }}>
-        <Search sx={{ bgcolor: "transparent", borderColor: "black" }}>
+        <Search
+          sx={{
+            bgcolor: "transparent",
+            border: "1.5px solid",
+            borderColor: "#041E42 ",
+          }}
+        >
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
-          <StyledInputBase placeholder="Search Our Products :)" />
+          <Typography variant="subtitle1">
+            <StyledInputBase
+              placeholder="Search Our Products :)"
+              sx={{ fontFamily: "Work Sans", color: "#041E42" }}
+            />
+          </Typography>
         </Search>
       </List>
     </Box>
