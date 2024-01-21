@@ -110,7 +110,7 @@ const selection = {
 };
 function SideCartCard() {
   const [quantity, setQuantity] = useState(1);
-  const [showSelection, setShowSelection] = useState(true);
+  const [showSelection, setShowSelection] = useState(false);
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
   };
@@ -208,50 +208,3 @@ function SideCartCard() {
 
 export default SideCartCard;
 
-// function AddQuantityForm({ product }) {
-
-//   const [cartItem, setCartItem] = useState(null);
-//   const queryClient = useQueryClient();
-//   const { mutate } = useMutation(addToCart, {
-//     onSuccess: (data) => {
-//       alert(data.msg);
-//       queryClient.invalidateQueries(["cart"]);
-//     },
-//     onError: (e) => alert(e.response.data.msg),
-//   });
-
-//   useEffect(() => {
-//     const existingCartItem = getCart().find((item) => item._id == product._id);
-//     setCartItem(existingCartItem);
-//   }, [product._id]);
-
-//   const handleAddToCart = () => {
-//     // Use the addToCart function or perform other actions based on the quantity
-//     addToCart(product, quantity);
-//     handleClose(); // Close the modal or perform other actions after adding to cart
-//   };
-
-//   return;
-//   <>
-//     <form method="POST" onSubmit={handleAddToCart}>
-//
-//       <Button
-//         type="submit"
-//         variant="button"
-//         sx={{ mt: 3, width: "180px", borderRadius: "13px" }}
-//       >
-//         ADD TO CART
-//       </Button>
-//     </form>
-
-//     <Button
-//       onClick={() => handleAddToCart()}
-//       variant="button"
-//       sx={{ mt: 3, width: "180px", borderRadius: "13px" }}
-//     >
-//       ADD TO CART
-//     </Button>
-//   </>;
-// }
-
-// export default AddQuantityForm;
