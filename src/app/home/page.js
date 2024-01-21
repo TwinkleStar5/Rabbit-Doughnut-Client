@@ -11,7 +11,6 @@ import {
 
 import homeBanner from "../../img/home_banner.webp";
 import worked_with from "../../img/worked-with.webp";
-import choose from "../../img/choose.jpg";
 import discount from "../../img/discount.webp";
 import { useRouter } from "next/navigation";
 
@@ -46,10 +45,11 @@ function Home() {
             </Box>
             <Box sx={{ textAlign: "center" }}>
               <Button
-                onClick={() => push("/shopProducts")}
+                onClick={() => push("/shopDoughnuts")}
                 variant="button"
                 sx={{
                   my: 3,
+                  borderRadius: "13px",
                 }}
               >
                 Order Now
@@ -148,7 +148,9 @@ function Home() {
               }}
             >
               <a href="/register">
-                <Button variant="button">REGISTER NOW</Button>
+                <Button variant="button" sx={{ borderRadius: "13px" }}>
+                  REGISTER NOW
+                </Button>
               </a>
             </Box>
             <Typography variant="h5">

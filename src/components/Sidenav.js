@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
-
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -10,7 +9,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -18,6 +16,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { InputBase, Typography, Grid } from "@mui/material";
 import { shopDonut } from "./ShopNav";
 import { Gifting } from "./ShopNav";
+import LoginLogout from "@/app/auth/login&logout";
 
 export default function Sidenav() {
   const [isExpanded, setIsExpanded] = React.useState(true);
@@ -79,11 +78,13 @@ export default function Sidenav() {
       },
     },
   }));
+
   const list = (anchor) => (
     <Box
       sx={{
         width: anchor === "top" || anchor === "bottom" ? "auto" : 400,
         backgroundColor: "#F2F2F2",
+        p: 3,
       }}
       role="presentation"
     >
@@ -106,7 +107,7 @@ export default function Sidenav() {
                 on
                 expandIcon={<ExpandMoreIcon />}
                 onClick={() => setIsExpanded(!isExpanded)}
-                sx={{ backgroundColor: "#F2F2F2" }}
+                sx={{ backgroundColor: "#F2F2F2", p: "0" }}
               >
                 <Typography
                   variant="h5"
@@ -131,7 +132,19 @@ export default function Sidenav() {
           </ListItemButton>
         </ListItem>
       </List>
-      <List sx={{ paddingLeft: "20px" }}>
+      <List>
+        <ListItemButton onClick={toggleDrawer(anchor, false)}>
+          <a href="/dashboard">
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: "bold", fontSize: "30px" }}
+            >
+              Dashboard
+            </Typography>
+          </a>
+        </ListItemButton>
+      </List>
+      <List>
         <ListItemButton onClick={toggleDrawer(anchor, false)}>
           <a href="/showProducts">
             <Typography
@@ -143,7 +156,7 @@ export default function Sidenav() {
           </a>
         </ListItemButton>
       </List>
-      <List sx={{ paddingLeft: "20px" }}>
+      <List>
         <ListItemButton onClick={toggleDrawer(anchor, false)}>
           <Typography
             variant="h5"
@@ -153,7 +166,19 @@ export default function Sidenav() {
           </Typography>
         </ListItemButton>
       </List>
-      <List sx={{ paddingLeft: "20px", paddingBottom: "262px" }}>
+      <List>
+        <ListItemButton onClick={toggleDrawer(anchor, false)}>
+          <a href="/orders">
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: "bold", fontSize: "30px" }}
+            >
+              Your Orders
+            </Typography>
+          </a>
+        </ListItemButton>
+      </List>
+      <List>
         <Search
           sx={{
             bgcolor: "transparent",
@@ -171,6 +196,12 @@ export default function Sidenav() {
             />
           </Typography>
         </Search>
+      </List>
+
+      <List sx={{ paddingBottom: "200px" }}>
+        <ListItemButton>
+          <LoginLogout />
+        </ListItemButton>
       </List>
     </Box>
   );

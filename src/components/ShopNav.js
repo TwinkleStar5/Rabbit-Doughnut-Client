@@ -1,6 +1,6 @@
 import { Card, Box, Typography, Grid } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
-import shopDonutPic from "../img/shopPIC.webp";
+import donutGIF from "../img/donutGIF.webp";
 import gifting from "../img/gifting.webp";
 const caption = {
   bgcolor: "white",
@@ -29,7 +29,7 @@ export function shopDonut() {
       }}
     >
       <Box sx={{ position: "relative" }}>
-        <CardMedia height="130" component="img" image={shopDonutPic.src} />
+        <CardMedia height="130" component="img" image={donutGIF.src} />
         <Typography variant="h6" sx={caption}>
           Shop Doughnuts
         </Typography>

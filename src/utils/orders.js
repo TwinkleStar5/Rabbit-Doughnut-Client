@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export async function addProducts(product) {
-  const res = await axios.post("http://localhost:8000/products", product, {
+export async function createOrder() {
+  const res = await axios.post("http://localhost:8000/orders", null, {
     headers: {
       "x-auth-token": localStorage.getItem("token"),
     },
@@ -9,8 +9,8 @@ export async function addProducts(product) {
   return res.data;
 }
 
-export async function getProducts() {
-  const res = await axios.get("http://localhost:8000/products", {
+export async function getOrder() {
+  const res = await axios.get("http://localhost:8000/orders", {
     headers: {
       "x-auth-token": localStorage.getItem("token"),
     },

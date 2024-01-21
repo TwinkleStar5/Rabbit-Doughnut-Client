@@ -12,7 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton, Typography } from "@mui/material";
 import cart from "../../img/cart.png";
 import Calendar from "./calendar";
-
+import SideCartCard from "./SideCartCard";
 
 function SideCart() {
   const [isExpanded, setIsExpanded] = React.useState(true);
@@ -43,8 +43,10 @@ function SideCart() {
         <Typography variant="h4" sx={{ mb: 3 }}>
           Your Cart
         </Typography>
-      
-        <Typography variant="h6">Your cart is currently empty.</Typography>
+        <Typography variant="h6" sx={{ mb: 3 }}>
+          Your cart is currently empty.
+        </Typography>
+        <SideCartCard />
       </List>
       <List sx={{ p: 4 }}>
         <Typography variant="h4" sx={{ mb: 3 }}>
