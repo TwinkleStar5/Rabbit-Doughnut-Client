@@ -9,7 +9,7 @@ import {
   Stepper,
   Step,
   StepLabel,
-  Input,
+  TextField,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Information from "./information";
@@ -26,16 +26,16 @@ const StyledBadge = styled(Badge)({
     padding: "0 4px",
   },
 });
-const steps = ["Information", "Payment", "Shipping"];
+const steps = ["Information", , "Shipping", "Payment"];
 
 function getStepContent(step) {
   switch (step) {
     case 0:
       return <Information />;
     case 1:
-      return <Payment />;
-    case 2:
       return <Shipping />;
+    case 2:
+      return <Payment />;
     default:
       throw new Error("Unknown step");
   }
@@ -82,7 +82,10 @@ function Checkout() {
                 {getStepContent(activeStep)}
                 <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                   {activeStep !== 0 && (
-                    <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                    <Button
+                      onClick={handleBack}
+                      sx={{ mt: 3, ml: 1, color: "white", width: "150px" }}
+                    >
                       Back
                     </Button>
                   )}
@@ -90,7 +93,7 @@ function Checkout() {
                   <Button
                     variant="contained"
                     onClick={handleNext}
-                    sx={{ mt: 3, ml: 1 }}
+                    sx={{ mt: 3, ml: 1, color: "white", width: "150px" }}
                   >
                     {activeStep === steps.length - 1 ? "Place order" : "Next"}
                   </Button>
@@ -99,7 +102,7 @@ function Checkout() {
             )}
           </Grid>
         </Grid>
-        <Grid container sx={{ bgcolor: "#F5F5F5", p: 3, pt: 7 }} md={5}>
+        <Grid container sx={{ bgcolor: "#F5F5F5", p: 6, pt: 8 }} md={5}>
           <Grid item>
             <Grid container sx={{ display: "flex", py: 2 }} spacing={2}>
               <Grid item xs={2}>
@@ -139,9 +142,84 @@ function Checkout() {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item sx={{ display: "flex" }}>
-            <Input label="Discount code" fullWidth variant="outlined" />
-            <Button>APPLY</Button>
+          <Grid item sx={{ display: "flex", width: "100%" }}>
+            <TextField
+              label="Discount Code"
+              fullWidth
+              variant="outlined"
+              color="info"
+              sx={{
+                fontFamily: "Archivo Black",
+                color: "#666666",
+              }}
+            />
+            <Button
+              variant="contained"
+              sx={{
+                height: "55px",
+                ml: 3,
+                bgcolor: "#EDEDED !important",
+                color: "#666666",
+                border: "10px solid !important",
+                borderColor: "#EEEEEE !important",
+                flex: "end",
+              }}
+              disableElevation
+            >
+              <Typography variant="h6">APPLY</Typography>
+            </Button>
+          </Grid>
+          <Grid item sx={{ width: "100%" }}>
+            <Box>
+              <Typography
+                variant="h6"
+                sx={{
+                  mt: 3,
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box>Subtotal</Box>
+                <Box sx={{ fontWeight: "bold" }}>RM 59.90</Box>
+              </Typography>
+            </Box>
+            <Box>
+              <Typography
+                variant="h6"
+                sx={{
+                  mt: 3,
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box>Shipping</Box>
+                <Box>Free</Box>
+              </Typography>
+            </Box>
+            <Box>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "bold",
+                  mt: 3,
+                  display: "flex",
+                }}
+              >
+                <Box sx={{ width: "100%" }}>
+                  <Box>Total</Box>
+                  <Box
+                    sx={{
+                      color: "#666666",
+                      fontWeight: "light",
+                      fontSize: "12px",
+                    }}
+                  >
+                    Including RM 6.32 in taxes
+                  </Box>
+                </Box>
+                <Box>Free</Box>
+              </Typography>
+            </Box>
           </Grid>
         </Grid>
       </Grid>
