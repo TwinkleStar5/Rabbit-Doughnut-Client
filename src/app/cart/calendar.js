@@ -1,74 +1,31 @@
-import { Box, Button, Typography } from "@mui/material";
+"use client";
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { useState } from "react";
-import "react-datetime/css/react-datetime.css";
-import Datetime from "react-datetime";
-import "../globals.css";
-
-import moment from "moment";
-var yesterday = moment().subtract(1, "day");
-var valid = function (current) {
-  return current.isAfter(yesterday);
-};
+import { styled } from "@mui/material/styles";
 
 function Calendar() {
+  const [value, setValue] = useState(dayjs(new Date()));
+
   return (
-    <>
-      <Box
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DateCalendar
+        value={value}
+        disablePast
+        onChange={(newValue) => setValue(newValue)}
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          bgcolor: "#f7f8f9",
+          bgcolor: "#F7F8F9",
+          color: "#041E42",
+          fontFamily: "Archivo Black",
+          border: "1px solid",
+          borderColor: "#EEEEEE",
           borderRadius: "10px",
-          p: 3,
+          width: "410px",
         }}
-      >
-        <Typography variant="h6" sx={{ fontSize: "23px" }}>
-          <Datetime className="calendar" isValidDate={valid} />
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          bgcolor: "#f7f8f9",
-          borderRadius: "10px",
-          mt: 2,
-          p: 3,
-        }}
-      >
-        <Typography variant="subtitle1">
-          Delivered 8am to 9pm 97% likely to arrive on time, but on the odd
-          occasion it could arrive the day after. For date-sensitive occasions
-          such as birthdays, we recommend selecting one day earlier, on the rare
-          occasion DPD delays delivery by a day.
-        </Typography>
-      </Box>
-      <Box>
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: "bold",
-            mt: 3,
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box>Subtotal</Box>
-          <Box>RM 59.90</Box>
-        </Typography>
-      </Box>
-      <Box>
-        <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
-          Shipping is calculated at checkout
-        </Typography>
-      </Box>
-      <Box
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-      >
-        <Button variant="button" sx={{ my: 2 }}>
-          CHECKOUT
-        </Button>
-      </Box>
-    </>
+      />
+    </LocalizationProvider>
   );
 }
 

@@ -17,6 +17,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { useMutation, useQueryClient } from "react-query";
 
+
 const NumberInput = forwardRef(function CustomNumberInput(props, ref) {
   return (
     <BaseNumberInput
@@ -117,7 +118,9 @@ function SideCartCard() {
   const handleToggleSelection = () => {
     setShowSelection(!showSelection);
   };
-
+  const handleRemove = () => {
+    onRemove();
+  };
   return (
     <Grid
       container
@@ -198,6 +201,7 @@ function SideCartCard() {
         <Typography
           variant="subtitle1"
           sx={{ color: "#041E42", mt: 1, cursor: "pointer" }}
+          onClick={handleRemove}
         >
           Remove
         </Typography>
@@ -207,4 +211,3 @@ function SideCartCard() {
 }
 
 export default SideCartCard;
-

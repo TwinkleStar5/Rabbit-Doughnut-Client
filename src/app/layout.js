@@ -6,7 +6,7 @@ import ReactQueryProvider from "./ReactQueryProvider";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Topnav from "@/components/Topnav";
 import Footer from "@/components/Footer";
-
+import Checkout from "./checkout/page";
 const inter = Inter({ subsets: ["latin"] });
 const metadata = {
   title: "Create Next App",
@@ -22,8 +22,7 @@ const theme = createTheme({
     error: { main: "#D85F5F", light: "#F9BABA" }, //red, pink
     warning: { main: "#E1DCA7" }, //yellow
     success: { main: "#A5C9A5" }, //green
-    shit: { main: "#041E42" },
-    //dark blue: #041E42
+    info: { main: "#041E42" }, //dark blue
   },
   typography: {
     h1: {
@@ -58,13 +57,13 @@ export default function RootLayout({ children }) {
   return (
     <ReactQueryProvider>
       <html lang="en">
-        <ThemeProvider theme={theme}>
-          <body className={inter.className}>
+        <body className={inter.className}>
+          <ThemeProvider theme={theme}>
             <Topnav />
             {children}
             <Footer />
-          </body>
-        </ThemeProvider>
+          </ThemeProvider>
+        </body>
       </html>
     </ReactQueryProvider>
   );

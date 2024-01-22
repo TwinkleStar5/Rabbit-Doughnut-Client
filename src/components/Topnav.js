@@ -9,15 +9,11 @@ import logo from "../img/logo3.png";
 import { Grid } from "@mui/material";
 import LoginLogout from "@/app/auth/login&logout";
 
-export default function Topnav() {
-  const handleLogoClick = () => {
-    window.location.href = "/home";
-  };
-
+function Topnav() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ py: 2 }} >
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }} >
+      <AppBar position="static" sx={{ py: 2 }}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Grid item sm={4}>
             <IconButton
               size="large"
@@ -30,11 +26,8 @@ export default function Topnav() {
             </IconButton>
           </Grid>
           <Grid item sm={4}>
-            <a href="/" onClick={handleLogoClick}>
-              <img
-                src={logo.src}
-                style={{ height: "65px", margin: "auto" }}
-              ></img>
+            <a href="/home">
+              <img src={logo.src} style={{ height: "65px", margin: "auto" }} />
             </a>
           </Grid>
           <Grid sx={{ display: "flex" }} sm={4}>
@@ -48,3 +41,5 @@ export default function Topnav() {
     </Box>
   );
 }
+
+export default Topnav;

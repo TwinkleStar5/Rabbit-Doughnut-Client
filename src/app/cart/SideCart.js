@@ -1,18 +1,24 @@
 "use client";
 
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
-
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import { IconButton, Typography } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
 import cart from "../../img/cart.png";
 import Calendar from "./calendar";
 import SideCartCard from "./SideCartCard";
+import Badge from "@mui/material/Badge";
+
+const StyledBadge = styled(Badge)({
+  "& .MuiBadge-badge": {
+    right: 10,
+    top: 30,
+    color: "white",
+    padding: "0 4px",
+  },
+});
 
 function SideCart() {
   const [isExpanded, setIsExpanded] = React.useState(true);
@@ -30,31 +36,92 @@ function SideCart() {
 
     setState({ ...state, [anchor]: open });
   };
+  const handleRemoveCard = () => {
+    // Perform removal logic here (e.g., update the cart state)
+    // For now, let's just set the state to an empty array
+    // Replace this with your actual logic
+    setState({ right: false });
 
+    // Invalidate the query to trigger a re-fetch
+    queryClient.invalidateQueries("cart");
+  };
   const list = (anchor) => (
     <Box
       sx={{
-        width: anchor === "top" || anchor === "bottom" ? "auto" : 550,
+        width: anchor === "top" || anchor === "bottom" ? "auto" : 520,
         backgroundColor: "#FFFFF",
+        p: 4,
       }}
       role="presentation"
     >
-      <List sx={{ p: 4 }}>
+      <List>
         <Typography variant="h4" sx={{ mb: 3 }}>
           Your Cart
         </Typography>
         <Typography variant="h6" sx={{ mb: 3 }}>
           Your cart is currently empty.
         </Typography>
-        <SideCartCard />
+        <SideCartCard onRemove={handleRemoveCard} />
       </List>
-      <List sx={{ p: 4 }}>
-        <Typography variant="h4" sx={{ mb: 3 }}>
+      <List>
+        <Typography variant="h4" sx={{ my: 2 }}>
           Delivery Date
         </Typography>
-        <Typography variant="h6">
+        <Box>
           <Calendar />
-        </Typography>
+        </Box>
+      </List>
+      <List>
+        <Box
+          sx={{
+            bgcolor: "#f7f8f9",
+            borderRadius: "10px",
+            mt: 2,
+            p: 2,
+            textAlign: "center",
+          }}
+        >
+          <Typography variant="subtitle1" sx={{ fontSize: "12px" }}>
+            Delivered 8am to 9pm 97% likely to arrive on time, but on the odd
+            occasion it could arrive the day after. For date-sensitive occasions
+            such as birthdays, we recommend selecting one day earlier, on the
+            rare occasion DPD delays delivery by a day.
+          </Typography>
+        </Box>
+      </List>
+      <List>
+        <Box>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: "bold",
+              mt: 3,
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box>Subtotal</Box>
+            <Box>RM 59.90</Box>
+          </Typography>
+        </Box>
+        <Box>
+          <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
+            Shipping is calculated at checkout
+          </Typography>
+        </Box>
+      </List>
+      <List>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button variant="button" sx={{ my: 2, borderRadius: "13px" }}>
+            <a href="/checkout">CHECKOUT</a>
+          </Button>
+        </Box>
       </List>
     </Box>
   );
@@ -63,9 +130,16 @@ function SideCart() {
     <div>
       {["right"].map((anchor) => (
         <React.Fragment key={anchor}>
-          <IconButton onClick={toggleDrawer(anchor, true)}>
-            <img src={cart.src} style={{ width: "30px" }} />{" "}
-          </IconButton>
+          <StyledBadge
+            badgeContent={4}
+            color="error"
+            invisible={false}
+            sx={{ fontFamily: "Work Sans" }}
+          >
+            <IconButton onClick={toggleDrawer(anchor, true)}>
+              <img src={cart.src} style={{ width: "30px" }} />
+            </IconButton>
+          </StyledBadge>
           <Drawer
             anchor={anchor}
             open={state[anchor]}

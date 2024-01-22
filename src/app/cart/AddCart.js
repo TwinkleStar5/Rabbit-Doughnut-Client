@@ -23,7 +23,7 @@ function ColorToggleButton() {
   };
   return (
     <ToggleButtonGroup
-      color="shit"
+      color="info"
       value={alignment}
       exclusive
       onChange={handleChange}
