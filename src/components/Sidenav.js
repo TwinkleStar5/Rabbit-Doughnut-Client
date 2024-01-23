@@ -168,6 +168,18 @@ export default function Sidenav() {
       </List>
       <List>
         <ListItemButton onClick={toggleDrawer(anchor, false)}>
+          <a href="/">
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: "bold", fontSize: "30px" }}
+            >
+              Points & Vouchers
+            </Typography>
+          </a>
+        </ListItemButton>
+      </List>
+      <List>
+        <ListItemButton onClick={toggleDrawer(anchor, false)}>
           <a href="/orders">
             <Typography
               variant="h5"
