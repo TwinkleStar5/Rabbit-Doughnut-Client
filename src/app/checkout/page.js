@@ -259,7 +259,7 @@ function Checkout() {
                 }}
               >
                 <Box>Points collected</Box>
-                <Box >59</Box>
+                <Box>59</Box>
               </Typography>
             </Box>
             <Box>
@@ -296,7 +296,7 @@ function Checkout() {
                     Including RM 6.32 in taxes
                   </Box>
                 </Box>
-                <Box>Free</Box>
+                <Box>RM 59.90</Box>
               </Typography>
             </Box>
           </Grid>

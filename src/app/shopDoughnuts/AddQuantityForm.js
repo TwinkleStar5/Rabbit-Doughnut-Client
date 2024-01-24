@@ -6,7 +6,8 @@ import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_Numb
 import { styled } from "@mui/system";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient, useQuery } from "react-query";
+import { Button } from "@mui/material";
 
 const NumberInput = forwardRef(function CustomNumberInput(props, ref) {
   return (
@@ -99,47 +100,55 @@ function AddQuantityForm({ product }) {
     onError: (e) => alert(e.response.data.msg),
   });
 
-  useEffect(() => {
-    const existingCartItem = getCart().find((item) => item._id == product._id);
-    setCartItem(existingCartItem);
-  }, [product._id]);
+  const { data } = useQuery("cartItems", getCart);
+  // useEffect(() => {
+  //   const existingCartItem = getCart().find((item) => item._id == product._id);
+  //   setCartItem(existingCartItem);
+  // }, [product._id]);
+  const donutCount = data?.items?.reduce(
+    (initialValue, item) => (initialValue += item.quantity),
+    0
+  );
 
   const handleAddToCart = () => {
     // Use the addToCart function or perform other actions based on the quantity
-    addToCart(product, quantity);
-    handleClose(); // Close the modal or perform other actions after adding to cart
+
+    mutate({ productId: product._id, quantity });
+    //handleClose(); // Close the modal or perform other actions after adding to cart
   };
 
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
   };
 
-  return;
-  <>
-    <form method="POST" onSubmit={handleAddToCart}>
-      <NumberInput
-        min={1}
-        max={12}
-        value={quantity}
-        onValueChange={(newValue) => handleQuantityChange(newValue)}
-      />
+  return (
+    <>
+      {/* <form method="POST" onSubmit={handleAddToCart}>
+        <NumberInput
+          min={1}
+          max={12}
+          value={quantity}
+          onValueChange={(newValue) => handleQuantityChange(newValue)}
+        />
+        <Button
+          type="submit"
+          variant="button"
+          sx={{ mt: 3, width: "180px", borderRadius: "13px" }}
+        >
+          ADD TO CART
+        </Button>
+      </form> */}
+
       <Button
-        type="submit"
+        onClick={() => handleAddToCart()}
         variant="button"
         sx={{ mt: 3, width: "180px", borderRadius: "13px" }}
+        disabled={donutCount > 11 ? true : false}
       >
         ADD TO CART
       </Button>
-    </form>
-
-    <Button
-      onClick={() => handleAddToCart()}
-      variant="button"
-      sx={{ mt: 3, width: "180px", borderRadius: "13px" }}
-    >
-      ADD TO CART
-    </Button>
-  </>;
+    </>
+  );
 }
 
 export default AddQuantityForm;

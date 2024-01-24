@@ -8,3 +8,8 @@ export const login = async (user) => {
   const res = await axios.post("http://localhost:8000/users/register", user);
   return res.data;
 };
+
+export const generateToken = async (user) => {
+  const res = await axios.post("http://localhost:8000/users/generate", user);
+  return res.data.token;
+};

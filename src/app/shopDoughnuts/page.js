@@ -11,7 +11,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import AddCart from "../cart/AddCart";
 import ShopProductCard from "./ShopProductCard";
 
-function ColorToggleButton() {
+function ColorToggleButton({ handleCategory }) {
   const [alignment, setAlignment] = React.useState("web");
 
   const handleChange = (event, newAlignment) => {
@@ -37,7 +37,11 @@ function ColorToggleButton() {
       exclusive
       onChange={handleChange}
     >
-      <ToggleButton sx={toggleStyle} value="All">
+      <ToggleButton
+        sx={toggleStyle}
+        value="All"
+        onClick={() => handleCategory("All")}
+      >
         <Typography
           variant="h6"
           sx={{
@@ -51,7 +55,11 @@ function ColorToggleButton() {
           All
         </Typography>
       </ToggleButton>
-      <ToggleButton sx={toggleStyle} value="Vegan">
+      <ToggleButton
+        sx={toggleStyle}
+        value="Vegan"
+        onClick={() => handleCategory("Vegan")}
+      >
         <Typography
           variant="h6"
           sx={{
@@ -65,7 +73,11 @@ function ColorToggleButton() {
           Vegan
         </Typography>
       </ToggleButton>
-      <ToggleButton sx={toggleStyle} value="Gluten Free">
+      <ToggleButton
+        sx={toggleStyle}
+        value="Gluten Free"
+        onClick={() => handleCategory("Gluten Free")}
+      >
         <Typography
           variant="h6"
           sx={{
@@ -79,7 +91,11 @@ function ColorToggleButton() {
           Gluten Free
         </Typography>
       </ToggleButton>
-      <ToggleButton sx={toggleStyle} value=" Vegan & Gluten Free">
+      <ToggleButton
+        sx={toggleStyle}
+        value="Vegan & Gluten Free"
+        onClick={() => handleCategory("Vegan & Gluten Free")}
+      >
         <Typography
           variant="h6"
           sx={{
@@ -102,9 +118,10 @@ function ShopProducts() {
   const theme = useTheme();
   const [selectedCategory, setSelectedCategory] = useState("All");
   if (isLoading) return <Typography variant="h2">Is Loading...</Typography>;
-  const handleToggleChange = (category) => {
-    setSelectedCategory(category);
-  };
+  // const handleToggleChange = (category) => {
+  //   setSelectedCategory(category);
+  // };
+  const handleCategory = (category) => setSelectedCategory(category);
   const filterProductsByCategory = (category, products) => {
     switch (category) {
       case "Vegan & Gluten Free":
@@ -128,7 +145,7 @@ function ShopProducts() {
           <Grid item md={8}>
             <Box sx={{ mb: 4 }}>
               <Box>
-                <ColorToggleButton onToggleChange={handleToggleChange} />
+                <ColorToggleButton handleCategory={handleCategory} />
               </Box>
             </Box>
             <Grid container spacing={2}>

@@ -8,6 +8,8 @@ function Logout({ setUser }) {
   const theme = useTheme();
   const onSuccess = (res) => {
     setUser({});
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     console.log("Log out successful");
   };
   const customGoogleButton = ({ onClick }) => (

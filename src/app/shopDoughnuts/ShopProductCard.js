@@ -177,7 +177,9 @@ function ShopProductCard({ product }) {
                 </Grid>
               </Box>
             </Modal>
-            <Box>{/* <AddQuantityForm product={product} /> */}</Box>
+            <Box>
+              <AddQuantityForm product={product} />
+            </Box>
           </Box>
         </CardContent>
       </Card>

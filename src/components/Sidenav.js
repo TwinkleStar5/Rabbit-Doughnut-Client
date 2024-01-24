@@ -17,6 +17,7 @@ import { InputBase, Typography, Grid } from "@mui/material";
 import { shopDonut } from "./ShopNav";
 import { Gifting } from "./ShopNav";
 import LoginLogout from "@/app/auth/login&logout";
+import { AuthContext } from "@/app/AuthProvider";
 
 export default function Sidenav() {
   const [isExpanded, setIsExpanded] = React.useState(true);

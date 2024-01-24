@@ -10,7 +10,7 @@ export async function addToCart(product) {
 }
 
 export async function getCart() {
-  const res = await axios.get("http://localhost:8000/cart",  {
+  const res = await axios.get("http://localhost:8000/cart", {
     headers: {
       "x-auth-token": localStorage.getItem("token"),
     },
@@ -18,4 +18,11 @@ export async function getCart() {
   return res.data;
 }
 
-
+export async function deleteSingleCartItem(id) {
+  const res = await axios.delete(`http://localhost:8000/cart/${id}`, {
+    headers: {
+      "x-auth-token": localStorage.getItem("token"),
+    },
+  });
+  return res.data;
+}

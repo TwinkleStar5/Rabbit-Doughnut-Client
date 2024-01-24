@@ -1,14 +1,23 @@
 import React from "react";
 import { Box, Button, useTheme } from "@mui/material";
 import { GoogleLogin } from "react-google-login";
+import { generateToken } from "@/utils/users";
 
 const clientId =
   "821687526755-4a7n1niuf8phj6qtes2olnmhugs46sft.apps.googleusercontent.com";
 
 function Login({ setUser }) {
   const theme = useTheme();
-  const onSuccess = (res) => {
+  const onSuccess = async (res) => {
     setUser({ token: res.accessToken, data: res.profileObj });
+    let userData = {
+      ...res.profileObj,
+      isAdmin:
+        "rabbitdoughnuts@gmail.com" === res.profileObj.email ? true : false,
+    };
+    localStorage.setItem("user", JSON.stringify(userData));
+    let token = await generateToken(userData);
+    localStorage.setItem("token", token);
     console.log("LOGIN SUCCESS! Current user: ", res.profileObj);
   };
 
