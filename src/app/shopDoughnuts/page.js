@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import { Box, Grid, useTheme } from "@mui/material";
@@ -12,7 +11,7 @@ import AddCart from "../cart/AddCart";
 import ShopProductCard from "./ShopProductCard";
 
 function ColorToggleButton({ handleCategory }) {
-  const [alignment, setAlignment] = React.useState("web");
+  const [alignment, setAlignment] = useState("web");
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -118,9 +117,7 @@ function ShopProducts() {
   const theme = useTheme();
   const [selectedCategory, setSelectedCategory] = useState("All");
   if (isLoading) return <Typography variant="h2">Is Loading...</Typography>;
-  // const handleToggleChange = (category) => {
-  //   setSelectedCategory(category);
-  // };
+
   const handleCategory = (category) => setSelectedCategory(category);
   const filterProductsByCategory = (category, products) => {
     switch (category) {

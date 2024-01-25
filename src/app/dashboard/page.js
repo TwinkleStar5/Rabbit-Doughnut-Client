@@ -4,15 +4,23 @@ import { Box, Typography } from "@mui/material";
 import { Chart as ChartJS, defaults } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import revenueData from "./data/revenueData.json";
-import RecentOrders from "./RecentOrders";
+import RecentOrders from "./AllOrders";
 import { Grid } from "@mui/material";
+import Chart from "./chart";
+
 function Dashboard() {
   return (
     <>
-      <Grid container>
+      <Grid
+        sx={{
+          p: 5,
+          textAlign: "center",
+        }}
+      >
         <Grid item>
-          <Typography variant="h2">This is Dashboard</Typography>
-          <Box sx={{ width: "800px", margin: "auto", my: 3 }}>
+          <Typography variant="h3">Line Chart</Typography>
+          <Chart />
+          {/* <Box sx={{ width: "800px", margin: "auto", my: 3 }}>
             <Line
               data={{
                 labels: revenueData.map((data) => data.label),
@@ -44,10 +52,10 @@ function Dashboard() {
                 },
               }}
             />
-          </Box>
-          <Grid item >
-            <RecentOrders />
-          </Grid>
+          </Box> */}
+        </Grid>
+        <Grid item>
+          <RecentOrders />
         </Grid>
       </Grid>
     </>

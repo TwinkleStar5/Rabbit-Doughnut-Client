@@ -99,77 +99,147 @@ function ColorToggleButton({ donutCount }) {
   );
 }
 
+const toggleButton = {
+  bgcolor: "white !important",
+  color: "info.main",
+  width: "100%",
+  height: "60px",
+  textAlign: "center",
+  border: "none",
+  fontSize: "18px",
+  fontWeight: "bold",
+  fontFamily: "Work Sans",
+};
+
 function AddCart() {
   const { data, isLoading } = useQuery("cartItems", getCart);
-
+  //This is a React Query hook that is used for fetching and managing data.
   const donutCount = data?.items?.reduce(
     (initialValue, item) => (initialValue += item.quantity),
     0
   );
 
-  const handleRemoveDonut = (index) => {
-    const donutToRemove = data?.items?.[index];
-    // console.log(donutToRemove);
-    if (donutToRemove && donutToRemove.product?.image) {
-      deleteSingleCartItem(donutToRemove.id); // Assuming you have a function to delete a single cart item by ID
-      // queryClient.invalidateQueries("cartItems"); // Refresh the cartItems query
-    }
+  const showDonuts =
+    data?.items > 0 ? (
+      data?.items
+        ?.flatMap((donut) => Array(donut.quantity).fill(donut))
+        .map((donut, i) => (
+          <Grid item md={4} key={i} sx={{ p: 1 }}>
+            <Box sx={{ position: "relative" }}>
+              <img
+                src={`http://localhost:8000/${donut.product.image}`}
+                style={{ width: "100px", borderRadius: "18px" }}
+              />
+              <Box sx={{ position: "absolute", top: "-5px", right: "-2px" }}>
+                <IconButton onClick={() => handleRemoveDonut(i)}>
+                  <CancelIcon />
+                </IconButton>
+              </Box>
+            </Box>
+          </Grid>
+        ))
+    ) : (
+      <Grid item md={4} sx={{ p: 1 }}>
+        <img
+          src={build.src}
+          style={{ width: "100px", borderRadius: "18px", opacity: "0.3" }}
+        />
+      </Grid>
+    );
+
+  // const showDonuts = data?.items
+  //   ?.flatMap((donut) => Array(donut.quantity).fill(donut))
+  //   .map((donut, i) => (
+  //     <Grid item md={4} key={i} sx={{ p: 1 }}>
+  //       <Box sx={{ position: "relative" }}>
+  //         <img
+  //           src={`http://localhost:8000/${donut.product.image}`}
+  //           style={{ width: "100px", borderRadius: "18px", opacity: "0.3" }}
+  //         />
+  //         <Box sx={{ position: "absolute", top: "-5px", right: "-2px" }}>
+  //           <IconButton onClick={() => handleRemoveDonut(i)}>
+  //             <CancelIcon />
+  //           </IconButton>
+  //         </Box>
+  //       </Box>
+  //     </Grid>
+  //   ));
+
+  const handleRemoveDonut = (i) => {
+    console.log(i);
+    deleteSingleCartItem(i);
   };
 
-  const showDonuts = data?.items
-    ?.flatMap((donut) => Array(donut.quantity).fill(donut))
-    .map((donut, i) => (
-      <Grid item md={4} key={i} sx={{ p: 1 }}>
-        <Box sx={{ position: "relative" }}>
-          <img
-            src={`http://localhost:8000/${donut.product.image}`}
-            style={{ width: "100px", borderRadius: "18px", opacity: "0.3" }}
-          />
-          <Box sx={{ position: "absolute", top: "-5px", right: "-2px" }}>
-            <IconButton onClick={() => handleRemoveDonut(i)}>
-              <CancelIcon />
-            </IconButton>
-          </Box>
-        </Box>
-      </Grid>
-    ));
+  const handleAddToCart = () => {};
 
+  const [pack, setPack] = useState(null);
+  const handlePackChange = (value) => {
+    setPack(value);
+  };
   return (
     <>
       <Grid
+        container
+        md={12}
         sx={{
           bgcolor: "white",
-          borderRadius: "22px",
+          borderRadius: "20px",
           p: 2,
+          mt: 3,
+          textAlign: "center",
         }}
       >
-        <Box sx={{ alignItems: "center" }}>
+        {/* <Grid item sx={{ alignItems: "center", width: "100%" }}>
           <ColorToggleButton donutCount={donutCount} />
-        </Box>
-        <Grid container md={12}>
-          {showDonuts}
-        </Grid>
+        </Grid> */}
         <Grid
+          item
           sx={{
-            bgcolor: "white",
-            borderRadius: "20px",
-            p: 2,
-            mt: 3,
-            textAlign: "center",
+            display: "flex",
+            justifyContent: "space-around",
+            width: "100%",
           }}
         >
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Button sx={toggleButton} onClick={() => handlePackChange("2 Pack")}>
+            2 Pack
+          </Button>
+          <Button sx={toggleButton} onClick={() => handlePackChange("6 Pack")}>
+            6 Pack
+          </Button>
+          <Button sx={toggleButton} onClick={() => handlePackChange("12 Pack")}>
+            12 Pack
+          </Button>
+        </Grid>
+        <Grid
+          md={12}
+          item
+          sx={{
+            bgcolor: "white",
+            borderRadius: "22px",
+            p: 2,
+          }}
+        >
+          {showDonuts}
+        </Grid>
+        <Grid item md={12}>
+          <Grid
+            container
+            sx={{ display: "flex", justifyContent: "space-around" }}
+            spacing={2}
+          >
             <Grid item md={6}>
               <Button
                 variant="contained"
                 sx={{
                   bgcolor: "#F2F2F2 !important",
                   borderRadius: "13px",
-                  width: "150px",
+                  width: "100%",
                   mb: 1,
+                  p: 2,
                 }}
+                disableElevation
               >
-                CLEAR SELECTION
+                CLEAR ALL
               </Button>
               <Typography variant="subtitle1" sx={{ color: "#B5B5B5" }}>
                 Remove your selected doughnuts
@@ -180,9 +250,9 @@ function AddCart() {
                 variant="button"
                 sx={{
                   borderRadius: "13px",
-                  width: "150px",
-                  height: "83px",
+                  width: "100%",
                   mb: 1,
+                  p: 2,
                 }}
               >
                 RANDOMISE
@@ -191,7 +261,41 @@ function AddCart() {
                 Can't decide? Let us choose!
               </Typography>
             </Grid>
-          </Box>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        sx={{
+          display: "flex",
+          bgcolor: "white",
+          borderRadius: "22px",
+          p: 3,
+          justifyContent: "space-between",
+          mt: 3,
+        }}
+      >
+        <Grid item md={5} sx={{ pr: 2 }}>
+          <Typography
+            variant="h6"
+            sx={{
+              color: "info.main",
+              pt: 1,
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            RM26.90
+          </Typography>
+        </Grid>
+        <Grid item md={7}>
+          <Button
+            onClick={() => handleAddToCart()}
+            variant="button"
+            sx={{ width: "100%", borderRadius: "13px" }}
+          >
+            ADD TO CART
+          </Button>
         </Grid>
       </Grid>
     </>

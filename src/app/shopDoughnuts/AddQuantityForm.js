@@ -8,7 +8,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { useMutation, useQueryClient, useQuery } from "react-query";
 import { Button } from "@mui/material";
-
+import BlockIcon from "@mui/icons-material/Block";
 const NumberInput = forwardRef(function CustomNumberInput(props, ref) {
   return (
     <BaseNumberInput
@@ -90,39 +90,65 @@ const StyledButton = styled("button")({
 
 function AddQuantityForm({ product }) {
   const [quantity, setQuantity] = useState(1);
-  const [cartItem, setCartItem] = useState(null);
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient(); //to create an instance of the query client in a React component. create an instance means setting up a query client object that can be used to interact with and manage queries.
   const { mutate } = useMutation(addToCart, {
+    //{ mutate } is a destructuring assignment. It is extracting the property mutate from the object returned by useMutation hook.
+    //addToCart => //Explanation: addToCart is the function that will be called when the mutate function is invoked. //Purpose: It's the logic that performs the actual mutation, in this case, adding an item to the cart.
     onSuccess: (data) => {
       alert(data.msg);
       queryClient.invalidateQueries(["cart"]);
+      //instructing the queryClient to mark the "cart" query as stale, so that the next time the "cart" query is requested, React Query will automatically refetch the data, ensuring it is up-to-date. This is a common pattern used to trigger a data refresh in response to a mutation or other data-changing operation.
     },
     onError: (e) => alert(e.response.data.msg),
   });
 
   const { data } = useQuery("cartItems", getCart);
-  // useEffect(() => {
-  //   const existingCartItem = getCart().find((item) => item._id == product._id);
-  //   setCartItem(existingCartItem);
-  // }, [product._id]);
   const donutCount = data?.items?.reduce(
     (initialValue, item) => (initialValue += item.quantity),
     0
   );
 
-  const handleAddToCart = () => {
-    // Use the addToCart function or perform other actions based on the quantity
-
+  const handleAddToPlaceholder = () => {
     mutate({ productId: product._id, quantity });
-    //handleClose(); // Close the modal or perform other actions after adding to cart
   };
+  //Calls the mutate function to trigger a mutation.
+  // The argument passed to mutate is an object with properties productId and quantity.
+  // productId: The ID of the product being added to the cart
+  // quantity: The quantity of the product to be added to the cart
 
-  const handleQuantityChange = (newQuantity) => {
-    setQuantity(newQuantity);
-  };
+  // const handleQuantityChange = (newQuantity) => {
+  //   setQuantity(newQuantity);
+  // };
 
   return (
     <>
+      {donutCount > 11 ? (
+        <Button
+          variant="button"
+          sx={{
+            mt: 3,
+            width: "180px",
+            bgcolor: "#EEEEEE !important",
+            border: "1.5px solid",
+            borderRadius: "13px ",
+            borderColor: "#041E42 !important",
+            color: "#B5B5B5 !important",
+            cursor: "not-allowed !important",
+          }}
+          disabled
+        >
+          ADD
+        </Button>
+      ) : (
+        <Button
+          onClick={() => handleAddToPlaceholder()}
+          variant="button"
+          sx={{ mt: 3, width: "180px", borderRadius: "13px" }}
+        >
+          ADD
+        </Button>
+      )}
+
       {/* <form method="POST" onSubmit={handleAddToCart}>
         <NumberInput
           min={1}
@@ -130,23 +156,7 @@ function AddQuantityForm({ product }) {
           value={quantity}
           onValueChange={(newValue) => handleQuantityChange(newValue)}
         />
-        <Button
-          type="submit"
-          variant="button"
-          sx={{ mt: 3, width: "180px", borderRadius: "13px" }}
-        >
-          ADD TO CART
-        </Button>
       </form> */}
-
-      <Button
-        onClick={() => handleAddToCart()}
-        variant="button"
-        sx={{ mt: 3, width: "180px", borderRadius: "13px" }}
-        disabled={donutCount > 11 ? true : false}
-      >
-        ADD TO CART
-      </Button>
     </>
   );
 }

@@ -19,10 +19,14 @@ export async function getCart() {
 }
 
 export async function deleteSingleCartItem(id) {
-  const res = await axios.delete(`http://localhost:8000/cart/${id}`, {
-    headers: {
-      "x-auth-token": localStorage.getItem("token"),
-    },
-  });
-  return res.data;
+  try {
+    const res = await axios.delete(`http://localhost:8000/cart/${id}`, {
+      headers: {
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.log("AHHHH CANNOT DELETE ITEM!!:", error);
+  }
 }
