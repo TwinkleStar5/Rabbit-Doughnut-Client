@@ -13,13 +13,12 @@ body {
   display: none;
 }
 
-/* Target the table head cells and set the font size */
+/* DASHBOARD */
 .MuiTableHead-root .MuiTableCell-root {
-  font-size: 25px;
+  font-size: 22px;
   font-weight: bold;
 }
 
-/* Target the table body cells and set the font size */
 .MuiTableBody-root .MuiTableCell-root {
   font-size: 20px;
 }
@@ -82,4 +81,13 @@ body {
 /* SIDENAV */
 .css-w8pwi2-MuiButtonBase-root-MuiListItemButton-root {
   box-sizing: none !important;
+}
+
+/* CRUD */
+.css-16rrc13-MuiFormLabel-root-MuiInputLabel-root,
+.css-17724hw-MuiInputBase-root-MuiOutlinedInput-root,
+.css-1a5kfn-MuiFormLabel-root-MuiInputLabel-root,
+.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input {
+  font-family: "Work Sans" !important;
+  font-size: 22px !important;
 }

@@ -13,16 +13,12 @@ import CreateProductTable from "./ProductTable";
 function Dashboard() {
   return (
     <>
-      <Grid
-        sx={{
-          p: 5,
-          textAlign: "center",
-        }}
-      >
-        <Grid item>
-          <Typography variant="h3">Line Chart</Typography>
-          <Chart />
-          {/* <Box sx={{ width: "800px", margin: "auto", my: 3 }}>
+      <Grid container sx={{ p: 5 }}>
+        <Grid container sx={{ margin: "auto" }}>
+          <Grid item md={8}>
+            <Typography variant="h4">Line Chart</Typography>
+            <Chart />
+            {/* <Box sx={{ width: "800px", margin: "auto", my: 3 }}>
             <Line
               data={{
                 labels: revenueData.map((data) => data.label),
@@ -55,14 +51,28 @@ function Dashboard() {
               }}
             />
           </Box> */}
+          </Grid>
+          <Grid
+            item
+            md={3}
+            sx={{ border: "1.5px dashed", borderRadius: "16px", p: 2 }}
+          >
+            <Typography variant="h5">Total Revenue</Typography>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              as of 16 Feb 2024
+            </Typography>
+            <Typography variant="h4" sx={{ color: "#9381ff" }}>
+              RM12,346.97
+            </Typography>
+          </Grid>
         </Grid>
-        <Grid item sx={{ my: 3 }}>
-          <Typography variant="h3">Recent Orders</Typography>
+        <Grid item sx={{ my: 4, mx: "auto" }}>
+          <Typography variant="h4">Recent Orders</Typography>
           <RecentOrders />
         </Grid>
-        <Grid item sx={{ my: 4 }}>
-          <Typography variant="h3" sx={{ my: 1 }}>
-            Create Doughnuts
+        <Grid sx={{ my: 4, mx: "auto" }}>
+          <Typography variant="h4" sx={{ my: 1 }}>
+            All Doughnuts Menu
           </Typography>
           <CreateProductTable />
         </Grid>

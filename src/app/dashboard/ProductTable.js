@@ -310,7 +310,7 @@ function ProductTable() {
           sx={{
             width: "100%",
             mb: 2,
-            bgcolor: "primary.main",
+            bgcolor: "#F9BABA",
             borderRadius: "20px",
             fontFamily: "Work Sans",
           }}
@@ -362,7 +362,7 @@ function ProductTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.products}
+                        <a href="/dashboard/CRUD"> {row.products}</a>
                       </TableCell>
                       <TableCell align="right">{row.qty}</TableCell>
                       <TableCell align="right">{row.isActive}</TableCell>

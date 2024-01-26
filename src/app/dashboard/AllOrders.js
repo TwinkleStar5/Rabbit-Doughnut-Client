@@ -42,7 +42,13 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <React.Fragment>
+    <React.Fragment
+      sx={{
+        bgcolor: "#A7D3D4",
+        borderRadius: "20px",
+        fontFamily: "Work Sans",
+      }}
+    >
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
           <IconButton
