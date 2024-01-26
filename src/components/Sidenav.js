@@ -18,6 +18,7 @@ import { shopDonut } from "./ShopNav";
 import { Gifting } from "./ShopNav";
 import LoginLogout from "@/app/auth/login&logout";
 import { AuthContext } from "@/app/AuthProvider";
+import "../app/globals.css";
 
 export default function Sidenav() {
   const [isExpanded, setIsExpanded] = React.useState(true);
@@ -92,8 +93,9 @@ export default function Sidenav() {
       <List>
         <ListItem disablePadding>
           <ListItemButton
-          // onClick={toggleDrawer(anchor, false)}
-          // onKeyDown={toggleDrawer(anchor, false)}
+            disableTouchRipple
+            // onClick={toggleDrawer(anchor, false)}
+            // onKeyDown={toggleDrawer(anchor, false)}
           >
             <Accordion
               expanded={isExpanded}
@@ -108,11 +110,15 @@ export default function Sidenav() {
                 on
                 expandIcon={<ExpandMoreIcon />}
                 onClick={() => setIsExpanded(!isExpanded)}
-                sx={{ backgroundColor: "#F2F2F2", p: "0" }}
+                sx={{ bgcolor: "#F2F2F2", p: "0" }}
               >
                 <Typography
                   variant="h5"
-                  sx={{ fontWeight: "bold", fontSize: "30px" }}
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "30px",
+                    bgcolor: "#F2F2F2",
+                  }}
                 >
                   Shop
                 </Typography>
@@ -121,7 +127,7 @@ export default function Sidenav() {
                 <ListItemButton>
                   <Grid container spacing={3}>
                     <Grid item sm={6}>
-                      <a href="/shopProducts">{shopDonut}</a>
+                      <a href="/shopDoughnuts">{shopDonut}</a>
                     </Grid>
                     <Grid item sm={6}>
                       <a href="/">{Gifting}</a>
@@ -134,7 +140,10 @@ export default function Sidenav() {
         </ListItem>
       </List>
       <List>
-        <ListItemButton onClick={toggleDrawer(anchor, false)}>
+        <ListItemButton
+          onClick={toggleDrawer(anchor, false)}
+          disableTouchRipple
+        >
           <a href="/dashboard">
             <Typography
               variant="h5"

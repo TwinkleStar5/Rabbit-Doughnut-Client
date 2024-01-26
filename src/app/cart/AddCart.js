@@ -170,6 +170,8 @@ function AddCart() {
     deleteSingleCartItem(i);
   };
 
+  const handleRemoveAll = () => {};
+
   const handleAddToCart = () => {};
 
   const [pack, setPack] = useState(null);
@@ -238,6 +240,7 @@ function AddCart() {
                   p: 2,
                 }}
                 disableElevation
+                onClick={() => handleRemoveAll}
               >
                 CLEAR ALL
               </Button>

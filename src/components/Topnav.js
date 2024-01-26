@@ -12,29 +12,39 @@ import LoginLogout from "@/app/auth/login&logout";
 function Topnav() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ py: 2 }}>
+      <AppBar
+        position="static"
+        sx={{ py: 2 }}
+        className="TopNav"
+        elevation="none"
+      >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Grid item sm={4}>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              sx={{ mr: 2 }}
-              disableRipple
-            >
-              <Sidenav />
-            </IconButton>
-          </Grid>
-          <Grid item sm={4}>
-            <a href="/home">
-              <img src={logo.src} style={{ height: "65px", margin: "auto" }} />
-            </a>
-          </Grid>
-          <Grid sx={{ display: "flex" }} sm={4}>
-            <LoginLogout />
-            <IconButton disableRipple>
-              <SideCart />
-            </IconButton>
+          <Grid container>
+            <Grid item sm={4}>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                sx={{ mr: 2 }}
+                disableRipple
+              >
+                <Sidenav />
+              </IconButton>
+            </Grid>
+            <Grid item sm={4}>
+              <a href="/home">
+                <img
+                  src={logo.src}
+                  style={{ height: "65px", margin: "auto" }}
+                />
+              </a>
+            </Grid>
+            <Grid sx={{ display: "flex", justifyContent: "flex-end" }} md={4}>
+              <LoginLogout sx={{ display: { sm: "none" } }} />
+              <IconButton disableRipple>
+                <SideCart />
+              </IconButton>
+            </Grid>
           </Grid>
         </Toolbar>
       </AppBar>

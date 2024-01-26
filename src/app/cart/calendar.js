@@ -5,6 +5,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
+import "../globals.css";
+import { Box } from "@mui/material";
 
 function Calendar() {
   const [value, setValue] = useState(dayjs(new Date()));

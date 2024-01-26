@@ -60,7 +60,7 @@ function Footer() {
       </Grid>
 
       <Grid
-        item
+        container
         sx={{
           mt: 3,
           px: 2,
@@ -68,18 +68,21 @@ function Footer() {
           justifyContent: "space-between",
         }}
       >
-        <Box>
+        <Grid item sm={6}>
           <Typography variant="h6">
             © 2024, Rabbit Doughnuts. Powered by Stripe
           </Typography>
-        </Box>
-        <Box sx={{ display: "flex", width: "30px" }}>
-          <img src={american.src} style={{ marginRight: "20px" }} />
-          <img src={visa.src} style={{ marginRight: "20px" }} />
-          <img src={mastercard.src} style={{ marginRight: "20px" }} />
-          <img src={jcb.src} style={{ marginRight: "20px" }} />
-          <img src={union.src} style={{ marginRight: "20px" }} />
-        </Box>
+        </Grid>
+        <Grid item sm={6} sx={{ display: "flex", justifyContent: "flex-end", pr:8 }}>
+          <img src={american.src} style={{ width: "38px" }} />
+          <img src={visa.src} style={{ width: "38px", marginLeft: "30px" }} />
+          <img
+            src={mastercard.src}
+            style={{ width: "38px", marginLeft: "30px" }}
+          />
+          <img src={jcb.src} style={{ width: "38px", marginLeft: "30px" }} />
+          <img src={union.src} style={{ width: "38px", marginLeft: "30px" }} />
+        </Grid>
       </Grid>
     </Grid>
   );

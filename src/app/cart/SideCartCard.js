@@ -16,7 +16,7 @@ import { styled } from "@mui/system";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { useMutation, useQueryClient } from "react-query";
-
+import "../globals.css";
 
 const NumberInput = forwardRef(function CustomNumberInput(props, ref) {
   return (

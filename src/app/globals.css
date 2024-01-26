@@ -9,7 +9,77 @@ body {
   margin: 0;
 }
 
-.calendar{
-  
+.TopNav {
+  display: none;
 }
 
+/* Target the table head cells and set the font size */
+.MuiTableHead-root .MuiTableCell-root {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+/* Target the table body cells and set the font size */
+.MuiTableBody-root .MuiTableCell-root {
+  font-size: 20px;
+}
+
+.css-pdct74-MuiTablePagination-selectLabel {
+  font-size: 16px !important;
+}
+
+/* CALENDAR */
+.css-cyfsxc-MuiPickersCalendarHeader-labelContainer {
+  font-family: "Work Sans" !important;
+  font-size: 23px !important;
+  font-weight: bold !important;
+}
+
+.css-gra8xn-MuiPickersYear-yearButton {
+  font-family: "Work Sans" !important;
+  font-size: 20px !important;
+}
+
+.css-1tkx1wf-MuiSvgIcon-root-MuiPickersCalendarHeader-switchViewIcon,
+.css-kg9q0s-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button,
+.css-1nkg345-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button {
+  font-size: 30px !important;
+}
+
+.css-nk89i7-MuiPickersCalendarHeader-root {
+  margin-bottom: 28px !important;
+}
+.css-rhmlg1-MuiTypography-root-MuiDayCalendar-weekDayLabel,
+.css-lz9un5-MuiButtonBase-root-MuiPickersDay-root,
+.css-3hf3w1-MuiPickersDay-root,
+.css-mh2edr-MuiButtonBase-root-MuiPickersDay-root.Mui-selected,
+.css-mh2edr-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {
+  font-family: "Work Sans" !important;
+  font-size: 23px !important;
+  margin: 4px 7px !important;
+}
+
+.css-mh2edr-MuiButtonBase-root-MuiPickersDay-root,
+.css-lz9un5-MuiButtonBase-root-MuiPickersDay-root {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.css-1cucrv5-MuiDateCalendar-root {
+  height: 400px !important;
+  max-height: 400px !important;
+}
+
+.css-1t0788u-MuiPickersSlideTransition-root-MuiDayCalendar-slideTransition {
+  min-height: 278px !important;
+}
+
+/* SIDECARTCARD */
+.css-v3l47h {
+  background-color: #f7f8f9 !important;
+}
+
+/* SIDENAV */
+.css-w8pwi2-MuiButtonBase-root-MuiListItemButton-root {
+  box-sizing: none !important;
+}

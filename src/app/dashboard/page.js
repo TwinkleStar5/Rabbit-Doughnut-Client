@@ -7,6 +7,8 @@ import revenueData from "./data/revenueData.json";
 import RecentOrders from "./AllOrders";
 import { Grid } from "@mui/material";
 import Chart from "./chart";
+import "../globals.css";
+import CreateProductTable from "./ProductTable";
 
 function Dashboard() {
   return (
@@ -54,8 +56,15 @@ function Dashboard() {
             />
           </Box> */}
         </Grid>
-        <Grid item>
+        <Grid item sx={{ my: 3 }}>
+          <Typography variant="h3">Recent Orders</Typography>
           <RecentOrders />
+        </Grid>
+        <Grid item sx={{ my: 4 }}>
+          <Typography variant="h3" sx={{ my: 1 }}>
+            Create Doughnuts
+          </Typography>
+          <CreateProductTable />
         </Grid>
       </Grid>
     </>
