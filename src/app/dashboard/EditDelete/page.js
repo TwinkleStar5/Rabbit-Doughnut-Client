@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { useRef } from "react";
 import {
   Box,
   Button,
@@ -16,56 +17,21 @@ import {
 import { styled } from "@mui/system";
 import donut from "../../../img/millie.webp";
 import "../../globals.css";
-const blue = {
-  100: "#DAECFF",
-  200: "#80BFFF",
-  400: "#3399FF",
-  500: "#007FFF",
-  600: "#0072E5",
-  700: "#0059B2",
-};
-
-const grey = {
-  50: "#F3F6F9",
-  100: "#E5EAF2",
-  200: "#DAE2ED",
-  300: "#C7D0DD",
-  400: "#B0B8C4",
-  500: "#9DA8B7",
-  600: "#6B7A90",
-  700: "#434D5B",
-  800: "#303740",
-  900: "#1C2025",
-};
-
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 const StyledInputRoot = styled("div")(
-  ({ theme }) => `
-  font-family: 'IBM Plex Sans', sans-serif;
+  `
+  font-family: 'Work Sans';
   font-weight: 400;
   border-radius: 8px;
-  color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-  background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
-  border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
-  box-shadow: 0px 2px 4px ${
-    theme.palette.mode === "dark" ? "rgba(0,0,0, 0.5)" : "rgba(0,0,0, 0.05)"
-  };
   display: grid;
-  grid-template-columns: 1fr 19px;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 20px;
+  grid-template-rows: 1fr 38px;
   overflow: hidden;
-  column-gap: 8px;
+  column-gap: 4px;
   padding: 4px;
+ 
 
-  &.${numberInputClasses.focused} {
-    border-color: ${blue[400]};
-    box-shadow: 0 0 0 3px ${
-      theme.palette.mode === "dark" ? blue[700] : blue[200]
-    };
-  }
-
-  &:hover {
-    border-color: ${blue[400]};
-  }
 
   // firefox
   &:focus-visible {
@@ -75,48 +41,41 @@ const StyledInputRoot = styled("div")(
 );
 
 const StyledInputElement = styled("input")(
-  ({ theme }) => `
-  font-size: 0.875rem;
-  font-family: inherit;
+  `
+  font-size: 22px;
+  font-family: 'Work Sans';
   font-weight: 400;
   line-height: 1.5;
   grid-column: 1/2;
   grid-row: 1/3;
-  color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-  background: inherit;
-  border: none;
-  border-radius: inherit;
+  background: white;
+  border: 1px solid;
+  border-color: #C4C4C4;
+  border-radius: 4px;
   padding: 8px 12px;
   outline: 0;
 `
 );
 
 const StyledButton = styled("button")(
-  ({ theme }) => `
+  `
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
   appearance: none;
   padding: 0;
-  width: 19px;
-  height: 19px;
-  font-family: system-ui, sans-serif;
-  font-size: 0.875rem;
-  line-height: 1;
+  width: 22px;
+  height: 22px;
+  font-family: 'Work Sans';
+  font-size: 22px;
+  line-height: 2;
   box-sizing: border-box;
-  background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
   border: 0;
-  color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 120ms;
 
-  &:hover {
-    background: ${theme.palette.mode === "dark" ? grey[800] : grey[50]};
-    border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
-    cursor: pointer;
-  }
 
   &.${numberInputClasses.incrementButton} {
     grid-column: 2/3;
@@ -124,17 +83,7 @@ const StyledButton = styled("button")(
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     border: 1px solid;
-    border-bottom: 0;
-    border-color: ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
-    background: ${theme.palette.mode === "dark" ? grey[900] : grey[50]};
-    color: ${theme.palette.mode === "dark" ? grey[200] : grey[900]};
-
-    &:hover {
-      cursor: pointer;
-      color: #FFF;
-      background: ${theme.palette.mode === "dark" ? blue[600] : blue[500]};
-      border-color: ${theme.palette.mode === "dark" ? blue[400] : blue[600]};
-    }
+    font-size:25px;
   }
 
   &.${numberInputClasses.decrementButton} {
@@ -143,16 +92,13 @@ const StyledButton = styled("button")(
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
     border: 1px solid;
-    border-color: ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
-    background: ${theme.palette.mode === "dark" ? grey[900] : grey[50]};
-    color: ${theme.palette.mode === "dark" ? grey[200] : grey[900]};
+    font-size: 25px;
+    margin-top: 15px;
   }
 
   &:hover {
     cursor: pointer;
-    color: #FFF;
-    background: ${theme.palette.mode === "dark" ? blue[600] : blue[500]};
-    border-color: ${theme.palette.mode === "dark" ? blue[400] : blue[600]};
+    color: #ADDFB3;
   }
 
   & .arrow {
@@ -187,25 +133,108 @@ const CustomNumberInput = React.forwardRef(function CustomNumberInput(
       }}
       {...props}
       ref={ref}
+      min={1}
     />
   );
 });
-function CRUDProduct() {
+
+function EditDeleteProduct
+() {
+  const [currentImage, setCurrentImage] = React.useState(donut.src);
+
+  const inputRef = useRef(null);
+
+  const handleClick = () => {
+    inputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const fileObj = event.target.files && event.target.files[0];
+
+    if (fileObj) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setCurrentImage(reader.result);
+      };
+
+      reader.readAsDataURL(fileObj);
+    }
+
+    // Reset the input value to allow selecting the same file again
+    event.target.value = null;
+  };
+
+  const handleDeleteProduct = () => {};
   return (
     <>
       <Box sx={{ textAlign: "center", my: 5 }}>
-        <Typography variant="h3">Millie Bobby Brownie</Typography>
+        <Typography variant="h3" sx={{ color: "info.main" }}>
+          Millie Bobby Brownie
+        </Typography>
       </Box>
       <Grid container sx={{ p: 5, justifyContent: "center" }}>
-        <Grid item md={5} sx={{ margin: "auto" }}>
-          <img
-            src={donut.src}
-            style={{ width: "300px", borderRadius: "20px" }}
+        <Grid item md={4} sx={{ margin: "auto" }}>
+          <label onClick={handleClick}>
+            <Box
+              sx={{
+                position: "relative",
+                "&:hover .changeImageText": {
+                  visibility: "visible",
+                  opacity: 0.6,
+                  cursor: "pointer",
+                },
+              }}
+            >
+              <img
+                src={currentImage}
+                style={{ width: "300px", borderRadius: "20px", margin: "auto" }}
+              />
+              <Box
+                className="changeImageText"
+                sx={{
+                  position: "absolute",
+                  bgcolor: "white",
+                  opacity: 0,
+                  zIndex: 100,
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: "100%",
+                  width: "100%",
+                  margin: "auto",
+                  transition: "0.5s ease",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: "black",
+                    fontSize: "25px",
+                    fontWeight: "bold",
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    textAlign: "center",
+                  }}
+                >
+                  <EditIcon sx={{ fontSize: "25px" }} /> <br /> Change Image
+                </Typography>
+              </Box>
+            </Box>
+          </label>
+          <input
+            ref={inputRef}
+            style={{ display: "none" }}
+            type="file"
+            onChange={handleFileChange}
           />
         </Grid>
         <Grid
           item
-          md={7}
+          md={8}
           sx={{ fontFamily: "Work Sans", fontSize: "30px !important" }}
         >
           <Grid container>
@@ -218,12 +247,16 @@ function CRUDProduct() {
                 color="info"
                 role="description"
                 multiline
-               
               />
             </Grid>
             <Grid container spacing={3}>
               <Grid item xs={6} sx={{ mb: 3 }}>
-                <CustomNumberInput placeholder="Update current quantity" />
+                <CustomNumberInput
+                  placeholder="Quantity"
+                  sx={{
+                    "& input::placeholder": { color: "#676767" },
+                  }}
+                />
               </Grid>
               <Grid item xs={6} sx={{ mb: 3 }}>
                 <TextField
@@ -233,13 +266,14 @@ function CRUDProduct() {
                   autoComplete="allergens"
                   variant="outlined"
                   color="info"
+                  multiline
                 />
               </Grid>
             </Grid>
             <Grid
               item
               xs={6}
-              sx={{ fontFamily: "Work Sans", fontSize: "30px" }}
+              sx={{ fontFamily: "Work Sans", fontSize: "30px", pl: 5 }}
             >
               <FormControlLabel
                 control={
@@ -276,19 +310,32 @@ function CRUDProduct() {
               }}
             >
               <Box>
-                <Button variant="button" sx={{ bgcolor: "#A5C9A5 !important" }}>
-                  Confirm Edit
+                <Button
+                  variant="button"
+                  sx={{
+                    bgcolor: "#ADDFB3 !important",
+                    color: "#041E42 !important",
+                    borderRadius: "8px",
+                    width: "250px",
+                    height: "55px",
+                  }}
+                >
+                  <EditIcon sx={{ mr: 2 }} /> Confirm Edit
                 </Button>
               </Box>
               <Box>
                 <Button
                   variant="button"
                   sx={{
-                    bgcolor: "#D85F5F !important",
+                    bgcolor: "#D1182E !important",
+                    borderRadius: "8px",
+                    width: "280px",
+                    height: "55px",
                   }}
+                  onClick={() => handleDeleteProduct}
                 >
-                  Delete Doughnut
-                </Button>{" "}
+                  <DeleteIcon sx={{ mr: 2 }} /> Delete Doughnut
+                </Button>
               </Box>
             </Grid>
           </Grid>
@@ -298,4 +345,5 @@ function CRUDProduct() {
   );
 }
 
-export default CRUDProduct;
+export default EditDeleteProduct
+;

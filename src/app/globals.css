@@ -86,8 +86,11 @@ body {
 /* CRUD */
 .css-16rrc13-MuiFormLabel-root-MuiInputLabel-root,
 .css-17724hw-MuiInputBase-root-MuiOutlinedInput-root,
+.css-db9sh8-MuiInputBase-root-MuiOutlinedInput-root,
 .css-1a5kfn-MuiFormLabel-root-MuiInputLabel-root,
-.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input {
+.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input,
+.css-ahj2mt-MuiTypography-root,
+.css-i4bv87-MuiSvgIcon-root {
   font-family: "Work Sans" !important;
   font-size: 22px !important;
 }

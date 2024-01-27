@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { Chart as ChartJS, defaults } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import revenueData from "./data/revenueData.json";
@@ -9,7 +9,7 @@ import { Grid } from "@mui/material";
 import Chart from "./chart";
 import "../globals.css";
 import CreateProductTable from "./ProductTable";
-
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 function Dashboard() {
   return (
     <>
@@ -71,9 +71,24 @@ function Dashboard() {
           <RecentOrders />
         </Grid>
         <Grid sx={{ my: 4, mx: "auto" }}>
-          <Typography variant="h4" sx={{ my: 1 }}>
-            All Doughnuts Menu
-          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "space-around", mb: 3 }}>
+            <Typography variant="h4" sx={{ my: 1 }}>
+              All Doughnuts Menu
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#D5C4E7 !important",
+                color: "#a4133c",
+                width: "280px !important",
+                borderRadius: "24px",
+              }}
+            >
+              <a href="/dashboard/CreateProduct">
+                <AddCircleIcon sx={{ mr: 2 }} /> Add Doughnuts
+              </a>
+            </Button>
+          </Box>
           <CreateProductTable />
         </Grid>
       </Grid>

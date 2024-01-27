@@ -362,7 +362,7 @@ function ProductTable() {
                         scope="row"
                         padding="none"
                       >
-                        <a href="/dashboard/CRUD"> {row.products}</a>
+                        <a href="/dashboard/EditDelete">{row.products}</a>
                       </TableCell>
                       <TableCell align="right">{row.qty}</TableCell>
                       <TableCell align="right">{row.isActive}</TableCell>
