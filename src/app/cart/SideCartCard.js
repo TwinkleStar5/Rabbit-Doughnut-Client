@@ -1,23 +1,13 @@
-import {
-  Box,
-  Button,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import donutGIF from "../../img/donutGIF.webp";
-import { useState, useEffect, forwardRef } from "react";
-import { addToCart } from "@/utils/cart";
-import { getCart } from "@/utils/cart";
+import { useState, forwardRef } from "react";
 import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_NumberInput";
 import { styled } from "@mui/system";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import { useMutation, useQueryClient } from "react-query";
 import "../globals.css";
-
+import { useQuery } from "react-query";
+import { getCart } from "@/utils/cart";
 const NumberInput = forwardRef(function CustomNumberInput(props, ref) {
   return (
     <BaseNumberInput
@@ -110,6 +100,8 @@ const selection = {
   mb: 1,
 };
 function SideCartCard() {
+  const { data, isLoading } = useQuery("cart", getCart);
+
   const [quantity, setQuantity] = useState(1);
   const [showSelection, setShowSelection] = useState(false);
   const handleQuantityChange = (newQuantity) => {
@@ -121,92 +113,99 @@ function SideCartCard() {
   const handleRemove = () => {
     onRemove();
   };
+
   return (
-    <Grid
-      container
-      sx={{
-        p: 1,
-        bgcolor: "#F7F8F9",
-        border: "1px solid",
-        borderColor: "#EEEEEE",
-        borderRadius: "10px",
-      }}
-      spacing={2}
-    >
-      <Grid item sm={4}>
-        <img
-          src={donutGIF.src}
-          style={{ borderRadius: "10px", width: "150px", margin: "auto" }}
-        />
-        <Typography
-          variant="subtitle1"
-          sx={{ mt: 1, textAlign: "center", fontWeight: "bold" }}
-        >
-          RM 26.90
-        </Typography>
-      </Grid>
-      <Grid item sm={8}>
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          Build A Pack - 6 Pack
-        </Typography>
-        <Button
-          variant="contained"
-          sx={selection}
-          disableElevation
-          disableRipple
-          onClick={handleToggleSelection}
-        >
-          {showSelection ? "Hide" : "View"} selection
-        </Button>
-        {showSelection && (
-          <Box
+    <>
+      {data &&
+        data?.mainCart?.map((c) => (
+          <Grid
+            container
             sx={{
-              border: "1px dashed",
-              borderColor: "#041E42",
-              borderRadius: "6px",
               p: 1,
-              mb: 2,
+              bgcolor: "#F7F8F9",
+              border: "1px solid",
+              borderColor: "#EEEEEE",
+              borderRadius: "10px",
             }}
+            spacing={2}
           >
-            <Typography
-              variant="subtitle1"
-              sx={{
-                whiteSpace: "pre-line",
-                fontStyle: "italic",
-                fontSize: "12px",
-                fontWeight: "bold",
-                color: "#041E42",
-              }}
-            >
-              1. NOTORIOUS P.I.G 2. MILLIE BOBBY BROWNIE 3. D'OH NUT 4.
-              DOUGHNATELLA VERSACE 5. LIAM HEMSWORTHY 6. BEN-OFFEE STILLER
-            </Typography>
-          </Box>
-        )}
-        <Box
-          sx={{
-            border: "1.5px solid",
-            borderRadius: "13px",
-            borderColor: "#041E42",
-            width: "180px",
-          }}
-        >
-          <NumberInput
-            min={1}
-            max={12}
-            value={quantity}
-            onValueChange={(newValue) => handleQuantityChange(newValue)}
-          />
-        </Box>
-        <Typography
-          variant="subtitle1"
-          sx={{ color: "#041E42", mt: 1, cursor: "pointer" }}
-          onClick={handleRemove}
-        >
-          Remove
-        </Typography>
-      </Grid>
-    </Grid>
+            <Grid item sm={4}>
+              <img
+                src={donutGIF.src}
+                style={{ borderRadius: "10px", width: "150px", margin: "auto" }}
+              />
+              <Typography
+                variant="subtitle1"
+                sx={{ mt: 1, textAlign: "center", fontWeight: "bold" }}
+              >
+                RM 26.90
+              </Typography>
+            </Grid>
+            <Grid item sm={8}>
+              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                Build A Pack - 6 Pack
+              </Typography>
+              <Button
+                variant="contained"
+                sx={selection}
+                disableElevation
+                disableRipple
+                onClick={handleToggleSelection}
+              >
+                {showSelection ? "Hide" : "View"} selection
+              </Button>
+              {showSelection && (
+                <Box
+                  sx={{
+                    border: "1px dashed",
+                    borderColor: "#041E42",
+                    borderRadius: "6px",
+                    p: 1,
+                    mb: 2,
+                  }}
+                >
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      whiteSpace: "pre-line",
+                      fontStyle: "italic",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      color: "#041E42",
+                    }}
+                  >
+                    {/* 1. NOTORIOUS P.I.G 2. MILLIE BOBBY BROWNIE 3. D'OH NUT 4.
+                    DOUGHNATELLA VERSACE 5. LIAM HEMSWORTHY 6. BEN-OFFEE STILLER */}
+                    {c.product}
+                  </Typography>
+                </Box>
+              )}
+              <Box
+                sx={{
+                  border: "1.5px solid",
+                  borderRadius: "13px",
+                  borderColor: "#041E42",
+                  width: "180px",
+                }}
+              >
+                <NumberInput
+                  min={1}
+                  max={12}
+                  value={quantity}
+                  onValueChange={(newValue) => handleQuantityChange(newValue)}
+                />
+              </Box>
+              <Typography
+                variant="subtitle1"
+                sx={{ color: "#041E42", mt: 1, cursor: "pointer" }}
+                onClick={handleRemove}
+              >
+                Remove
+              </Typography>
+            </Grid>
+          </Grid>
+        ))}
+    </>
   );
 }
 

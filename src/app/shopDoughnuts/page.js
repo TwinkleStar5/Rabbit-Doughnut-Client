@@ -116,6 +116,8 @@ function ShopProducts() {
   const { data, isLoading } = useQuery("products", getProducts);
   const theme = useTheme();
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [pack, setPack] = useState(2);
+
   if (isLoading) return <Typography variant="h2">Is Loading...</Typography>;
 
   const handleCategory = (category) => setSelectedCategory(category);
@@ -135,6 +137,10 @@ function ShopProducts() {
   };
 
   const filteredProducts = filterProductsByCategory(selectedCategory, data);
+  const handlePackChange = (value) => {
+    setPack(value);
+  };
+
   return (
     <>
       <Box sx={{ p: 5, bgcolor: "#F2F2F2" }}>
@@ -148,13 +154,16 @@ function ShopProducts() {
             <Grid container spacing={2}>
               {filteredProducts?.map((product) => (
                 <Grid item md={4} key={product._id}>
-                  <ShopProductCard product={product} />
+                  <ShopProductCard
+                    product={product}
+                    handlePackChange={handlePackChange}
+                  />
                 </Grid>
               ))}
             </Grid>
           </Grid>
           <Grid item md={4}>
-            <AddCart />
+            <AddCart pack={pack} handlePackChange={handlePackChange} />
           </Grid>
         </Grid>
       </Box>

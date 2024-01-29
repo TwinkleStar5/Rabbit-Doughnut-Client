@@ -9,8 +9,26 @@ export async function addToCart(product) {
   return res.data;
 }
 
+export async function addToMainCart() {
+  const res = await axios.put("http://localhost:8000/cart", null, {
+    headers: {
+      "x-auth-token": localStorage.getItem("token"),
+    },
+  });
+  return res.data;
+}
+
 export async function getCart() {
   const res = await axios.get("http://localhost:8000/cart", {
+    headers: {
+      "x-auth-token": localStorage.getItem("token"),
+    },
+  });
+  return res.data;
+}
+
+export async function deleteAllItems() {
+  const res = await axios.delete(`http://localhost:8000/cart`, {
     headers: {
       "x-auth-token": localStorage.getItem("token"),
     },

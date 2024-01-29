@@ -36,7 +36,7 @@ const dietaryCaption = {
   borderBottomRightRadius: "0",
 };
 
-function ShopProductCard({ product }) {
+function ShopProductCard({ product, handlePackChange }) {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (id) => {
@@ -178,7 +178,10 @@ function ShopProductCard({ product }) {
               </Box>
             </Modal>
             <Box>
-              <AddQuantityForm product={product} />
+              <AddQuantityForm
+                product={product}
+                handlePackChange={handlePackChange}
+              />
             </Box>
           </Box>
         </CardContent>
