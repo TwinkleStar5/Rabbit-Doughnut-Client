@@ -37,14 +37,32 @@ export async function deleteAllItems() {
 }
 
 export async function deleteSingleCartItem(id) {
+  const res = await axios.delete(`http://localhost:8000/cart/${id}`, {
+    headers: {
+      "x-auth-token": localStorage.getItem("token"),
+    },
+  });
+  return res.data;
+}
+
+export async function deleteSingleMainCart(idx) {
+  const res = await axios.delete(`http://localhost:8000/cart/main/${idx}`, {
+    headers: {
+      "x-auth-token": localStorage.getItem("token"),
+    },
+  });
+  return res.data;
+}
+
+export async function updateQtyPack(idx) {
   try {
-    const res = await axios.delete(`http://localhost:8000/cart/${id}`, {
+    const res = await axios.put(`http://localhost:8000/cart/main/${idx}`, {
       headers: {
         "x-auth-token": localStorage.getItem("token"),
       },
     });
     return res.data;
-  } catch (error) {
-    console.log("AHHHH CANNOT DELETE ITEM!!:", error);
+  } catch (e) {
+    return console.log("cannot do... :(");
   }
 }

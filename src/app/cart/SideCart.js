@@ -10,6 +10,8 @@ import cart from "../../img/cart.png";
 import Calendar from "./calendar";
 import SideCartCard from "./SideCartCard";
 import Badge from "@mui/material/Badge";
+import { useQueryClient, useQuery } from "react-query";
+import { getCart } from "@/utils/cart";
 
 const StyledBadge = styled(Badge)({
   "& .MuiBadge-badge": {
@@ -21,6 +23,7 @@ const StyledBadge = styled(Badge)({
 });
 
 function SideCart() {
+  const { data, isLoading } = useQuery("cart", getCart);
   const [isExpanded, setIsExpanded] = React.useState(true);
 
   const [state, setState] = React.useState({
@@ -36,21 +39,14 @@ function SideCart() {
 
     setState({ ...state, [anchor]: open });
   };
-  const handleRemoveCard = () => {
-    // Perform removal logic here (e.g., update the cart state)
-    // For now, let's just set the state to an empty array
-    // Replace this with your actual logic
-    setState({ right: false });
 
-    // Invalidate the query to trigger a re-fetch
-    queryClient.invalidateQueries("cart");
-  };
   const list = (anchor) => (
     <Box
       sx={{
         width: anchor === "top" || anchor === "bottom" ? "auto" : 520,
         backgroundColor: "#FFFFF",
-        p: 4,
+        px: 8,
+        py: 4,
       }}
       role="presentation"
     >
@@ -58,10 +54,13 @@ function SideCart() {
         <Typography variant="h4" sx={{ mb: 3 }}>
           Your Cart
         </Typography>
-        <Typography variant="h6" sx={{ mb: 3 }}>
-          Your cart is currently empty.
-        </Typography>
-        <SideCartCard onRemove={handleRemoveCard} />
+        {data && data?.mainCart?.length ? (
+          <SideCartCard />
+        ) : (
+          <Typography variant="h6" sx={{ mb: 3 }}>
+            Your cart is currently empty.
+          </Typography>
+        )}
       </List>
       <List>
         <Typography variant="h4" sx={{ my: 2 }}>

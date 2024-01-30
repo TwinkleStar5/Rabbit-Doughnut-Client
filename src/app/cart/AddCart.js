@@ -125,6 +125,8 @@ const selectedPack = {
 function AddCart({ pack, handlePackChange }) {
   const { data, isLoading } = useQuery("cart", getCart);
   //This is a React Query hook that is used for fetching and managing data.
+
+  const queryClient = useQueryClient(); //so we don't have to refresh the page each time customers add to cart. receive the cache?
   const handleRemoveDonut = async (id) => {
     await deleteSingleCartItem(id);
     queryClient.invalidateQueries(["cart"]);
@@ -135,11 +137,8 @@ function AddCart({ pack, handlePackChange }) {
     queryClient.invalidateQueries(["cart"]);
   };
 
-  const queryClient = useQueryClient(); //so we don't have to refresh the page each time customers add to cart. receive the cache?
-
   const { mutate } = useMutation(addToMainCart, {
     onSuccess: (data) => {
-      alert(data.msg);
       queryClient.invalidateQueries(["cart"]);
     },
     onError: (e) => alert(e.response.data.msg),
