@@ -19,6 +19,7 @@ import donut from "../../../img/build_placeholder.webp";
 import "../../globals.css";
 import EditIcon from "@mui/icons-material/Edit";
 import CelebrationIcon from "@mui/icons-material/Celebration";
+import "../../globals.css";
 const StyledInputRoot = styled("div")(
   `
   font-family: 'Work Sans';
@@ -285,6 +286,7 @@ function CreateProduct() {
               sx={{ fontFamily: "Work Sans", fontSize: "30px", pl: 5 }}
             >
               <FormControlLabel
+                className="FormControlLabel"
                 control={
                   <Checkbox
                     color="info"
@@ -298,6 +300,7 @@ function CreateProduct() {
             </Grid>
             <Grid item xs={6}>
               <FormControlLabel
+                className="FormControlLabel"
                 control={
                   <Checkbox
                     color="info"

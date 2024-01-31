@@ -7,12 +7,11 @@ import Sidenav from "./Sidenav";
 import SideCart from "@/app/cart/SideCart";
 import logo from "../img/logo3.png";
 import { Grid } from "@mui/material";
-import LoginLogout from "@/app/auth/login&logout";
+import LoginLogout from "@/app/googleApis/login&logout";
 import { useQuery } from "react-query";
 import { getCart } from "@/utils/cart";
+import "../app/globals.css";
 function Topnav() {
- 
-  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -25,6 +24,7 @@ function Topnav() {
           <Grid container>
             <Grid item sm={4}>
               <IconButton
+                className="menuItem"
                 size="large"
                 edge="start"
                 color="inherit"

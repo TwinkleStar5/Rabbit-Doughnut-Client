@@ -93,5 +93,11 @@ body {
 .css-ahj2mt-MuiTypography-root,
 .css-i4bv87-MuiSvgIcon-root {
   font-family: "Work Sans" !important;
-  font-size: 22px !important;
+  font-size: 18px !important;
+}
+
+.menuItem .css-i4bv87-MuiSvgIcon-root,
+.FormControlLabel .css-i4bv87-MuiSvgIcon-root {
+  font-family: "Work Sans" !important;
+  font-size: 30px !important;
 }

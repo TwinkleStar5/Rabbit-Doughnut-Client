@@ -16,7 +16,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { InputBase, Typography, Grid } from "@mui/material";
 import { shopDonut } from "./ShopNav";
 import { Gifting } from "./ShopNav";
-import LoginLogout from "@/app/auth/login&logout";
+import LoginLogout from "@/app/googleApis/login&logout";
 import { AuthContext } from "@/app/AuthProvider";
 import "../app/globals.css";
 

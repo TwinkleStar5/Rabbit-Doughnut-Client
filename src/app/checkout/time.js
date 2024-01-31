@@ -1,23 +1,27 @@
 import * as React from "react";
 import dayjs from "dayjs";
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
-
-const shouldDisableTime = (value, view) =>
-  view === "hours" && value.hour() > 21 && value.hour() < 7;
+import { TimePicker } from "@mui/x-date-pickers";
 
 function Time() {
+  const [value, setValue] = React.useState(
+    dayjs().set("hour", 8).startOf("hour")
+  );
+  const minTime = dayjs().set("hour", 8).startOf("hour");
+  const maxTime = dayjs().set("hour", 21).startOf("hour");
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer>
-        <DemoItem label="Mobile variant">
-          <MobileTimePicker
-            defaultValue={dayjs("2024-01-17T15:30")}
-            shouldDisableTime={shouldDisableTime}
-          />
-        </DemoItem>
+      <DemoContainer components={["TimePicker", "TimePicker"]}>
+        <TimePicker
+          label="Time to pick up your order"
+          value={value}
+          minTime={minTime}
+          maxTime={maxTime}
+          onChange={(newValue) => setValue(newValue)}
+        />
       </DemoContainer>
     </LocalizationProvider>
   );

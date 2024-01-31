@@ -18,6 +18,7 @@ import donutGIF from "../../img/donutGIF.webp";
 import Badge from "@mui/material/Badge";
 import { useQuery } from "react-query";
 import { getCart } from "@/utils/cart";
+import { getOrder } from "@/utils/orders";
 
 const StyledBadge = styled(Badge)({
   "& .MuiBadge-badge": {
@@ -56,12 +57,31 @@ function getStepContent(step) {
   }
 }
 function Checkout() {
-  const { data } = useQuery("carts", getCart);
+  const { data: cartData } = useQuery("carts", getCart);
+  const { data: orderData } = useQuery("orders", getOrder);
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const [showSelection, setShowSelection] = React.useState(false);
+  const handleToggleSelection = () => {
+    setShowSelection(!showSelection);
+  };
+  const selection = {
+    bgcolor: "#F3F3F3 !important",
+    border: "1px solid",
+    borderColor: "#D6D6D6",
+    borderRadius: "10px",
+    color: "#041E42 !important",
+    fontFamily: "Work Sans",
+    fontWeight: "500",
+    textTransform: "none",
+    width: "200px",
+    fontSize: "16px",
+    p: "2px",
+    mb: 1,
+  };
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
@@ -70,9 +90,7 @@ function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
-  let allPacks = data?.mainCart.map((pack) => pack);
-
-  const flatMappedData = data?.mainCart.map((item) => {
+  const flatMappedData = cartData?.mainCart.map((item) => {
     const innerQuantity = item.items.reduce(
       (acc, innerItem) => acc + innerItem.quantity,
       0
@@ -87,6 +105,7 @@ function Checkout() {
 
   let subtotal = 0;
 
+  let allPacks = cartData?.mainCart.map((pack) => pack.items);
   return (
     <>
       <Grid container sx={{ pt: 4, pl: 4 }} spacing={3}>
@@ -187,12 +206,8 @@ function Checkout() {
           </Grid>
         </Grid>
         <Grid container sx={{ bgcolor: "#F5F5F5", p: 6, pt: 8 }} md={5}>
-          {data &&
+          {cartData &&
             allPacks?.map((pack, idx) => {
-              // console.log(pack);
-              // console.log(pack.items);
-              // let pack = 0;
-              // pack.forEach((q) => (pack += q.quantity));
               let perPack = (
                 parseInt(flatMappedData[idx].outerQuantity) *
                 parseFloat(flatMappedData[idx].price)
@@ -219,20 +234,61 @@ function Checkout() {
                         />
                       </StyledBadge>
                     </Grid>
-                    <Grid item xs={8}>
+                    <Grid item xs={7}>
                       <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                         {flatMappedData[idx].innerQuantity} Pack Doughnuts
                       </Typography>
-                      <Typography variant="subtitle1" sx={{ fontSize: "12px" }}>
+                      {/* <Typography variant="subtitle1" sx={{ fontSize: "12px" }}>
                         Pack Contents: 1. NOTORIOUS P.I.G 2. D'OH NUT 3. LIAM
                         HEMSWORTHY 4. DAVID HASSELHOFF 5. THE OG 6. GORDON
                         JAMSAY
-                      </Typography>
-                      <Typography variant="subtitle1" sx={{ fontSize: "12px" }}>
-                        Pack Size: 6
-                      </Typography>
+                      </Typography> */}
+                      <Button
+                        key={idx}
+                        variant="contained"
+                        sx={selection}
+                        disableElevation
+                        disableRipple
+                        onClick={handleToggleSelection}
+                      >
+                        {showSelection ? "Hide" : "View"} selection
+                      </Button>
+
+                      {showSelection && (
+                        <Box
+                          sx={{
+                            border: "1px dashed",
+                            borderColor: "#041E42",
+                            borderRadius: "6px",
+                            p: 1,
+                            mb: 2,
+                          }}
+                        >
+                          {pack.map((innerIdx) => {
+                            return (
+                              <>
+                                <Typography
+                                  variant="subtitle1"
+                                  sx={{
+                                    whiteSpace: "pre-line",
+                                    fontStyle: "italic",
+                                    fontSize: "12px",
+                                    fontWeight: "bold",
+                                    color: "#041E42",
+                                  }}
+                                >
+                                  {innerIdx.product.name} x {innerIdx.quantity}
+                                </Typography>
+                              </>
+                            );
+                          })}
+                        </Box>
+                      )}
+                      {/* <Typography variant="subtitle1" sx={{ fontSize: "12px" }}>
+                        Pack Size: {flatMappedData[idx].outerQuantity}
+                      </Typography> */}
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={3}>
                       <Typography
                         variant="subtitle1"
                         sx={{ fontWeight: "bold" }}
@@ -288,7 +344,7 @@ function Checkout() {
                 }}
               >
                 <Box>Subtotal</Box>
-                <Box sx={{ fontWeight: "bold" }}>{subtotal}</Box>
+                <Box sx={{ fontWeight: "bold" }}>RM {subtotal.toFixed(2)}</Box>
               </Typography>
             </Box>
             <Box>
@@ -324,11 +380,11 @@ function Checkout() {
                   fontWeight: "bold",
                   mt: 3,
                   display: "flex",
+                  justifyContent: "space-between",
                 }}
               >
-                <Box sx={{ width: "100%" }}>
-                  <Box>Total</Box>
-                  <Box
+                <Box>Total</Box>
+                {/* <Box
                     sx={{
                       color: "#666666",
                       fontWeight: "light",
@@ -336,8 +392,8 @@ function Checkout() {
                     }}
                   >
                     Including RM 6.32 in taxes
-                  </Box>
-                </Box>
+                  </Box> */}
+
                 <Box>RM 59.90</Box>
               </Typography>
             </Box>

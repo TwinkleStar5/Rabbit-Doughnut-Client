@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Login from "@/app/auth/login";
+import Login from "@/app/googleApis/login";
 import { gapi } from "gapi-script";
-import Logout from "@/app/auth/logout";
+import Logout from "@/app/googleApis/logout";
 import { Box } from "@mui/material";
 
 const clientId =

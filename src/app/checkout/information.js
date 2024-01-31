@@ -1,15 +1,24 @@
 import { useState } from "react";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, InputAdornment, Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import MenuItem from "@mui/material/MenuItem";
 import Time from "./time";
-import { getOrder } from "@/utils/orders";
+import { createOrder } from "@/utils/orders";
 import { useMutation, useQuery } from "react-query";
 
 function Information() {
   const [info, setInfo] = useState({});
+  const isValidPhoneNumber = (phoneNumber) => {
+    const phoneNumberRegex = /^\d{3}-\d{7}$/;
+    return phoneNumberRegex.test(phoneNumber);
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
   const defaultCountry = "Malaysia";
   const states = [
     { value: "Penang" },
@@ -39,11 +48,11 @@ function Information() {
   };
 
   const handleChange = (e) => {
-    setInfo({ ...info, [e.target.value]: e.target.name });
+    setInfo({ ...info, [e.target.name]: e.target.value });
   };
 
   const queryClient = useQuery();
-  const { mutate } = useMutation(getOrder, {
+  const { mutate } = useMutation(createOrder, {
     onSuccess: (data) => {
       alert(data.msg);
       queryClient.invalidateQueries(["orders"]);
@@ -97,6 +106,17 @@ function Information() {
               autoComplete="phone number"
               variant="outlined"
               color="info"
+              id="outlined-error-helper-text"
+              helperText={
+                info.phoneNumber && !isValidPhoneNumber(info.phoneNumber)
+                  ? "Invalid phone number. Only Malaysian number. Please add a hypen ('-') in between"
+                  : ""
+              }
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">+6</InputAdornment>
+                ),
+              }}
               onChange={handleChange}
             />
           </Grid>
@@ -109,6 +129,10 @@ function Information() {
               autoComplete="given-email"
               variant="outlined"
               color="info"
+              id="outlined-error-helper-text"
+              helperText={
+                info.email && !isValidEmail(info.email) ? "Invalid email" : ""
+              }
               onChange={handleChange}
             />
             <FormControlLabel

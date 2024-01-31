@@ -102,12 +102,11 @@ function SideCart() {
           <Typography variant="subtitle1" sx={{ fontSize: "12px" }}>
             Delivered 8am to 9pm 97% likely to arrive on time, but on the odd
             occasion it could arrive the day after. For date-sensitive occasions
-            such as birthdays, we recommend selecting one day earlier, on the
-            rare occasion DPD delays delivery by a day.
+            such as birthdays, we recommend selecting one day earlier.
           </Typography>
         </Box>
       </List>
-      <List>
+      {/* <List>
         <Box>
           <Typography
             variant="h6"
@@ -127,7 +126,7 @@ function SideCart() {
             Shipping is calculated at checkout
           </Typography>
         </Box>
-      </List>
+      </List> */}
       <List>
         <Box
           sx={{
