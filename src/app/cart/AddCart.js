@@ -18,7 +18,6 @@ import {
   deleteAllItems,
 } from "@/utils/cart";
 import { useQuery } from "react-query";
-import { data } from "autoprefixer";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useMutation, useQueryClient } from "react-query";
 

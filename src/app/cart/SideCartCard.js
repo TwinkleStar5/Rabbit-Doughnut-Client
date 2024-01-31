@@ -108,54 +108,39 @@ function SideCartCard() {
   const [qty, setQty] = useState(data?.mainCart);
   const [showSelection, setShowSelection] = useState(false);
   console.log(qty);
-  const handleQuantityChange = async (action, idx) => {
+  const handleQuantityChange = async (action, packIdx) => {
     if (action === "inc") {
-      setQty([...qty, (qty[idx].quantity += 1)]);
+      setQty([...qty, (qty[packIdx].quantity += 1)]);
     } else {
-      if (qty[idx].quantity >= 2) {
-        setQty([...qty, (qty[idx].quantity -= 1)]);
+      if (qty[packIdx].quantity >= 2) {
+        setQty([...qty, (qty[packIdx].quantity -= 1)]);
       }
     }
 
-    await updateQtyPack(idx);
+    await updateQtyPack(action, packIdx);
+    queryClient.invalidateQueries(["cart"]);
   };
 
   const handleToggleSelection = () => {
     setShowSelection(!showSelection);
   };
 
-  const handleRemove = async (idx) => {
-    await deleteSingleMainCart(idx);
+  const handleRemove = async (packIdx) => {
+    await deleteSingleMainCart(packIdx);
     queryClient.invalidateQueries(["cart"]);
   };
 
-  let cartItems = data?.mainCart.map((cart) => cart.items);
-  // const pack = cartItems.forEach((item) => item.quantity);
-
-  // let packPrice = 9.9;
-
-  // switch (true) {
-  //   case pack <= 2:
-  //     packPrice = 9.9;
-  //     break;
-  //   case pack > 2 && pack <= 6:
-  //     packPrice = 26.9;
-  //     break;
-  //   case pack > 6 && pack <= 12:
-  //     packPrice = 49.9;
-  //     break;
-  // }
+  let allDonutsInPack = data?.mainCart.map((pack) => pack.items);
 
   return (
     <>
       {data &&
-        cartItems?.map((c, outerIdx) => {
+        allDonutsInPack?.map((eachDonutTypeInPack, packIdx) => {
           let donutQuantity = 0;
-          c.forEach((q) => (donutQuantity += q.quantity));
-          // donutQuantity += c.quantity;
 
+          eachDonutTypeInPack.forEach((q) => (donutQuantity += q.quantity));
           return (
-            <div key={outerIdx}>
+            <div key={packIdx}>
               <Grid
                 container
                 sx={{
@@ -183,10 +168,10 @@ function SideCartCard() {
                   >
                     RM{" "}
                     {donutQuantity === 2
-                      ? "9.90"
+                      ? `${(qty[packIdx].quantity * 9.9).toFixed(2)}`
                       : donutQuantity === 6
-                      ? "29.90"
-                      : "49.90"}
+                      ? `${(qty[packIdx].quantity * 29.9).toFixed(2)}`
+                      : `${(qty[packIdx].quantity * 49.9).toFixed(2)}`}
                   </Typography>
                 </Grid>
                 <Grid item sm={8}>
@@ -194,7 +179,7 @@ function SideCartCard() {
                     {donutQuantity} Pack
                   </Typography>
                   <Button
-                    key={outerIdx}
+                    key={packIdx}
                     variant="contained"
                     sx={selection}
                     disableElevation
@@ -214,7 +199,7 @@ function SideCartCard() {
                         mb: 2,
                       }}
                     >
-                      {c.map((innerIdx) => {
+                      {eachDonutTypeInPack.map((innerIdx) => {
                         return (
                           <>
                             <Typography
@@ -227,16 +212,13 @@ function SideCartCard() {
                                 color: "#041E42",
                               }}
                             >
-                              <h6>
-                                {innerIdx.product.name} x {innerIdx.quantity}
-                              </h6>
+                              {innerIdx.product.name} x {innerIdx.quantity}
                             </Typography>
                           </>
                         );
                       })}
                     </Box>
                   )}
-
                   <Box
                     sx={{
                       border: "1.5px solid",
@@ -244,7 +226,8 @@ function SideCartCard() {
                       borderColor: "#041E42",
                       width: "180px",
                       display: "flex",
-                      justifyContent: "space-between",
+                      justifyContent: "space-around",
+                      p: 1,
                     }}
                   >
                     {/* <NumberInput
@@ -257,12 +240,16 @@ function SideCartCard() {
                     /> */}
                     <RemoveIcon
                       fontSize="medium"
-                      onClick={() => handleQuantityChange("dec", outerIdx)}
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => handleQuantityChange("dec", packIdx)}
                     />
-                    <span>{qty[outerIdx].quantity}</span>
+                    <span style={{ fontWeight: "bold" }}>
+                      {qty[packIdx].quantity}
+                    </span>
                     <AddIcon
                       fontSize="medium"
-                      onClick={() => handleQuantityChange("inc", outerIdx)}
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => handleQuantityChange("inc", packIdx)}
                     />
                   </Box>
                   <Typography
@@ -273,7 +260,7 @@ function SideCartCard() {
                       cursor: "pointer",
                       ":hover": { color: "#D1182E", fontWeight: "bold" },
                     }}
-                    onClick={() => handleRemove(outerIdx)}
+                    onClick={() => handleRemove(packIdx)}
                   >
                     Remove
                   </Typography>

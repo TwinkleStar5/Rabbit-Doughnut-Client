@@ -10,8 +10,9 @@ import cart from "../../img/cart.png";
 import Calendar from "./calendar";
 import SideCartCard from "./SideCartCard";
 import Badge from "@mui/material/Badge";
-import { useQueryClient, useQuery } from "react-query";
-import { getCart } from "@/utils/cart";
+import { useQueryClient, useQuery, useMutation } from "react-query";
+import { getCart, addToCart } from "@/utils/cart";
+import { createOrder } from "@/utils/orders";
 
 const StyledBadge = styled(Badge)({
   "& .MuiBadge-badge": {
@@ -24,11 +25,29 @@ const StyledBadge = styled(Badge)({
 
 function SideCart() {
   const { data, isLoading } = useQuery("cart", getCart);
+  // const { data2, isLoading2 } = useQuery("orders", createOrder);
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation(createOrder, {
+    onSuccess: (data) => {
+      alert(data.msg);
+      queryClient.invalidateQueries(["orders"]);
+    },
+    onError: (e) => alert(e.response.data.msg),
+  });
+
+  const handleCheckout = () => {
+    e.preventDefault();
+
+    mutate();
+  };
+
   const [isExpanded, setIsExpanded] = React.useState(true);
 
   const [state, setState] = React.useState({
     right: false,
   });
+
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -64,7 +83,7 @@ function SideCart() {
       </List>
       <List>
         <Typography variant="h4" sx={{ my: 2 }}>
-          Delivery Date
+          Delivery Date / Pick Up
         </Typography>
         <Box>
           <Calendar />
@@ -125,12 +144,16 @@ function SideCart() {
     </Box>
   );
 
+  let totalOrders = data?.mainCart
+    .map((pack) => pack.quantity)
+    .reduce((s, e) => s + e, 0);
+  
   return (
-    <div>
+    <form onSubmit={handleCheckout}>
       {["right"].map((anchor) => (
         <React.Fragment key={anchor}>
           <StyledBadge
-            badgeContent={4}
+            badgeContent={totalOrders}
             color="error"
             invisible={false}
             sx={{ fontFamily: "Work Sans" }}
@@ -148,7 +171,7 @@ function SideCart() {
           </Drawer>
         </React.Fragment>
       ))}
-    </div>
+    </form>
   );
 }
 

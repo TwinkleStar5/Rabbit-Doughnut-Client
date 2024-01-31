@@ -8,8 +8,11 @@ import SideCart from "@/app/cart/SideCart";
 import logo from "../img/logo3.png";
 import { Grid } from "@mui/material";
 import LoginLogout from "@/app/auth/login&logout";
-
+import { useQuery } from "react-query";
+import { getCart } from "@/utils/cart";
 function Topnav() {
+ 
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar

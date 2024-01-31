@@ -16,7 +16,8 @@ import Information from "./information";
 import Payment from "./payment";
 import donutGIF from "../../img/donutGIF.webp";
 import Badge from "@mui/material/Badge";
-
+import { useQuery } from "react-query";
+import { getCart } from "@/utils/cart";
 
 const StyledBadge = styled(Badge)({
   "& .MuiBadge-badge": {
@@ -43,6 +44,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
 function getStepContent(step) {
   switch (step) {
     case 0:
@@ -54,6 +56,7 @@ function getStepContent(step) {
   }
 }
 function Checkout() {
+  const { data } = useQuery("carts", getCart);
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -66,6 +69,23 @@ function Checkout() {
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  let allPacks = data?.mainCart.map((pack) => pack);
+
+  const flatMappedData = data?.mainCart.map((item) => {
+    const innerQuantity = item.items.reduce(
+      (acc, innerItem) => acc + innerItem.quantity,
+      0
+    );
+    let price;
+    if (innerQuantity === 2) price = 9.9;
+    if (innerQuantity === 6) price = 29.9;
+    if (innerQuantity === 12) price = 49.9;
+
+    return { outerQuantity: item.quantity, innerQuantity, price };
+  });
+
+  let subtotal = 0;
 
   return (
     <>
@@ -167,45 +187,67 @@ function Checkout() {
           </Grid>
         </Grid>
         <Grid container sx={{ bgcolor: "#F5F5F5", p: 6, pt: 8 }} md={5}>
-          <Grid item>
-            <Grid container sx={{ display: "flex", py: 2 }} spacing={2}>
-              <Grid item xs={2}>
-                <StyledBadge
-                  badgeContent={2}
-                  color="error"
-                  invisible={false}
-                  sx={{ fontFamily: "Work Sans" }}
-                >
-                  <img
-                    src={donutGIF.src}
-                    style={{
-                      borderRadius: "10px",
-                      border: "1px solid",
-                      borderColor: "#EEEEEE",
-                      borderRadius: "10px",
-                    }}
-                  />
-                </StyledBadge>
-              </Grid>
-              <Grid item xs={8}>
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                  Build A Pack - 6 Pack
-                </Typography>
-                <Typography variant="subtitle1" sx={{ fontSize: "12px" }}>
-                  Pack Contents: 1. NOTORIOUS P.I.G 2. D'OH NUT 3. LIAM
-                  HEMSWORTHY 4. DAVID HASSELHOFF 5. THE OG 6. GORDON JAMSAY
-                </Typography>
-                <Typography variant="subtitle1" sx={{ fontSize: "12px" }}>
-                  Pack Size: 6
-                </Typography>
-              </Grid>
-              <Grid item xs={2}>
-                <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                  RM 26.90
-                </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
+          {data &&
+            allPacks?.map((pack, idx) => {
+              // console.log(pack);
+              // console.log(pack.items);
+              // let pack = 0;
+              // pack.forEach((q) => (pack += q.quantity));
+              let perPack = (
+                parseInt(flatMappedData[idx].outerQuantity) *
+                parseFloat(flatMappedData[idx].price)
+              ).toFixed(2);
+              subtotal += parseFloat(perPack);
+              return (
+                <Grid item>
+                  <Grid container sx={{ display: "flex", py: 2 }} spacing={2}>
+                    <Grid item xs={2}>
+                      <StyledBadge
+                        badgeContent={flatMappedData[idx].outerQuantity}
+                        color="error"
+                        invisible={false}
+                        sx={{ fontFamily: "Work Sans" }}
+                      >
+                        <img
+                          src={donutGIF.src}
+                          style={{
+                            borderRadius: "10px",
+                            border: "1px solid",
+                            borderColor: "#EEEEEE",
+                            borderRadius: "10px",
+                          }}
+                        />
+                      </StyledBadge>
+                    </Grid>
+                    <Grid item xs={8}>
+                      <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                        {flatMappedData[idx].innerQuantity} Pack Doughnuts
+                      </Typography>
+                      <Typography variant="subtitle1" sx={{ fontSize: "12px" }}>
+                        Pack Contents: 1. NOTORIOUS P.I.G 2. D'OH NUT 3. LIAM
+                        HEMSWORTHY 4. DAVID HASSELHOFF 5. THE OG 6. GORDON
+                        JAMSAY
+                      </Typography>
+                      <Typography variant="subtitle1" sx={{ fontSize: "12px" }}>
+                        Pack Size: 6
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ fontWeight: "bold" }}
+                      >
+                        RM{" "}
+                        {(
+                          flatMappedData[idx].outerQuantity *
+                          flatMappedData[idx].price
+                        ).toFixed(2)}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              );
+            })}
           <Grid item sx={{ display: "flex", width: "100%" }}>
             <TextField
               label="Discount Code"
@@ -246,7 +288,7 @@ function Checkout() {
                 }}
               >
                 <Box>Subtotal</Box>
-                <Box sx={{ fontWeight: "bold" }}>RM 59.90</Box>
+                <Box sx={{ fontWeight: "bold" }}>{subtotal}</Box>
               </Typography>
             </Box>
             <Box>

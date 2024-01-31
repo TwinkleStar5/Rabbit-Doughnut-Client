@@ -1,7 +1,11 @@
 import { Box, Grid, Typography } from "@mui/material";
 import Stripe from "./stripe";
+import { getOrder } from "@/utils/orders";
+import { useQueryClient, useQuery } from "react-query";
 
 function Payment() {
+  const { data, isLoading } = useQuery("orders", getOrder);
+
   return (
     <>
       <Grid
@@ -30,7 +34,7 @@ function Payment() {
             </Typography>
           </Box>
           <Box>
-            <Typography variant="subtitle1">valentina@gmail.com</Typography>
+            <Typography variant="subtitle1">{data?.email}</Typography>
           </Box>
         </Grid>
         <Grid
@@ -51,9 +55,7 @@ function Payment() {
             </Typography>
           </Grid>
           <Grid item xs={10}>
-            <Typography variant="subtitle1">
-              183, Jalan Magazine, George Town, 10300 George Town, Pulau Pinang
-            </Typography>
+            <Typography variant="subtitle1">{data?.address}</Typography>
           </Grid>
         </Grid>
         <Grid
@@ -71,7 +73,9 @@ function Payment() {
             </Typography>
           </Grid>
           <Grid item xs={10}>
-            <Typography variant="subtitle1">Delivery</Typography>
+            <Typography variant="subtitle1">
+              {data?.delivery ? "Delivery" : " Pick Up"}
+            </Typography>
           </Grid>
         </Grid>
       </Grid>

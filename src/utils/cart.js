@@ -27,15 +27,6 @@ export async function getCart() {
   return res.data;
 }
 
-export async function deleteAllItems() {
-  const res = await axios.delete(`http://localhost:8000/cart`, {
-    headers: {
-      "x-auth-token": localStorage.getItem("token"),
-    },
-  });
-  return res.data;
-}
-
 export async function deleteSingleCartItem(id) {
   const res = await axios.delete(`http://localhost:8000/cart/${id}`, {
     headers: {
@@ -54,15 +45,15 @@ export async function deleteSingleMainCart(idx) {
   return res.data;
 }
 
-export async function updateQtyPack(idx) {
-  try {
-    const res = await axios.put(`http://localhost:8000/cart/main/${idx}`, {
+export async function updateQtyPack(act, idx) {
+  const res = await axios.put(
+    `http://localhost:8000/cart/main/${idx}/${act}`,
+    null,
+    {
       headers: {
         "x-auth-token": localStorage.getItem("token"),
       },
-    });
-    return res.data;
-  } catch (e) {
-    return console.log("cannot do... :(");
-  }
+    }
+  );
+  return res.data;
 }
