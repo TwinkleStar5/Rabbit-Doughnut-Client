@@ -37,7 +37,6 @@ function createData(id, products, qty, isActive) {
   };
 }
 
-const rows = [createData(1, "Cupcake", 305, 3.7, 67, 4.3)];
 // const rows = [
 //   createData(1, "Cupcake", 305, 3.7, 67, 4.3),
 //   createData(2, "Donut", 452, 25.0, 51, 4.9),
@@ -68,18 +67,6 @@ function getComparator(order, orderBy) {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
 }
 
 const headCells = [
@@ -290,17 +277,32 @@ function ProductTable() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
-  );
-
   //SHOW ALL PRODUCTS
   const { data, isLoading } = useQuery("products", getProducts);
+
+  // const rows = data;
+
+  // function stableSort(array, comparator) {
+  //   const stabilizedThis = array.map((el, index) => [el, index]);
+  //   stabilizedThis.sort((a, b) => {
+  //     const order = comparator(a[0], b[0]);
+  //     if (order !== 0) {
+  //       return order;
+  //     }
+  //     return a[1] - b[1];
+  //   });
+  //   return stabilizedThis.map((el) => el[0]);
+  // }
+
+  // const visibleRows = React.useMemo(
+  //   () =>
+  //     stableSort(rows, getComparator(order, orderBy)).slice(
+  //       page * rowsPerPage,
+  //       page * rowsPerPage + rowsPerPage
+  //     ),
+  //   [order, orderBy, page, rowsPerPage]
+  // );
+
   if (isLoading) return <Typography variant="h2">Is Loading</Typography>;
 
   return (
@@ -328,10 +330,11 @@ function ProductTable() {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={rows.length}
+                rowCount={data.length}
               />
               <TableBody>
-                {visibleRows.map((row, index) => {
+                {data.map((row, index) => {
+                  console.log(row);
                   const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -355,17 +358,19 @@ function ProductTable() {
                           }}
                         />
                       </TableCell>
-                      <TableCell align="left">{row.id}</TableCell>
+                      <TableCell align="left">{row._id}</TableCell>
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
                         padding="none"
                       >
-                        <a href="/dashboard/EditDelete">{row.products}</a>
+                        <a href="/dashboard/EditDelete">{row.name}</a>
                       </TableCell>
-                      <TableCell align="right">{row.qty}</TableCell>
-                      <TableCell align="right">{row.isActive}</TableCell>
+                      <TableCell align="right">{row.quantity}</TableCell>
+                      <TableCell align="right">
+                        {row.isActive ? "check" : "x"}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -384,7 +389,7 @@ function ProductTable() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={rows.length}
+            count={data.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

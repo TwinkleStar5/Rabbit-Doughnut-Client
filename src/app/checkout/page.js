@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -19,6 +20,7 @@ import Badge from "@mui/material/Badge";
 import { useQuery } from "react-query";
 import { getCart } from "@/utils/cart";
 import { getOrder } from "@/utils/orders";
+import { handleVerifyAllFill } from "./information";
 
 const StyledBadge = styled(Badge)({
   "& .MuiBadge-badge": {
@@ -46,17 +48,42 @@ const style = {
   p: 4,
 };
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <Information />;
-    case 1:
-      return <Payment />;
-    default:
-      throw new Error("Unknown step");
+function Checkout({ handleVerifyAllFill }) {
+  const [info, setInfo] = useState({});
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [stateFee, setStateFee] = useState("Free");
+
+  // const handleTimeChange = (time) => {
+
+  // };
+
+  console.log(info);
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return (
+          <Information
+            info={info}
+            setInfo={setInfo}
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
+            setStateFee={setStateFee}
+          />
+        );
+      case 1:
+        return (
+          <Payment
+            info={info}
+            selectedTime={selectedTime}
+            selectedOption={selectedOption}
+          />
+        );
+      default:
+        throw new Error("Unknown step");
+    }
   }
-}
-function Checkout() {
   const { data: cartData } = useQuery("carts", getCart);
   const { data: orderData } = useQuery("orders", getOrder);
 
@@ -84,28 +111,41 @@ function Checkout() {
   };
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    // if (isValid) {
+    // } else {
+    //   alert("Please fill in all details first");
+    // }
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
-  const flatMappedData = cartData?.mainCart.map((item) => {
-    const innerQuantity = item.items.reduce(
-      (acc, innerItem) => acc + innerItem.quantity,
-      0
-    );
-    let price;
-    if (innerQuantity === 2) price = 9.9;
-    if (innerQuantity === 6) price = 29.9;
-    if (innerQuantity === 12) price = 49.9;
-
-    return { outerQuantity: item.quantity, innerQuantity, price };
-  });
+  const flatMappedData = cartData?.mainCart
+    ? cartData?.mainCart.map((item) => {
+        const innerQuantity = item.items.reduce(
+          (acc, innerItem) => acc + innerItem.quantity,
+          0
+        );
+        let price;
+        if (innerQuantity === 2) price = 9.9;
+        if (innerQuantity === 6) price = 29.9;
+        if (innerQuantity === 12) price = 49.9;
+        let total = 0;
+        return {
+          outerQuantity: item.quantity,
+          innerQuantity,
+          price,
+          subtotal: price * item.quantity,
+        };
+      })
+    : null;
 
   let subtotal = 0;
 
-  let allPacks = cartData?.mainCart.map((pack) => pack.items);
+  let allPacks = cartData?.mainCart
+    ? cartData?.mainCart.map((pack) => pack.items)
+    : null;
   return (
     <>
       <Grid container sx={{ pt: 4, pl: 4 }} spacing={3}>
@@ -157,13 +197,21 @@ function Checkout() {
                   )}
                   {activeStep !== steps.length - 1 ? (
                     <Button
+                      disabled={
+                        (selectedOption === "Pick Up" &&
+                          Object.keys(info).length === 6) ||
+                        (selectedOption === "Delivery" &&
+                          Object.keys(info).length >= 8)
+                          ? false
+                          : true
+                      }
                       variant="contained"
                       onClick={handleNext}
                       sx={{
                         mt: 3,
                         ml: 1,
-                        color: "white",
-                        width: "150px",
+                        color: "white !important",
+                        width: "150px !important",
                       }}
                     >
                       Next
@@ -293,11 +341,7 @@ function Checkout() {
                         variant="subtitle1"
                         sx={{ fontWeight: "bold" }}
                       >
-                        RM{" "}
-                        {(
-                          flatMappedData[idx].outerQuantity *
-                          flatMappedData[idx].price
-                        ).toFixed(2)}
+                        RM {flatMappedData[idx].subtotal.toFixed(2)}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -370,7 +414,11 @@ function Checkout() {
                 }}
               >
                 <Box>Shipping</Box>
-                <Box>Free</Box>
+                <Box>
+                  {stateFee !== "Free"
+                    ? `RM ${parseFloat(stateFee).toFixed(2)}`
+                    : "Free"}
+                </Box>
               </Typography>
             </Box>
             <Box>
@@ -393,8 +441,12 @@ function Checkout() {
                   >
                     Including RM 6.32 in taxes
                   </Box> */}
-
-                <Box>RM 59.90</Box>
+                <Box>
+                  RM{" "}
+                  {stateFee !== "Free"
+                    ? parseInt(stateFee) + parseFloat(subtotal.toFixed(2))
+                    : subtotal.toFixed(2)}
+                </Box>
               </Typography>
             </Box>
           </Grid>

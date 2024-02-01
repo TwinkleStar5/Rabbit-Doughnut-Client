@@ -23,7 +23,7 @@ const StyledBadge = styled(Badge)({
   },
 });
 
-function SideCart() {
+function SideCart({ info, setInfo }) {
   const { data, isLoading } = useQuery("cart", getCart);
   // const { data2, isLoading2 } = useQuery("orders", createOrder);
   const queryClient = useQueryClient();
@@ -86,7 +86,7 @@ function SideCart() {
           Delivery Date / Pick Up
         </Typography>
         <Box>
-          <Calendar />
+          <Calendar info={info} setInfo={setInfo} />
         </Box>
       </List>
       <List>
@@ -144,9 +144,9 @@ function SideCart() {
   );
 
   let totalOrders = data?.mainCart
-    .map((pack) => pack.quantity)
-    .reduce((s, e) => s + e, 0);
-  
+    ? data?.mainCart.map((pack) => pack.quantity).reduce((s, e) => s + e, 0)
+    : 0;
+
   return (
     <form onSubmit={handleCheckout}>
       {["right"].map((anchor) => (

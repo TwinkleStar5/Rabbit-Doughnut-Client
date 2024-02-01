@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js"; //import loadstripe from stripe library
 import { Box, Button, Typography } from "@mui/material";
+import { useMutation, useQuery } from "react-query";
+import { createOrder } from "@/utils/orders";
 
 let stripePromise;
 //makes sure that the Stripe library is fully prepared and set up for handling payments before the rest of our code tries to use it. The code we provided makes sure this preparation only happens once and then reuses it, which is a good way to keep things efficient and speedy in our web application.
@@ -13,7 +15,21 @@ const getStripe = () => {
   return stripePromise;
 };
 
-function Stripe() {
+function Stripe({ info }) {
+  const queryClient = useQuery();
+  const { mutate } = useMutation(createOrder, {
+    onSuccess: (data) => {
+      alert(data.msg);
+      queryClient.invalidateQueries(["orders"]);
+    },
+    onError: (e) => alert(e.response.data.msg),
+  });
+
+  const handleSubmitInfo = (e) => {
+    e.preventDefault();
+    mutate(info);
+  };
+
   const [isLoading, setLoading] = useState(false);
   const [stripeError, setStripeError] = useState(null);
 
@@ -36,21 +52,22 @@ function Stripe() {
   if (stripeError) alert(stripeError);
   return (
     <>
-      <Button
-        variant="contained"
-        sx={{
-          width: "250px",
-          borderRadius: "5px",
-          bgcolor: "#A5C9A5 !important",
-          color: "#041E42",
-          margin: "auto",
-          my: 3,
-        }}
-        onClick={redirectToCheckout}
-        disabled={isLoading}
-      >
-        {isLoading ? "Loading..." : "Payment"}
-      </Button>
+      <form onSubmit={handleSubmitInfo}>
+        <Button
+          variant="contained"
+          sx={{
+            width: "250px",
+            borderRadius: "5px",
+            bgcolor: "#A5C9A5 !important",
+            color: "#041E42",
+            my: 3,
+          }}
+          onClick={handleSubmitInfo}
+          disabled={isLoading}
+        >
+          {isLoading ? "Loading..." : "Payment"}
+        </Button>
+      </form>
     </>
   );
 }
