@@ -13,6 +13,8 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { useQuery } from "react-query";
+import { getOrder } from "@/utils/orders";
 
 function createData(name, calories, fat, carbs, protein, price) {
   return {
@@ -132,6 +134,8 @@ const rows = [
 
 const fonts = { fontSize: "20px", fontFamily: "Work Sans" };
 function AllOrdersTable() {
+  const { data, isLoading } = useQuery("orders", "getOrder");
+  if (isLoading ? <h3>Loading</h3> : null) console.log(data);
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -151,9 +155,9 @@ function AllOrdersTable() {
           </TableRow>
         </TableHead>
         <TableBody sx={fonts}>
-          {rows.map((row) => (
+          {/* {data.map((row) => (
             <Row key={row.name} row={row} />
-          ))}
+          ))} */}
         </TableBody>
       </Table>
     </TableContainer>

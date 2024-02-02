@@ -145,8 +145,6 @@ function AddCart({ pack, handlePackChange }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // let tempCartId = mainCart.items._id;
-    // console.log(tempCartId);
     mutate();
   };
 

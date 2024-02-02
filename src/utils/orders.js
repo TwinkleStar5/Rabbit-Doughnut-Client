@@ -9,7 +9,7 @@ export async function createOrder(info) {
   });
   return res.data;
 }
-//localStorage.setItem("selectedDate", newValue)
+
 export async function getOrder() {
   const res = await axios.get("http://localhost:8000/orders", {
     headers: {

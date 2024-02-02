@@ -358,7 +358,7 @@ function ProductTable() {
                           }}
                         />
                       </TableCell>
-                      <TableCell align="left">{row._id}</TableCell>
+                      <TableCell align="left">{row.index}</TableCell>
                       <TableCell
                         component="th"
                         id={labelId}

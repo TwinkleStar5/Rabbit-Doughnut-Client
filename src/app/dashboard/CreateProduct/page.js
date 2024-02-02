@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -20,6 +20,9 @@ import "../../globals.css";
 import EditIcon from "@mui/icons-material/Edit";
 import CelebrationIcon from "@mui/icons-material/Celebration";
 import "../../globals.css";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { addProducts } from "@/utils/products";
+
 const StyledInputRoot = styled("div")(
   `
   font-family: 'Work Sans';
@@ -140,12 +143,35 @@ const CustomNumberInput = React.forwardRef(function CustomNumberInput(
 });
 
 function CreateProduct() {
-  const [currentImage, setCurrentImage] = React.useState(donut.src);
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(addProducts, {
+    onSuccess: () => queryClient.invalidateQueries(["products"]),
+    onError: (e) => alert(e.response.data.msg),
+  });
+  const [product, setProduct] = React.useState({});
+  const [currentImage, setCurrentImage] = useState(donut.src);
 
   const inputRef = useRef(null);
 
   const handleClick = () => {
     inputRef.current.click();
+  };
+
+  const handleDeleteProduct = () => {};
+
+  const handleChangeProduct = (e) => {
+    setProduct({
+      ...product,
+      [e.target.name]: e.target.value,
+      image: currentImage,
+    });
+    console.log(currentImage);
+  };
+
+  const handleSubmitProduct = (e) => {
+    e.preventDefault();
+    mutate(product);
+    alert("Successfully added");
   };
 
   const handleFileChange = (event) => {
@@ -165,195 +191,206 @@ function CreateProduct() {
     event.target.value = null;
   };
 
-  const handleDeleteProduct = () => {};
   return (
     <>
-      <Grid container sx={{ px: 5, pt: 5, justifyContent: "center" }}>
-        <Grid item xs={6}>
-          <TextField
-            fullWidth
-            variant="outlined"
-            name="name"
-            color="info"
-            role="name"
-            label="Invent a doughnut name!"
-            required
-          />
+      <form onSubmit={handleSubmitProduct}>
+        <Grid container sx={{ px: 5, pt: 5, justifyContent: "center" }}>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              name="name"
+              color="info"
+              role="name"
+              label="Invent a doughnut name!"
+              required
+              onChange={handleChangeProduct}
+            />
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid container sx={{ p: 5, justifyContent: "center" }}>
-        <Grid item md={4} sx={{ margin: "auto" }}>
-          <label onClick={handleClick}>
-            <Box
-              sx={{
-                position: "relative",
-                "&:hover .changeImageText": {
-                  visibility: "visible",
-                  opacity: 0.6,
-                  cursor: "pointer",
-                },
-              }}
-            >
-              <img
-                src={currentImage}
-                style={{ width: "300px", borderRadius: "20px", margin: "auto" }}
-              />
+        <Grid container sx={{ p: 5, justifyContent: "center" }}>
+          <Grid item md={4} sx={{ margin: "auto" }}>
+            <label onClick={handleClick}>
               <Box
-                className="changeImageText"
                 sx={{
-                  position: "absolute",
-                  bgcolor: "white",
-                  opacity: 0,
-                  zIndex: 100,
-                  top: 0,
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: "100%",
-                  width: "100%",
-                  margin: "auto",
-                  transition: "0.5s ease",
+                  position: "relative",
+                  "&:hover .changeImageText": {
+                    visibility: "visible",
+                    opacity: 0.6,
+                    cursor: "pointer",
+                  },
                 }}
               >
-                <Typography
-                  variant="h6"
-                  sx={{
-                    color: "black",
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    textAlign: "center",
-                  }}
-                >
-                  <EditIcon sx={{ fontSize: "25px" }} /> <br /> Add Doughnut
-                  Image
-                </Typography>
-              </Box>
-            </Box>
-          </label>
-          <input
-            ref={inputRef}
-            style={{ display: "none" }}
-            type="file"
-            onChange={handleFileChange}
-          />
-        </Grid>
-        <Grid
-          item
-          md={8}
-          sx={{ fontFamily: "Work Sans", fontSize: "30px !important" }}
-        >
-          <Grid container>
-            <Grid item xs={12} sx={{ mb: 3 }}>
-              <TextField
-                name="description"
-                label="Add Doughnut Description"
-                fullWidth
-                variant="outlined"
-                color="info"
-                role="description"
-                multiline
-                required
-              />
-            </Grid>
-            <Grid container spacing={3}>
-              <Grid item xs={6} sx={{ mb: 3 }}>
-                <CustomNumberInput
-                  placeholder="Quantity"
-                  sx={{
-                    "& input::placeholder": { color: "#676767" },
+                <img
+                  src={currentImage}
+                  style={{
+                    width: "300px",
+                    borderRadius: "20px",
+                    margin: "auto",
                   }}
                 />
-              </Grid>
-              <Grid item xs={6} sx={{ mb: 3 }}>
+                <Box
+                  className="changeImageText"
+                  sx={{
+                    position: "absolute",
+                    bgcolor: "white",
+                    opacity: 0,
+                    zIndex: 100,
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: "100%",
+                    width: "100%",
+                    margin: "auto",
+                    transition: "0.5s ease",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: "black",
+                      fontSize: "25px",
+                      fontWeight: "bold",
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      textAlign: "center",
+                    }}
+                  >
+                    <EditIcon sx={{ fontSize: "25px" }} /> <br /> Add Doughnut
+                    Image
+                  </Typography>
+                </Box>
+              </Box>
+            </label>
+            <input
+              ref={inputRef}
+              style={{ display: "none" }}
+              type="file"
+              onChange={handleFileChange}
+            />
+          </Grid>
+          <Grid
+            item
+            md={8}
+            sx={{ fontFamily: "Work Sans", fontSize: "30px !important" }}
+          >
+            <Grid container>
+              <Grid item xs={12} sx={{ mb: 3 }}>
                 <TextField
-                  name="allergens"
-                  label="Add Allergens"
+                  name="description"
+                  label="Add Doughnut Description"
                   fullWidth
-                  autoComplete="allergens"
                   variant="outlined"
                   color="info"
+                  role="description"
                   multiline
+                  required
+                  onChange={handleChangeProduct}
                 />
               </Grid>
-            </Grid>
-            <Grid
-              item
-              xs={6}
-              sx={{ fontFamily: "Work Sans", fontSize: "30px", pl: 5 }}
-            >
-              <FormControlLabel
-                className="FormControlLabel"
-                control={
-                  <Checkbox
-                    color="info"
-                    name="vegan"
-                    value="yes"
-                    disableFocusRipple
+              <Grid container spacing={3}>
+                <Grid item xs={6} sx={{ mb: 3 }}>
+                  <CustomNumberInput
+                    placeholder="Quantity"
+                    sx={{
+                      "& input::placeholder": { color: "#676767" },
+                    }}
                   />
-                }
-                label="Vegan"
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <FormControlLabel
-                className="FormControlLabel"
-                control={
-                  <Checkbox
+                </Grid>
+                <Grid item xs={6} sx={{ mb: 3 }}>
+                  <TextField
+                    name="allergens"
+                    label="Add Allergens"
+                    fullWidth
+                    autoComplete="allergens"
+                    variant="outlined"
                     color="info"
-                    name="glutenFree"
-                    value="yes"
-                    disableFocusRipple
+                    multiline
+                    onChange={handleChangeProduct}
                   />
-                }
-                label="Gluten Free"
-              />
-            </Grid>
-            <Grid
-              item
-              sx={{
-                mt: 3,
-                width: "100%",
-                justifyContent: "space-around",
-                display: "flex",
-              }}
-            >
-              <Box>
-                <Button
-                  variant="button"
-                  sx={{
-                    bgcolor: "#FAE89E !important",
-                    color: "#041E42 !important",
-                    borderRadius: "8px",
-                    width: "250px",
-                    height: "55px",
-                  }}
-                >
-                  <EditIcon sx={{ mr: 2 }} /> Edit
-                </Button>
-              </Box>
-              <Box>
-                <Button
-                  variant="button"
-                  sx={{
-                    bgcolor: "#ffc8dd !important",
-                    color: "#041E42 !important",
-                    borderRadius: "8px",
-                    width: "300px",
-                    height: "55px",
-                  }}
-                  onClick={() => handleDeleteProduct}
-                >
-                  <CelebrationIcon sx={{ mr: 2 }} /> Publish Doughnut
-                </Button>
-              </Box>
+                </Grid>
+              </Grid>
+              <Grid
+                item
+                xs={6}
+                sx={{ fontFamily: "Work Sans", fontSize: "30px", pl: 5 }}
+              >
+                <FormControlLabel
+                  className="FormControlLabel"
+                  control={
+                    <Checkbox
+                      color="info"
+                      name="vegan"
+                      value="yes"
+                      disableFocusRipple
+                      onChange={handleChangeProduct}
+                    />
+                  }
+                  label="Vegan"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControlLabel
+                  className="FormControlLabel"
+                  control={
+                    <Checkbox
+                      color="info"
+                      name="glutenFree"
+                      value="yes"
+                      disableFocusRipple
+                      onChange={handleChangeProduct}
+                    />
+                  }
+                  label="Gluten Free"
+                />
+              </Grid>
+              <Grid
+                item
+                sx={{
+                  mt: 3,
+                  width: "100%",
+                  justifyContent: "space-around",
+                  display: "flex",
+                }}
+              >
+                <Box>
+                  <Button
+                    variant="button"
+                    sx={{
+                      bgcolor: "#FAE89E !important",
+                      color: "#041E42 !important",
+                      borderRadius: "8px",
+                      width: "250px",
+                      height: "55px",
+                    }}
+                  >
+                    <EditIcon sx={{ mr: 2 }} /> Edit
+                  </Button>
+                </Box>
+                <Box>
+                  <Button
+                    variant="button"
+                    type="submit"
+                    sx={{
+                      bgcolor: "#ffc8dd !important",
+                      color: "#041E42 !important",
+                      borderRadius: "8px",
+                      width: "300px",
+                      height: "55px",
+                    }}
+                    onClick={() => handleDeleteProduct}
+                  >
+                    <CelebrationIcon sx={{ mr: 2 }} /> Publish Doughnut
+                  </Button>
+                </Box>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </form>
     </>
   );
 }
