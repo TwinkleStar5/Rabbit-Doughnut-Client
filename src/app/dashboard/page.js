@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Divider, Paper, Typography } from "@mui/material";
 import { Chart as ChartJS, defaults } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import revenueData from "./data/revenueData.json";
@@ -10,13 +10,35 @@ import Chart from "./chart";
 import "../globals.css";
 import CreateProductTable from "./ProductTable";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { styled } from "@mui/material/styles";
+
+const Root = styled("div")(({ theme }) => ({
+  width: "100%",
+  ...theme.typography.body2,
+  color: theme.palette.text.secondary,
+  "& > :not(style) ~ :not(style)": {
+    marginTop: theme.spacing(2),
+  },
+}));
+
+const currentDate = new Date().toLocaleDateString("en-gb", {
+  day: "numeric",
+  year: "numeric",
+  month: "short",
+});
 function Dashboard() {
   return (
     <>
       <Grid container sx={{ p: 5 }}>
-        <Grid container sx={{ margin: "auto" }}>
+        <Grid container sx={{ margin: "auto", mb: 5 }}>
           <Grid item md={8}>
-            <Typography variant="h4">Line Chart</Typography>
+            <Typography
+              variant="h4"
+              sx={{ color: "#2B2A4C", textAlign: "center", mb: 3 }}
+            >
+              LINE CHART
+            </Typography>
+
             <Chart />
             {/* <Box sx={{ width: "800px", margin: "auto", my: 3 }}>
             <Line
@@ -52,36 +74,65 @@ function Dashboard() {
             />
           </Box> */}
           </Grid>
-          <Grid
+          <Paper
             item
             md={3}
-            sx={{ border: "1.5px dashed", borderRadius: "16px", p: 2 }}
+            sx={{
+              border: "1.5px dashed",
+              borderRadius: "16px",
+              p: 2,
+              textAlign: "center",
+              bgcolor: "#FBECB2",
+            }}
+            elevation={4}
           >
-            <Typography variant="h5">Total Revenue</Typography>
-            <Typography variant="h6" sx={{ mb: 2 }}>
-              as of 16 Feb 2024
+            <Typography variant="h5" sx={{ color: "#2B2A4C", mb: 1 }}>
+              TOTAL REVENUE
             </Typography>
-            <Typography variant="h4" sx={{ color: "#9381ff" }}>
+
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              as of {currentDate}
+            </Typography>
+            <Typography variant="h4" sx={{ color: "#d14081" }}>
               RM12,346.97
             </Typography>
-          </Grid>
+          </Paper>
         </Grid>
-        <Grid item sx={{ my: 4, mx: "auto" }}>
-          <Typography variant="h4">Recent Orders</Typography>
+        <Grid item sx={{ mb: 10, mt: 4, mx: "auto" }}>
+          <Root>
+            <Divider>
+              <Typography
+                variant="h4"
+                sx={{ color: "#2B2A4C", textAlign: "center", mb: 3 }}
+              >
+                RECENT ORDERS
+              </Typography>
+            </Divider>
+          </Root>
           <RecentOrders />
         </Grid>
-        <Grid sx={{ my: 4, mx: "auto" }}>
-          <Box sx={{ display: "flex", justifyContent: "space-around", mb: 3 }}>
-            <Typography variant="h4" sx={{ my: 1 }}>
-              All Doughnuts Menu
+        <Root>
+          <Divider>
+            <Typography
+              variant="h4"
+              sx={{ color: "#2B2A4C", textAlign: "center" }}
+            >
+              ALL DOUGHNUTS MENU
             </Typography>
+          </Divider>
+        </Root>
+        <Grid sx={{ mx: "auto" }}>
+          <Box
+            sx={{ display: "flex", justifyContent: "space-around", mb: 3 }}
+          ></Box>
+          <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
             <Button
               variant="contained"
               sx={{
-                bgcolor: "#D5C4E7 !important",
-                color: "#a4133c",
+                bgcolor: "#2B2A4C !important",
+                color: "#FBECB2",
                 width: "280px !important",
-                borderRadius: "24px",
+                borderRadius: "16px",
               }}
             >
               <a href="/dashboard/CreateProduct">

@@ -1,6 +1,6 @@
 import { Box, Grid, TextField, Typography } from "@mui/material";
 import Stripe from "./stripe";
-
+import "../globals.css";
 function Payment({ info, selectedOption }) {
   console.log(info);
   return (
@@ -26,15 +26,20 @@ function Payment({ info, selectedOption }) {
           }}
         >
           <Grid item xs={2}>
-            <Typography variant="subtitle1" sx={{ color: "#707070", pr: 4 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ color: "#707070", pr: 4 }}
+             
+            >
               Name:
             </Typography>
           </Grid>
           <Grid item xs={8}>
             <Typography variant="subtitle1">
               <TextField
+                className="checkoutInput"
                 sx={{ width: "100%" }}
-                value={`${info.firstName}  ${info.lastName}`}
+                value={`${info.firstName} ${info.lastName}`}
                 InputProps={{
                   readOnly: true,
                   disableUnderline: true,
@@ -56,15 +61,20 @@ function Payment({ info, selectedOption }) {
           }}
         >
           <Grid item xs={2}>
-            <Typography variant="subtitle1" sx={{ color: "#707070", pr: 4 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ color: "#707070", pr: 4 }}
+             
+            >
               Contact:
             </Typography>
           </Grid>
           <Grid item xs={8}>
             <Typography variant="subtitle1">
               <TextField
+                className="checkoutInput"
                 sx={{ width: "100%" }}
-                value={`${info?.email} / ${info?.phoneNumber}`}
+                value={`${info?.email} / 0${info?.phoneNumber}`}
                 InputProps={{
                   readOnly: true,
                   disableUnderline: true,
@@ -88,7 +98,11 @@ function Payment({ info, selectedOption }) {
           }}
         >
           <Grid item xs={4}>
-            <Typography variant="subtitle1" sx={{ color: "#707070" }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ color: "#707070" }}
+             
+            >
               {selectedOption === "Delivery"
                 ? "Ship To:"
                 : "Pick Up Date & Time:"}
@@ -97,25 +111,12 @@ function Payment({ info, selectedOption }) {
           <Grid item xs={8}>
             <Typography variant="subtitle1">
               <TextField
+                className="checkoutInput"
                 sx={{ width: "100%" }}
                 value={
-                  selectedOption === "Delivery" || selectedOption === "Pick Up"
-                    ? localStorage.getItem("selectedDate")
-                    : selectedOption === "Delivery"
+                  selectedOption === "Delivery"
                     ? info.address
-                    : info.time instanceof Date
-                    ? info.time
-                        .toLocaleTimeString([], {
-                          hour: "numeric",
-                          minute: "2-digit",
-                          hour12: true,
-                        })
-                        .replace(/\d+:\d+/, (time) => {
-                          const [hour, minute] = time.split(":");
-                          const suffix = hour >= 12 ? "PM" : "AM";
-                          return `${hour % 12 || 12}:${minute} ${suffix}`;
-                        })
-                    : ""
+                    : localStorage.getItem("selectedDate") + ", " + info.time
                 }
                 InputProps={{
                   readOnly: true,

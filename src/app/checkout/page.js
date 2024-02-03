@@ -48,15 +48,11 @@ const style = {
   p: 4,
 };
 
-function Checkout({ handleVerifyAllFill }) {
+function Checkout() {
   const [info, setInfo] = useState({});
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [stateFee, setStateFee] = useState("Free");
-
-  // const handleTimeChange = (time) => {
-
-  // };
 
   console.log(info);
 
@@ -111,10 +107,6 @@ function Checkout({ handleVerifyAllFill }) {
   };
   const handleNext = () => {
     setActiveStep(activeStep + 1);
-    // if (isValid) {
-    // } else {
-    //   alert("Please fill in all details first");
-    // }
   };
 
   const handleBack = () => {
@@ -197,14 +189,14 @@ function Checkout({ handleVerifyAllFill }) {
                   )}
                   {activeStep !== steps.length - 1 ? (
                     <Button
-                      disabled={
-                        (selectedOption === "Pick Up" &&
-                          Object.keys(info).length === 6) ||
-                        (selectedOption === "Delivery" &&
-                          Object.keys(info).length >= 8)
-                          ? false
-                          : true
-                      }
+                      // disabled={
+                      //   (selectedOption === "Pick Up" &&
+                      //     Object.keys(info).length === 6) ||
+                      //   (selectedOption === "Delivery" &&
+                      //     Object.keys(info).length >= 8)
+                      //     ? false
+                      //     : true
+                      // }
                       variant="contained"
                       onClick={handleNext}
                       sx={{
@@ -261,6 +253,7 @@ function Checkout({ handleVerifyAllFill }) {
                 parseFloat(flatMappedData[idx].price)
               ).toFixed(2);
               subtotal += parseFloat(perPack);
+
               return (
                 <Grid item>
                   <Grid container sx={{ display: "flex", py: 2 }} spacing={2}>
@@ -441,6 +434,7 @@ function Checkout({ handleVerifyAllFill }) {
                   >
                     Including RM 6.32 in taxes
                   </Box> */}
+                {/* <Box>RM {grandTotal}</Box> */}
                 <Box>
                   RM{" "}
                   {stateFee !== "Free"

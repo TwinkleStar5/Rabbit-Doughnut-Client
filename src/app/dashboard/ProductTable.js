@@ -28,14 +28,14 @@ import { visuallyHidden } from "@mui/utils";
 import "../globals.css";
 import { getProducts } from "@/utils/products";
 import { useQuery } from "react-query";
-function createData(id, products, qty, isActive) {
-  return {
-    id,
-    products,
-    qty,
-    isActive,
-  };
-}
+// function createData(id, products, qty, isActive) {
+//   return {
+//     id,
+//     products,
+//     qty,
+//     isActive,
+//   };
+// }
 
 // const rows = [
 //   createData(1, "Cupcake", 305, 3.7, 67, 4.3),
@@ -74,7 +74,7 @@ const headCells = [
     id: "id",
     numeric: false,
     disablePadding: true,
-    label: "Id",
+    label: "No.",
   },
   {
     id: "name",
@@ -224,6 +224,9 @@ function ProductTable() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  //SHOW ALL PRODUCTS
+  const { data, isLoading } = useQuery("products", getProducts);
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -232,7 +235,7 @@ function ProductTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
+      const newSelected = data.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
@@ -275,12 +278,7 @@ function ProductTable() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-  //SHOW ALL PRODUCTS
-  const { data, isLoading } = useQuery("products", getProducts);
-
-  // const rows = data;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
   // function stableSort(array, comparator) {
   //   const stabilizedThis = array.map((el, index) => [el, index]);
@@ -296,26 +294,27 @@ function ProductTable() {
 
   // const visibleRows = React.useMemo(
   //   () =>
-  //     stableSort(rows, getComparator(order, orderBy)).slice(
+  //     stableSort(data, getComparator(order, orderBy)).slice(
   //       page * rowsPerPage,
   //       page * rowsPerPage + rowsPerPage
   //     ),
-  //   [order, orderBy, page, rowsPerPage]
+  //   [data, order, orderBy, page, rowsPerPage]
   // );
-
-  if (isLoading) return <Typography variant="h2">Is Loading</Typography>;
 
   return (
     <Box sx={{ width: "100%" }}>
-      {data.length ? (
+      {isLoading ? (
+        <Typography variant="h2">Is Loading</Typography>
+      ) : data.length ? (
         <Paper
           sx={{
             width: "100%",
             mb: 2,
-            bgcolor: "#F9BABA",
+            bgcolor: "#ffe0e9 ",
             borderRadius: "20px",
             fontFamily: "Work Sans",
           }}
+          elevation={6}
         >
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer>
@@ -334,7 +333,6 @@ function ProductTable() {
               />
               <TableBody>
                 {data.map((row, index) => {
-                  console.log(row);
                   const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -358,18 +356,22 @@ function ProductTable() {
                           }}
                         />
                       </TableCell>
-                      <TableCell align="left">{row.index}</TableCell>
+                      <TableCell align="left">{index + 1}</TableCell>
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
                         padding="none"
                       >
-                        <a href="/dashboard/EditDelete">{row.name}</a>
+                        <a href={`/dashboard/EditDelete?id=${row._id}`}>
+                          {row.name}
+                        </a>
                       </TableCell>
                       <TableCell align="right">{row.quantity}</TableCell>
                       <TableCell align="right">
-                        {row.isActive ? "check" : "x"}
+                        <FormControlLabel
+                          control={<Checkbox checked={row.isActive} />}
+                        />
                       </TableCell>
                     </TableRow>
                   );

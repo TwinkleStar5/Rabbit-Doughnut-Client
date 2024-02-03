@@ -4,6 +4,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { useMutation, useQuery } from "react-query";
 import { createOrder } from "@/utils/orders";
 
+
 let stripePromise;
 //makes sure that the Stripe library is fully prepared and set up for handling payments before the rest of our code tries to use it. The code we provided makes sure this preparation only happens once and then reuses it, which is a good way to keep things efficient and speedy in our web application.
 
@@ -28,6 +29,7 @@ function Stripe({ info }) {
   const handleSubmitInfo = (e) => {
     e.preventDefault();
     mutate(info);
+    
   };
 
   const [isLoading, setLoading] = useState(false);

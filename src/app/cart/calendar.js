@@ -4,15 +4,18 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { useState } from "react";
 
-function Calendar({ info, setInfo }) {
-  // State variable to store the selected date
+function Calendar() {
   const [selectedDate, setSelectedDate] = useState(dayjs(new Date()));
 
+  const formatDate = (date) => {
+    // return dayjs(date).format("D MMMM YYYY, h:mm A");
+    return dayjs(date).format("D MMMM YYYY");
+  };
   // Handler function to update the selected date
   const handleDateChange = (newValue) => {
     setSelectedDate(newValue);
     // setInfo({ ...info, dateToCollect: newValue });
-    localStorage.setItem("selectedDate", newValue);
+    localStorage.setItem("selectedDate", formatDate(newValue));
   };
 
   return (

@@ -11,7 +11,7 @@ export async function createOrder(info) {
 }
 
 export async function getOrder() {
-  const res = await axios.get("http://localhost:8000/orders", {
+  const res = await axios.get("http://localhost:8000/orders/all", {
     headers: {
       "x-auth-token": localStorage.getItem("token"),
     },

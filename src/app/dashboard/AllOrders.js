@@ -62,40 +62,61 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.name}
+          {row.email}
         </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
+        <TableCell align="right">{row.grandTotal}</TableCell>
+        <TableCell align="right">{row.purchased_date}</TableCell>
+        <TableCell align="right">
+          {row.delivery ? "Delivery" : "Pick Up"}
+        </TableCell>
+        <TableCell align="right">Pending</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
-                Order Id: #839248
+                Order ID: {row._id}
+              </Typography>
+              <Typography variant="h6" gutterBottom component="div">
+                Customer Name: {`${row.firstName} ${row.lastName}`}
+              </Typography>
+              <Typography variant="h6" gutterBottom component="div">
+                Phone Number: {row.phoneNumber}
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
                     <TableCell>Product</TableCell>
                     <TableCell align="right">Quantity</TableCell>
                     <TableCell align="right">Subtotal</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
+                  {row?.cart?.map((pack, idx) => (
+                    <TableRow>
                       <TableCell component="th" scope="row">
-                        {historyRow.date}
+                        <ul>
+                          {pack[idx]?.items?.map((donut) => (
+                            <li>
+                              {donut.product} x {donut.quantity}
+                            </li>
+                          ))}
+                        </ul>
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
+                      <TableCell>{pack[idx]?.quantity}</TableCell>
                       <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
+                        {pack?.items.map((donut) =>
+                          donut?.quantity === 2
+                            ? "RM9.90"
+                            : donut?.quantity === 6
+                            ? "RM29.90"
+                            : "RM49.90"
+                        )}
                       </TableCell>
+                      {/* <TableCell align="right">
+                        {Math.round(historyRow.amount * row.price * 100) / 100}
+                      </TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -134,33 +155,57 @@ const rows = [
 
 const fonts = { fontSize: "20px", fontFamily: "Work Sans" };
 function AllOrdersTable() {
-  const { data, isLoading } = useQuery("orders", "getOrder");
+  const { data, isLoading } = useQuery("orders", getOrder);
   if (isLoading ? <h3>Loading</h3> : null) console.log(data);
+  console.log("Type of data:", typeof data);
+  console.log("Data:", data);
+  if (!Array.isArray(data)) return <p>No orders found</p>;
+
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow sx={fonts}>
-            <TableCell />
-            <TableCell sx={fonts}>Order Id</TableCell>
-            <TableCell align="right" sx={fonts}>
-              Total Amount
-            </TableCell>
-            <TableCell align="right" sx={fonts}>
-              Ordered Date
-            </TableCell>
-            <TableCell align="right" sx={fonts}>
-              Status
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody sx={fonts}>
-          {/* {data.map((row) => (
-            <Row key={row.name} row={row} />
-          ))} */}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {isLoading ? (
+        <Typography variant="h2" sx={{ textAlign: "center" }}>
+          IS LOADING...
+        </Typography>
+      ) : data.length ? (
+        <TableContainer
+          component={Paper}
+          sx={{ bgcolor: "#f1e3fc", borderRadius: "20px" }}
+          elevation={3}
+        >
+          <Table>
+            <TableHead>
+              <TableRow sx={fonts}>
+                <TableCell />
+                <TableCell sx={fonts}>Email</TableCell>
+                <TableCell align="right" sx={fonts}>
+                  Total Amount
+                </TableCell>
+                <TableCell align="right" sx={fonts}>
+                  Ordered Date
+                </TableCell>
+                <TableCell align="right" sx={fonts}>
+                  Mode
+                </TableCell>
+
+                <TableCell align="right" sx={fonts}>
+                  Status
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody sx={fonts}>
+              {data?.map((row) => (
+                <Row key={row.name} row={row} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography variant="h2" sx={{ textAlign: "center" }}>
+          NO ORDERS TO SHOW
+        </Typography>
+      )}
+    </>
   );
 }
 

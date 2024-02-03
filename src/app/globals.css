@@ -101,3 +101,10 @@ body {
   font-family: "Work Sans" !important;
   font-size: 30px !important;
 }
+
+/* PAYMENT */
+.checkoutInput .css-1x51dt5-MuiInputBase-input-MuiInput-input.Mui-disabled {
+  font-family: "Work Sans" !important;
+  -webkit-text-fill-color: black;
+  font-weight: bold;
+}

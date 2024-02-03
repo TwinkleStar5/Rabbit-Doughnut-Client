@@ -15,7 +15,7 @@ function Topnav() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
-        position="static"
+        position="sticky"
         sx={{ py: 2 }}
         className="TopNav"
         elevation="none"

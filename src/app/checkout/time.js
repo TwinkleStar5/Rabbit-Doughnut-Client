@@ -11,14 +11,15 @@ function Time({ info, setInfo }) {
   const maxTime = dayjs().set("hour", 21).startOf("hour");
 
   const handleTimeChange = (newValue) => {
-    setInfo({ ...info, time: newValue["$d"] });
+    const formattedTime = dayjs(newValue["$d"]).format("h:mm A");
+    setInfo({ ...info, time: formattedTime });
   };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["TimePicker", "TimePicker"]}>
         <TimePicker
-          label="Time to pick up your order"
+          label="What time for your order?"
           time={initialTime}
           minTime={minTime}
           maxTime={maxTime}

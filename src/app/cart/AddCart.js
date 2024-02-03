@@ -11,12 +11,7 @@ import {
 import build from "../../img/build_placeholder.webp";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import {
-  addToMainCart,
-  getCart,
-  deleteSingleCartItem,
-  deleteAllItems,
-} from "@/utils/cart";
+import { addToMainCart, getCart, deleteSingleCartItem } from "@/utils/cart";
 import { useQuery } from "react-query";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useMutation, useQueryClient } from "react-query";

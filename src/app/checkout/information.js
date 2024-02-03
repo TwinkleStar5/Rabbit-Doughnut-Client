@@ -5,14 +5,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import MenuItem from "@mui/material/MenuItem";
 import Time from "./time";
+import Calendar2 from "./calendar2";
 
 function Information({
   info,
   setInfo,
   selectedOption,
   setSelectedOption,
-  onTimeChange,
-  handleTimeChange,
   setStateFee,
   setSelectedTime,
 }) {
@@ -54,7 +53,11 @@ function Information({
   };
 
   const handleChange = (e) => {
-    setInfo({ ...info, [e.target.name]: e.target.value });
+    setInfo({
+      ...info,
+      [e.target.name]: e.target.value,
+      // grandTotal: grandTotal,
+    });
     console.log(info);
     let fee = 5;
     if (
@@ -121,7 +124,7 @@ function Information({
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          {/* <TextField
             required
             name="email"
             label="Email"
@@ -134,7 +137,7 @@ function Information({
               info.email && !isValidEmail(info.email) ? "Invalid email" : ""
             }
             onChange={handleChange}
-          />
+          /> */}
           <FormControlLabel
             control={
               <Checkbox
@@ -171,7 +174,7 @@ function Information({
       </Grid>
       {selectedOption == "Delivery" && (
         <Grid container spacing={3} className="Shipping Address">
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ my: 3, mt: 6 }}>
             <Typography variant="h5">Shipping Address</Typography>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -259,7 +262,18 @@ function Information({
         </Grid>
       )}
       {selectedOption == "Pick Up" && (
-        <Time setSelectedTime={setSelectedTime} info={info} setInfo={setInfo} />
+        <Grid container direction="column">
+          <Grid item>
+            <Calendar2 />
+          </Grid>
+          <Grid item>
+            <Time
+              setSelectedTime={setSelectedTime}
+              info={info}
+              setInfo={setInfo}
+            />
+          </Grid>
+        </Grid>
       )}
     </>
   );
