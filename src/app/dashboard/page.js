@@ -11,6 +11,7 @@ import "../globals.css";
 import CreateProductTable from "./ProductTable";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { styled } from "@mui/material/styles";
+import "../globals.css";
 
 const Root = styled("div")(({ theme }) => ({
   width: "100%",
@@ -30,17 +31,18 @@ function Dashboard() {
   return (
     <>
       <Grid container sx={{ p: 5 }}>
-        <Grid container sx={{ margin: "auto", mb: 5 }}>
-          <Grid item md={8}>
+        <Grid container sx={{ margin: "auto", mb: 5, width: "100%" }}>
+          {/* <Grid item md={8} sx={{ width: "100%" }}>
             <Typography
               variant="h4"
               sx={{ color: "#2B2A4C", textAlign: "center", mb: 3 }}
+              className="dashboardTitle"
             >
               LINE CHART
             </Typography>
 
             <Chart />
-            {/* <Box sx={{ width: "800px", margin: "auto", my: 3 }}>
+            <Box sx={{ width: "800px", margin: "auto", my: 3 }}>
             <Line
               data={{
                 labels: revenueData.map((data) => data.label),
@@ -72,43 +74,72 @@ function Dashboard() {
                 },
               }}
             />
-          </Box> */}
-          </Grid>
-          <Paper
-            item
-            md={3}
-            sx={{
-              border: "1.5px dashed",
-              borderRadius: "16px",
-              p: 2,
-              textAlign: "center",
-              bgcolor: "#FBECB2",
-            }}
-            elevation={4}
-          >
-            <Typography variant="h5" sx={{ color: "#2B2A4C", mb: 1 }}>
-              TOTAL REVENUE
-            </Typography>
+          </Box>
+          </Grid> */}
+          <Grid item md={8}></Grid>
+          <Grid item md={3} sx={{ width: "100%" }}>
+            <Paper
+              item
+              md={3}
+              sx={{
+                border: "1.5px dashed",
+                borderRadius: "16px",
+                p: 2,
+                textAlign: "center",
+                bgcolor: "#FBECB2",
+              }}
+              elevation={4}
+            >
+              <Typography
+                variant="h5"
+                sx={{ color: "#2B2A4C", mb: 1 }}
+                className="dashboardTitle"
+              >
+                TOTAL REVENUE
+              </Typography>
 
-            <Typography variant="h6" sx={{ mb: 2 }}>
-              as of {currentDate}
-            </Typography>
-            <Typography variant="h4" sx={{ color: "#d14081" }}>
-              RM12,346.97
-            </Typography>
-          </Paper>
-        </Grid>
-        <Grid item sx={{ mb: 10, mt: 4, mx: "auto" }}>
-          <Root>
-            <Divider>
+              <Typography
+                variant="h6"
+                sx={{ mb: 2 }}
+                className="dashboardTitle"
+              >
+                as of {currentDate}
+              </Typography>
               <Typography
                 variant="h4"
-                sx={{ color: "#2B2A4C", textAlign: "center", mb: 3 }}
+                sx={{ color: "#d14081" }}
+                className="dashboardTitle"
               >
-                RECENT ORDERS
+                RM12,346.97
               </Typography>
-            </Divider>
-          </Root>
+            </Paper>
+          </Grid>
+        </Grid>
+        <Root>
+          <Divider>
+            <Typography
+              variant="h4"
+              sx={{ color: "#2B2A4C", textAlign: "center", mb: 3 }}
+              className="dashboardTitle"
+            >
+              RECENT ORDERS
+            </Typography>
+          </Divider>
+        </Root>
+        <Grid
+          item
+          sx={{
+            mb: 10,
+            mt: 4,
+            mx: "auto",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          md={8}
+        >
           <RecentOrders />
         </Grid>
         <Root>
@@ -116,17 +147,28 @@ function Dashboard() {
             <Typography
               variant="h4"
               sx={{ color: "#2B2A4C", textAlign: "center" }}
+              className="dashboardTitle"
             >
               ALL DOUGHNUTS MENU
             </Typography>
           </Divider>
         </Root>
-        <Grid sx={{ mx: "auto" }}>
-          <Box
-            sx={{ display: "flex", justifyContent: "space-around", mb: 3 }}
-          ></Box>
-          <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
+        <Grid
+          item
+          sx={{
+            mt: 4,
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+            margin: "auto",
+          }}
+          md={8}
+        >
+          <Box sx={{ my: 3 }}>
             <Button
+              className="addDonutButton"
               variant="contained"
               sx={{
                 bgcolor: "#2B2A4C !important",

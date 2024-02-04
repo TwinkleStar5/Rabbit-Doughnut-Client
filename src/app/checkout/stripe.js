@@ -4,7 +4,6 @@ import { Box, Button, Typography } from "@mui/material";
 import { useMutation, useQuery } from "react-query";
 import { createOrder } from "@/utils/orders";
 
-
 let stripePromise;
 //makes sure that the Stripe library is fully prepared and set up for handling payments before the rest of our code tries to use it. The code we provided makes sure this preparation only happens once and then reuses it, which is a good way to keep things efficient and speedy in our web application.
 
@@ -29,17 +28,16 @@ function Stripe({ info }) {
   const handleSubmitInfo = (e) => {
     e.preventDefault();
     mutate(info);
-    
   };
 
   const [isLoading, setLoading] = useState(false);
   const [stripeError, setStripeError] = useState(null);
 
-  const product = { prod: "prod_PQamm9vf7v1YYb" };
+  const product = { prod: "price_1Objc9CZpgJT0cLMuF82ltl6" };
   const checkOutOptions = {
-    mode: "payment", //Payment Mode: It indicates that the intention is to make a payment.
-    successUrl: `${window.location.origin}/success`, //Success URL: Where to go after a successful payment.
-    cancelUrl: `${window.location.origin}/cancel`, //Cancel URL: Where to go if the user decides to cancel the payment.
+    mode: "payment",
+    successUrl: `${window.location.origin}/success`,
+    cancelUrl: `${window.location.origin}/cancel`,
   };
   const redirectToCheckout = async () => {
     setLoading(true);

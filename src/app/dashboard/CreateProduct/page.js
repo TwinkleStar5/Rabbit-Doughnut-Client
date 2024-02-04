@@ -315,7 +315,7 @@ function CreateProduct() {
               </Grid>
               <Grid
                 item
-                xs={6}
+                xs={4}
                 sx={{ fontFamily: "Work Sans", fontSize: "30px", pl: 5 }}
               >
                 <FormControlLabel
@@ -332,7 +332,7 @@ function CreateProduct() {
                   label="Vegan"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <FormControlLabel
                   className="FormControlLabel"
                   control={
@@ -345,6 +345,21 @@ function CreateProduct() {
                     />
                   }
                   label="Gluten Free"
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <FormControlLabel
+                  className="FormControlLabel"
+                  control={
+                    <Checkbox
+                      color="info"
+                      name="isActive"
+                      value="yes"
+                      disableFocusRipple
+                      onChange={handleChangeProduct}
+                    />
+                  }
+                  label="isActive"
                 />
               </Grid>
               <Grid

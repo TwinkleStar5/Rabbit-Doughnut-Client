@@ -2,13 +2,11 @@ import { Box, Grid, IconButton, Typography } from "@mui/material";
 import instagram from "../img/instagram.png";
 import facebook from "../img/facebook.png";
 import american from "../img/american-express.png";
-import apple from "../img/apple-pay.png";
-import google from "../img/google-pay.png";
 import jcb from "../img/jcb.png";
 import mastercard from "../img/mastercard.png";
 import union from "../img/union-pay.png";
 import visa from "../img/visa.png";
-
+import "../app/globals.css";
 function Footer() {
   return (
     <Grid
@@ -16,21 +14,28 @@ function Footer() {
       sx={{ bgcolor: "#041E42", color: "white", py: 1, px: 2, pb: 3 }}
     >
       <Grid item md={4} sx={{ mt: 3, p: 3 }}>
-        <Box>
+        <Box >
           <Typography variant="h4" sx={{ mb: 2 }}>
             Operation Hours
           </Typography>
-          <Typography variant="h6">Mon-Fri: 8AM-6PM</Typography>
-          <Typography variant="h6">Sat: 8AM-8PM</Typography>
-          <Typography variant="h6">Sun: Closed</Typography>
+          <Typography variant="h6" className="footerText">
+            Mon-Fri: 8AM-6PM
+          </Typography>
+          <Typography variant="h6" className="footerText">
+            Sat: 8AM-8PM
+          </Typography>
+          <Typography variant="h6" className="footerText">
+            Sun: Closed
+          </Typography>
         </Box>
       </Grid>
       <Grid item md={4} sx={{ mt: 3, p: 3 }}>
         <Box>
           <Typography variant="h4" sx={{ mb: 2 }}>
+            {" "}
             Location
           </Typography>
-          <Typography variant="h6">
+          <Typography variant="h6" className="footerText">
             584, Love Lane, Georgetown, 10200 George Town, Penang
           </Typography>
         </Box>
@@ -40,7 +45,7 @@ function Footer() {
           <Typography variant="h4" sx={{ mb: 2 }}>
             Contact Us
           </Typography>
-          <Typography variant="h6">
+          <Typography variant="h6" className="footerText">
             Email:{" "}
             <a
               href="mailto:rabbitdoughnuts@gmail.com"
@@ -49,7 +54,9 @@ function Footer() {
               rabbitdoughnuts@gmail.com
             </a>
           </Typography>
-          <Typography variant="h6">Follow us on social media:</Typography>
+          <Typography variant="h6" className="footerText">
+            Follow us on social media:
+          </Typography>
           <IconButton disableRipple>
             <img src={instagram.src} style={{ width: "30px" }} />
           </IconButton>
@@ -73,7 +80,11 @@ function Footer() {
             © 2024, Rabbit Doughnuts. Powered by Stripe
           </Typography>
         </Grid>
-        <Grid item sm={6} sx={{ display: "flex", justifyContent: "flex-end", pr:8 }}>
+        <Grid
+          item
+          sm={6}
+          sx={{ display: "flex", justifyContent: "flex-end", pr: 8 }}
+        >
           <img src={american.src} style={{ width: "38px" }} />
           <img src={visa.src} style={{ width: "38px", marginLeft: "30px" }} />
           <img

@@ -8,8 +8,6 @@ import SideCart from "@/app/cart/SideCart";
 import logo from "../img/logo3.png";
 import { Grid } from "@mui/material";
 import LoginLogout from "@/app/googleApis/login&logout";
-import { useQuery } from "react-query";
-import { getCart } from "@/utils/cart";
 import "../app/globals.css";
 function Topnav() {
   return (
@@ -22,7 +20,7 @@ function Topnav() {
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Grid container>
-            <Grid item sm={4}>
+            <Grid item xs={4}>
               <IconButton
                 className="menuItem"
                 size="large"
@@ -34,16 +32,22 @@ function Topnav() {
                 <Sidenav />
               </IconButton>
             </Grid>
-            <Grid item sm={4}>
+            <Grid item xs={4}>
               <a href="/home">
                 <img
+                  className="logo"
                   src={logo.src}
-                  style={{ height: "65px", margin: "auto" }}
+                  style={{
+                    height: "65px",
+                    margin: "auto",
+                  }}
                 />
               </a>
             </Grid>
-            <Grid sx={{ display: "flex", justifyContent: "flex-end" }} md={4}>
-              <LoginLogout sx={{ display: { sm: "none" } }} />
+            <Grid sx={{ display: "flex", justifyContent: "flex-end" }} xs={4}>
+              <Box sx={{ display: { xs: "none", md: "block" } }}>
+                <LoginLogout />
+              </Box>
               <IconButton disableRipple>
                 <SideCart />
               </IconButton>

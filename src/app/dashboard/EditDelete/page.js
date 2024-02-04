@@ -344,7 +344,7 @@ function EditDeleteProduct() {
               </Grid>
               <Grid
                 item
-                xs={6}
+                xs={4}
                 sx={{ fontFamily: "Work Sans", fontSize: "30px", pl: 5 }}
               >
                 <FormControlLabel
@@ -360,7 +360,7 @@ function EditDeleteProduct() {
                   label="Vegan"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -372,6 +372,20 @@ function EditDeleteProduct() {
                     />
                   }
                   label="Gluten Free"
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color="info"
+                      name="isActive"
+                      value={editProduct?.isActive ? "yes" : "no"}
+                      disableFocusRipple
+                      onChange={handleEditProduct}
+                    />
+                  }
+                  label="isActive"
                 />
               </Grid>
               <Grid

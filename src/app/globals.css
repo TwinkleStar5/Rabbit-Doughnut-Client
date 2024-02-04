@@ -9,8 +9,33 @@ body {
   margin: 0;
 }
 
+/* TopNav */
 .TopNav {
   display: none;
+}
+
+@media (max-width: 500px) {
+  .logo {
+    height: 50px !important;
+  }
+}
+
+/* SIDENAV */
+.sideNavText {
+  font-size: 20px;
+}
+
+@media (max-width: 500px) {
+  .sideNavTitle {
+    font-size: 22px !important;
+  }
+}
+
+/* FOOTER */
+@media (max-width: 500px) {
+  .footerText {
+    font-size: 16px !important;
+  }
 }
 
 /* DASHBOARD */
@@ -27,6 +52,28 @@ body {
   font-size: 16px !important;
 }
 
+/* PRODUCT TABLE */
+
+@media (max-width: 500px) {
+  .dashboardTitle {
+    font-size: 16px !important;
+  }
+
+  .MuiTableHead-root .MuiTableCell-root,
+  .MuiTableBody-root .MuiTableCell-root {
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .addDonutButton {
+    font-size: 16px !important;
+  }
+}
+
+/* .css-i4bv87-MuiSvgIcon-root {
+  font-size: 30px !important;
+} */
 /* CALENDAR */
 .css-cyfsxc-MuiPickersCalendarHeader-labelContainer {
   font-family: "Work Sans" !important;

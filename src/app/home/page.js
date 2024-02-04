@@ -13,6 +13,7 @@ import homeBanner from "../../img/home_banner.webp";
 import worked_with from "../../img/worked-with.webp";
 import discount from "../../img/discount.webp";
 import { useRouter } from "next/navigation";
+import LoginLogout from "../googleApis/login&logout";
 
 function Home() {
   const { push } = useRouter();
@@ -136,12 +137,32 @@ function Home() {
             </Box>
           </Grid>
         </Grid>
-        <Grid item sx={{ textAlign: "center", p: 4, bgcolor: "#FABBCB" }}>
-          <Box>
-            <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-              GET 20% OFF YOUR FIRST ONLINE ORDER!
-            </Typography>
-            <Box
+        <Grid
+          item
+          sx={{
+            p: 4,
+            bgcolor: "#FABBCB",
+
+            textAlign: "center",
+            display: "flex",
+            justifyContent: "center",
+            margin: "auto",
+          }}
+        >
+          <Grid
+            container
+            sx={{
+              textAlign: "center",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Grid item md={8}>
+              <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+                GET 20% OFF YOUR FIRST ONLINE ORDER WHEN YOU LOGIN!{" "}
+              </Typography>
+            </Grid>
+            {/* <Box
               sx={{
                 margin: "auto",
                 my: 3,
@@ -151,16 +172,19 @@ function Home() {
                 <Button variant="button" sx={{ borderRadius: "13px" }}>
                   REGISTER NOW
                 </Button>
+                <LoginLogout />
               </a>
-            </Box>
-            <Typography variant="h5">
-              If you have registered,{" "}
-              <a href="/login" style={{ textDecoration: "underline" }}>
+            </Box> */}
+            <Grid item md={8} sx={{ mt: 4 }}>
+              <Typography variant="h5">
+                Once you have created an account with us,{" "}
+                {/* <a href="/login" style={{ textDecoration: "underline" }}>
                 LOGIN NOW
-              </a>{" "}
-              to collect points as you shop for more doughnuts
-            </Typography>
-          </Box>
+              </a>{" "} */}
+                you can collect points as you shop online for our doughnuts
+              </Typography>
+            </Grid>
+          </Grid>
         </Grid>
       </Box>
     </>

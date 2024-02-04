@@ -1,7 +1,10 @@
 import { Box, Grid, TextField, Typography } from "@mui/material";
 import Stripe from "./stripe";
+import Payment_Button from "./stripe/button";
+import { useRouter } from "next/router";
 import "../globals.css";
 function Payment({ info, selectedOption }) {
+  const router = useRouter();
   console.log(info);
   return (
     <>
@@ -26,11 +29,7 @@ function Payment({ info, selectedOption }) {
           }}
         >
           <Grid item xs={2}>
-            <Typography
-              variant="subtitle1"
-              sx={{ color: "#707070", pr: 4 }}
-             
-            >
+            <Typography variant="subtitle1" sx={{ color: "#707070", pr: 4 }}>
               Name:
             </Typography>
           </Grid>
@@ -61,11 +60,7 @@ function Payment({ info, selectedOption }) {
           }}
         >
           <Grid item xs={2}>
-            <Typography
-              variant="subtitle1"
-              sx={{ color: "#707070", pr: 4 }}
-             
-            >
+            <Typography variant="subtitle1" sx={{ color: "#707070", pr: 4 }}>
               Contact:
             </Typography>
           </Grid>
@@ -98,11 +93,7 @@ function Payment({ info, selectedOption }) {
           }}
         >
           <Grid item xs={4}>
-            <Typography
-              variant="subtitle1"
-              sx={{ color: "#707070" }}
-             
-            >
+            <Typography variant="subtitle1" sx={{ color: "#707070" }}>
               {selectedOption === "Delivery"
                 ? "Ship To:"
                 : "Pick Up Date & Time:"}
@@ -137,7 +128,8 @@ function Payment({ info, selectedOption }) {
             justifyContent: "center",
           }}
         >
-          <Stripe info={info} />
+          <Payment_Button info={info} router={router} />
+          {/* <Stripe info={info} /> */}
         </Box>
       </Grid>
     </>

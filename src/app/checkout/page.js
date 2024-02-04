@@ -121,7 +121,7 @@ function Checkout() {
         );
         let price;
         if (innerQuantity === 2) price = 9.9;
-        if (innerQuantity === 6) price = 29.9;
+        if (innerQuantity === 6) price = 26.9;
         if (innerQuantity === 12) price = 49.9;
         let total = 0;
         return {

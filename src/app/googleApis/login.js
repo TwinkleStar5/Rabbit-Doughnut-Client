@@ -12,8 +12,7 @@ function Login({ setUser }) {
     setUser({ token: res.accessToken, data: res.profileObj });
     let userData = {
       ...res.profileObj,
-      isAdmin:
-        "rabbitdoughnuts@gmail.com" === res.profileObj.email ? true : false,
+      isAdmin: "rabbitdoughnuts@gmail.com" === res.profileObj.email,
     };
     localStorage.setItem("user", JSON.stringify(userData));
     let token = await generateToken(userData);

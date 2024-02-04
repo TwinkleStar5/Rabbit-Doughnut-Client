@@ -18,14 +18,16 @@ import { shopDonut } from "./ShopNav";
 import { Gifting } from "./ShopNav";
 import LoginLogout from "@/app/googleApis/login&logout";
 import { AuthContext } from "@/app/AuthProvider";
+import CloseIcon from "@mui/icons-material/Close";
 import "../app/globals.css";
 
 export default function Sidenav() {
-  const [isExpanded, setIsExpanded] = React.useState(true);
-
   const [state, setState] = React.useState({
     left: false,
   });
+
+  const [isExpanded, setIsExpanded] = React.useState(true);
+
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -36,6 +38,7 @@ export default function Sidenav() {
 
     setState({ ...state, [anchor]: open });
   };
+  const handleClose = () => {};
 
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -87,11 +90,34 @@ export default function Sidenav() {
         width: anchor === "top" || anchor === "bottom" ? "auto" : 400,
         backgroundColor: "#F2F2F2",
         p: 3,
+        pt: 5,
       }}
       role="presentation"
     >
+      <CloseIcon
+        onClick={handleClose}
+        sx={{
+          position: "relative",
+          zIndex: 9999,
+          cursor: "pointer",
+        }}
+      />
       <List>
-        <ListItem disablePadding>
+        <ListItemButton
+          onClick={toggleDrawer(anchor, false)}
+          disableTouchRipple
+        >
+          <a href="/shopDoughnuts">
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: "bold", fontSize: "30px" }}
+              className="sideNavTitle"
+            >
+              Shop Doughnuts
+            </Typography>
+          </a>
+        </ListItemButton>
+        {/* <ListItem disablePadding>
           <ListItemButton
             disableTouchRipple
             // onClick={toggleDrawer(anchor, false)}
@@ -137,7 +163,7 @@ export default function Sidenav() {
               </AccordionDetails>
             </Accordion>
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
       </List>
       <List>
         <ListItemButton
@@ -148,6 +174,7 @@ export default function Sidenav() {
             <Typography
               variant="h5"
               sx={{ fontWeight: "bold", fontSize: "30px" }}
+              className="sideNavTitle"
             >
               Dashboard
             </Typography>
@@ -160,6 +187,7 @@ export default function Sidenav() {
             <Typography
               variant="h5"
               sx={{ fontWeight: "bold", fontSize: "30px" }}
+              className="sideNavTitle"
             >
               Our Menu
             </Typography>
@@ -171,6 +199,7 @@ export default function Sidenav() {
           <Typography
             variant="h5"
             sx={{ fontWeight: "bold", fontSize: "30px" }}
+            className="sideNavTitle"
           >
             Our Story
           </Typography>
@@ -182,6 +211,7 @@ export default function Sidenav() {
             <Typography
               variant="h5"
               sx={{ fontWeight: "bold", fontSize: "30px" }}
+              className="sideNavTitle"
             >
               Points & Vouchers
             </Typography>
@@ -194,13 +224,14 @@ export default function Sidenav() {
             <Typography
               variant="h5"
               sx={{ fontWeight: "bold", fontSize: "30px" }}
+              className="sideNavTitle"
             >
               Your Orders
             </Typography>
           </a>
         </ListItemButton>
       </List>
-      <List>
+      {/* <List>
         <Search
           sx={{
             bgcolor: "transparent",
@@ -218,9 +249,8 @@ export default function Sidenav() {
             />
           </Typography>
         </Search>
-      </List>
-
-      <List sx={{ paddingBottom: "200px" }}>
+      </List> */}
+      <List sx={{ paddingBottom: "880px" }}>
         <ListItemButton>
           <LoginLogout />
         </ListItemButton>

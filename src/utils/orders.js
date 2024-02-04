@@ -18,3 +18,11 @@ export async function getOrder() {
   });
   return res.data;
 }
+export async function getSingleOrder() {
+  const res = await axios.get("http://localhost:8000/orders", {
+    headers: {
+      "x-auth-token": localStorage.getItem("token"),
+    },
+  });
+  return res.data;
+}
