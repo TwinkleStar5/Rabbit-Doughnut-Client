@@ -61,15 +61,15 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
+        <TableCell align="center" scope="row">
           {row.email}
         </TableCell>
-        <TableCell align="right">{row.grandTotal}</TableCell>
-        <TableCell align="right">{row.purchased_date}</TableCell>
-        <TableCell align="right">
+        <TableCell align="center">RM {row.grandTotal}</TableCell>
+        <TableCell align="center">{row.purchased_date}</TableCell>
+        <TableCell align="center">
           {row.delivery ? "Delivery" : "Pick Up"}
         </TableCell>
-        <TableCell align="right">Pending</TableCell>
+        <TableCell align="center">Pending</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

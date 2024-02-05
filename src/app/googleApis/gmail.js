@@ -1,13 +1,10 @@
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 
-// These id's and secrets should come from .env file.
-const CLIENT_ID =
-  "821687526755-4a7n1niuf8phj6qtes2olnmhugs46sft.apps.googleusercontent.com";
-const CLIENT_SECRET = "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";
-const REDIRECT_URL = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN =
-  "1//04BdJyc5k4c_GCgYIARAAGAQSNwF-L9Ir-N9rDQS-cz-irhy75jOmLG_0fJNmciflG31Of6w-CVn-Uga2c0PRQv-SOlqAhSXAtvI";
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const REDIRECT_URL = process.env.REDIRECT_URL;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
@@ -33,22 +30,19 @@ async function sendMail() {
     });
 
     const mailOptions = {
-      from: "Mr Rabbit <rabbitdoughnuts@gmail.com>",
+      from: "rabbitdoughnuts@gmail.com",
       to: "bethsummer05@gmail.com",
       subject: "31/01/2024 11:26pm",
       text: "this is text",
-      html: "<h1>lala</h1>",
+      html: "<h1>this is msg</h1>",
     };
 
     const result = await transport.sendMail(mailOptions);
     return result;
   } catch (error) {
-    return error;
+    console.error("Error sending email:", error);
+    throw error; 
   }
 }
 
-sendMail()
-  .then((result) => console.log("Email sent successfully!!", result))
-  .catch((error) => console.log(error.message));
-
-export default sendMail;
+module.exports = sendMail;

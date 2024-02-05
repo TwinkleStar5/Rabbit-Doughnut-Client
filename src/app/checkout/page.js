@@ -20,8 +20,8 @@ import Badge from "@mui/material/Badge";
 import { useQuery } from "react-query";
 import { getCart } from "@/utils/cart";
 import { getOrder } from "@/utils/orders";
-import { handleVerifyAllFill } from "./information";
 
+import "../globals.css";
 const StyledBadge = styled(Badge)({
   "& .MuiBadge-badge": {
     right: 3,
@@ -147,13 +147,27 @@ function Checkout() {
 
   return (
     <>
-      <Grid container sx={{ pt: 4, pl: 4 }} spacing={3}>
-        <Grid container md={7} sx={{ px: 8, pt: 8 }}>
-          <Grid item>
+      <Grid container>
+        <Grid
+          container
+          md={7}
+          sx={{ px: 8, pt: 8, margin: "auto" }}
+          className="checkoutLeft"
+        >
+          <Grid item sx={{ width: "100%" }}>
             <Typography component="h1" variant="h4" align="center">
               Checkout
             </Typography>
-            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+            <Stepper
+              activeStep={activeStep}
+              sx={{
+                pt: 3,
+                pb: 5,
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
               {steps.map((label) => (
                 <Step key={label}>
                   <StepLabel>{label}</StepLabel>
@@ -285,11 +299,6 @@ function Checkout() {
                       <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                         {flatMappedData[idx].innerQuantity} Pack Doughnuts
                       </Typography>
-                      {/* <Typography variant="subtitle1" sx={{ fontSize: "12px" }}>
-                        Pack Contents: 1. NOTORIOUS P.I.G 2. D'OH NUT 3. LIAM
-                        HEMSWORTHY 4. DAVID HASSELHOFF 5. THE OG 6. GORDON
-                        JAMSAY
-                      </Typography> */}
                       <Button
                         key={idx}
                         variant="contained"
@@ -347,36 +356,57 @@ function Checkout() {
                 </Grid>
               );
             })}
-          <Grid item sx={{ display: "flex", width: "100%" }}>
-            <TextField
-              label="Discount Code"
-              fullWidth
-              variant="outlined"
-              color="info"
-              sx={{
-                fontFamily: "Archivo Black",
-                color: "#666666",
-              }}
-            />
-            <Button
-              variant="contained"
-              sx={{
-                height: "55px",
-                width: "150px",
-                ml: 3,
-                bgcolor: "#EDEDED !important",
-                color: "#666666",
-                borderRadius: "5px",
-                border: "1.5px solid",
-                borderColor: "#D6D6D6",
-                flex: "end",
-              }}
-              disableElevation
-            >
-              <Typography variant="h6">APPLY</Typography>
-            </Button>
-          </Grid>
           <Grid item sx={{ width: "100%" }}>
+            <Grid container sx={{ display: "flex", width: "100%" }}>
+              <Grid
+                item
+                sx={{
+                  width: "100%",
+                  mb: 3,
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+                md={8}
+              >
+                <TextField
+                  label="Discount Code"
+                  fullWidth
+                  variant="outlined"
+                  color="info"
+                  sx={{
+                    fontFamily: "Archivo Black",
+                    color: "#666666",
+                  }}
+                />
+              </Grid>
+              <Grid
+                item
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+                md={4}
+              >
+                <Button
+                  variant="contained"
+                  sx={{
+                    height: "55px",
+                    width: "150px",
+                    ml: 3,
+                    bgcolor: "#EDEDED !important",
+                    color: "#666666",
+                    borderRadius: "5px",
+                    border: "1.5px solid",
+                    borderColor: "#D6D6D6",
+                    flex: "end",
+                  }}
+                  disableElevation
+                >
+                  <Typography variant="h6">APPLY</Typography>
+                </Button>
+              </Grid>
+            </Grid>
             <Box>
               <Typography
                 variant="h6"
@@ -431,20 +461,12 @@ function Checkout() {
                 }}
               >
                 <Box>Total</Box>
-                {/* <Box
-                    sx={{
-                      color: "#666666",
-                      fontWeight: "light",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Including RM 6.32 in taxes
-                  </Box> */}
-                {/* <Box>RM {grandTotal}</Box> */}
                 <Box>
                   RM{" "}
                   {stateFee !== "Free"
-                    ? parseInt(stateFee) + parseFloat(subtotal.toFixed(2))
+                    ? (
+                        parseInt(stateFee) + parseFloat(subtotal.toFixed(2))
+                      ).toFixed(2)
                     : subtotal.toFixed(2)}
                 </Box>
               </Typography>

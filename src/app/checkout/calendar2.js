@@ -9,20 +9,24 @@ function Calendar2() {
   const [selectedDate, setSelectedDate] = React.useState(dayjs(new Date()));
 
   const formatDate = (date) => {
-    // return dayjs(date).format("D MMMM YYYY, h:mm A");
     return dayjs(date).format("D MMMM YYYY");
   };
-  // Handler function to update the selected date
+
   const handleDateChange = (newValue) => {
     setSelectedDate(newValue);
-    // setInfo({ ...info, dateToCollect: newValue });
+
     localStorage.setItem("selectedDate", formatDate(newValue));
   };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["DatePicker"]}>
-        <DatePicker label="Choose a date!" onChange={handleDateChange} />
+        <DatePicker
+          value={selectedDate}
+          label="Choose a date!"
+          onChange={handleDateChange}
+          disablePast
+        />
       </DemoContainer>
     </LocalizationProvider>
   );

@@ -20,7 +20,7 @@ function Time({ info, setInfo }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["TimePicker", "TimePicker"]}>
         <TimePicker
-          label="What time for your order?"
+          label="What time to pick up?"
           time={initialTime}
           minTime={minTime}
           maxTime={maxTime}

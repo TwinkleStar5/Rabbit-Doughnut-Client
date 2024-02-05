@@ -27,14 +27,16 @@ function Stripe({ info, flatMappedData }) {
   console.log(flatMappedData);
   const item = { price: "price_1ObjcjCZpgJT0cLMhpzUQbxL", quantity: 1 };
 
-  const items = flatMappedData.map((item) => {
-    let price = "";
-    if (item.innerQuantity === 2) price = "price_1Objc9CZpgJT0cLMuF82ltl6";
-    if (item.innerQuantity === 6) price = "price_1ObjaZCZpgJT0cLMJqr5mMX0";
-    if (item.innerQuantity === 12) price = "price_1ObjcjCZpgJT0cLMhpzUQbxL";
+  const items = data?.mainCart
+    ? flatMappedData.map((item) => {
+        let price = "";
+        if (item.innerQuantity === 2) price = "price_1Objc9CZpgJT0cLMuF82ltl6";
+        if (item.innerQuantity === 6) price = "price_1ObjaZCZpgJT0cLMJqr5mMX0";
+        if (item.innerQuantity === 12) price = "price_1ObjcjCZpgJT0cLMhpzUQbxL";
 
-    return { price, quantity: item.outerQuantity };
-  });
+        return { price, quantity: item.outerQuantity };
+      })
+    : 0;
 
   const checkOutOptions = {
     lineItems: items,
@@ -64,11 +66,10 @@ function Stripe({ info, flatMappedData }) {
 
   const handleSubmitInfo = (e) => {
     e.preventDefault();
-    mutate(info);
     redirectToCheckout();
+    mutate(info);
   };
 
-  console.log(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
   return (
     <>
       <form onSubmit={handleSubmitInfo}>
