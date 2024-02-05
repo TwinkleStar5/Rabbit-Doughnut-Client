@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { styled, alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -17,11 +18,19 @@ import { InputBase, Typography, Grid } from "@mui/material";
 import { shopDonut } from "./ShopNav";
 import { Gifting } from "./ShopNav";
 import LoginLogout from "@/app/googleApis/login&logout";
-import { AuthContext } from "@/app/AuthProvider";
 import CloseIcon from "@mui/icons-material/Close";
 import "../app/globals.css";
+import { useContext } from "react";
+import { AuthContext } from "@/app/AuthProvider";
 
-export default function Sidenav() {
+function Sidenav() {
+  const {
+    token,
+    setToken,
+    user,
+    setUser: setUserData,
+  } = useContext(AuthContext);
+
   const [state, setState] = React.useState({
     left: false,
   });
@@ -101,23 +110,43 @@ export default function Sidenav() {
           zIndex: 9999,
           cursor: "pointer",
         }}
-      />
-      <List>
-        <ListItemButton
-          onClick={toggleDrawer(anchor, false)}
-          disableTouchRipple
-        >
-          <a href="/shopDoughnuts">
-            <Typography
-              variant="h5"
-              sx={{ fontWeight: "bold", fontSize: "30px" }}
-              className="sideNavTitle"
+      />{" "}
+      {token && user.isAdmin ? (
+        <List>
+          <ListItemButton
+            onClick={toggleDrawer(anchor, false)}
+            disableTouchRipple
+          >
+            <a href="/dashboard">
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: "bold", fontSize: "30px" }}
+                className="sideNavTitle"
+              >
+                Dashboard
+              </Typography>
+            </a>
+          </ListItemButton>
+        </List>
+      ) : null}
+      {!user?.isAdmin ? (
+        <>
+          <List>
+            <ListItemButton
+              onClick={toggleDrawer(anchor, false)}
+              disableTouchRipple
             >
-              Shop Doughnuts
-            </Typography>
-          </a>
-        </ListItemButton>
-        {/* <ListItem disablePadding>
+              <a href="/shopDoughnuts">
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "bold", fontSize: "30px" }}
+                  className="sideNavTitle"
+                >
+                  Shop Doughnuts
+                </Typography>
+              </a>
+            </ListItemButton>
+            {/* <ListItem disablePadding>
           <ListItemButton
             disableTouchRipple
             // onClick={toggleDrawer(anchor, false)}
@@ -164,73 +193,63 @@ export default function Sidenav() {
             </Accordion>
           </ListItemButton>
         </ListItem> */}
-      </List>
-      <List>
-        <ListItemButton
-          onClick={toggleDrawer(anchor, false)}
-          disableTouchRipple
-        >
-          <a href="/dashboard">
-            <Typography
-              variant="h5"
-              sx={{ fontWeight: "bold", fontSize: "30px" }}
-              className="sideNavTitle"
-            >
-              Dashboard
-            </Typography>
-          </a>
-        </ListItemButton>
-      </List>
-      <List>
-        <ListItemButton onClick={toggleDrawer(anchor, false)}>
-          <a href="/showProducts">
-            <Typography
-              variant="h5"
-              sx={{ fontWeight: "bold", fontSize: "30px" }}
-              className="sideNavTitle"
-            >
-              Our Menu
-            </Typography>
-          </a>
-        </ListItemButton>
-      </List>
-      <List>
-        <ListItemButton onClick={toggleDrawer(anchor, false)}>
-          <Typography
-            variant="h5"
-            sx={{ fontWeight: "bold", fontSize: "30px" }}
-            className="sideNavTitle"
-          >
-            Our Story
-          </Typography>
-        </ListItemButton>
-      </List>
-      <List>
-        <ListItemButton onClick={toggleDrawer(anchor, false)}>
-          <a href="/points&vouchers">
-            <Typography
-              variant="h5"
-              sx={{ fontWeight: "bold", fontSize: "30px" }}
-              className="sideNavTitle"
-            >
-              Points & Vouchers
-            </Typography>
-          </a>
-        </ListItemButton>
-      </List>
-      <List>
-        <ListItemButton onClick={toggleDrawer(anchor, false)}>
-          <a href="/orders">
-            <Typography
-              variant="h5"
-              sx={{ fontWeight: "bold", fontSize: "30px" }}
-              className="sideNavTitle"
-            >
-              Your Orders
-            </Typography>
-          </a>
-        </ListItemButton>
-      </List>
+          </List>
+          <List>
+            <ListItemButton onClick={toggleDrawer(anchor, false)}>
+              <a href="/showProducts">
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "bold", fontSize: "30px" }}
+                  className="sideNavTitle"
+                >
+                  Our Menu
+                </Typography>
+              </a>
+            </ListItemButton>
+          </List>
+          <List>
+            <ListItemButton onClick={toggleDrawer(anchor, false)}>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: "bold", fontSize: "30px" }}
+                className="sideNavTitle"
+              >
+                Our Story
+              </Typography>
+            </ListItemButton>
+          </List>
+        </>
+      ) : null}
+      {token && !user.isAdmin ? (
+        <>
+          <List>
+            <ListItemButton onClick={toggleDrawer(anchor, false)}>
+              <a href="/points&vouchers">
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "bold", fontSize: "30px" }}
+                  className="sideNavTitle"
+                >
+                  Points & Vouchers
+                </Typography>
+              </a>
+            </ListItemButton>
+          </List>
+          <List>
+            <ListItemButton onClick={toggleDrawer(anchor, false)}>
+              <a href="/orders">
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "bold", fontSize: "30px" }}
+                  className="sideNavTitle"
+                >
+                  Your Orders
+                </Typography>
+              </a>
+            </ListItemButton>
+          </List>{" "}
+        </>
+      ) : null}
       {/* <List>
         <Search
           sx={{
@@ -277,3 +296,5 @@ export default function Sidenav() {
     </div>
   );
 }
+
+export default Sidenav;

@@ -9,7 +9,16 @@ import logo from "../img/logo3.png";
 import { Grid } from "@mui/material";
 import LoginLogout from "@/app/googleApis/login&logout";
 import "../app/globals.css";
+import { useContext } from "react";
+import { AuthContext } from "@/app/AuthProvider";
 function Topnav() {
+  const {
+    token,
+    setToken,
+    user,
+    setUser: setUserData,
+  } = useContext(AuthContext);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -48,9 +57,11 @@ function Topnav() {
               <Box sx={{ display: { xs: "none", md: "block" } }}>
                 <LoginLogout />
               </Box>
-              <IconButton disableRipple>
-                <SideCart />
-              </IconButton>
+              {!user?.isAdmin ? (
+                <IconButton disableRipple>
+                  <SideCart />
+                </IconButton>
+              ) : null}
             </Grid>
           </Grid>
         </Toolbar>

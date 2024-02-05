@@ -49,7 +49,7 @@ function Information({
   const handleShipment = (option) => {
     setSelectedOption(option);
     setInfo({ ...info, mode: option });
-    setStateFee("Free");
+    setStateFee(0);
   };
 
   const handleChange = (e) => {

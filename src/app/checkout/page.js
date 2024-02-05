@@ -52,9 +52,7 @@ function Checkout() {
   const [info, setInfo] = useState({});
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [stateFee, setStateFee] = useState("Free");
-
-  console.log(info);
+  const [stateFee, setStateFee] = useState(0);
 
   function getStepContent(step) {
     switch (step) {
@@ -72,6 +70,7 @@ function Checkout() {
         return (
           <Payment
             info={info}
+            flatMappedData={flatMappedData}
             selectedTime={selectedTime}
             selectedOption={selectedOption}
           />
@@ -105,8 +104,9 @@ function Checkout() {
     p: "2px",
     mb: 1,
   };
-  const handleNext = () => {
+  const handleNext = (total) => {
     setActiveStep(activeStep + 1);
+    setInfo({ ...info, total });
   };
 
   const handleBack = () => {
@@ -123,7 +123,6 @@ function Checkout() {
         if (innerQuantity === 2) price = 9.9;
         if (innerQuantity === 6) price = 26.9;
         if (innerQuantity === 12) price = 49.9;
-        let total = 0;
         return {
           outerQuantity: item.quantity,
           innerQuantity,
@@ -138,6 +137,14 @@ function Checkout() {
   let allPacks = cartData?.mainCart
     ? cartData?.mainCart.map((pack) => pack.items)
     : null;
+
+  let total =
+    flatMappedData?.reduce((value, item) => {
+      value += item.subtotal;
+
+      return value;
+    }, 0) + stateFee;
+
   return (
     <>
       <Grid container sx={{ pt: 4, pl: 4 }} spacing={3}>
@@ -198,7 +205,7 @@ function Checkout() {
                       //     : true
                       // }
                       variant="contained"
-                      onClick={handleNext}
+                      onClick={() => handleNext(total)}
                       sx={{
                         mt: 3,
                         ml: 1,
@@ -253,7 +260,6 @@ function Checkout() {
                 parseFloat(flatMappedData[idx].price)
               ).toFixed(2);
               subtotal += parseFloat(perPack);
-
               return (
                 <Grid item>
                   <Grid container sx={{ display: "flex", py: 2 }} spacing={2}>
@@ -408,7 +414,7 @@ function Checkout() {
               >
                 <Box>Shipping</Box>
                 <Box>
-                  {stateFee !== "Free"
+                  {stateFee !== 0
                     ? `RM ${parseFloat(stateFee).toFixed(2)}`
                     : "Free"}
                 </Box>

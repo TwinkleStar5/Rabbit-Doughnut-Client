@@ -11,6 +11,7 @@ function Time({ info, setInfo }) {
   const maxTime = dayjs().set("hour", 21).startOf("hour");
 
   const handleTimeChange = (newValue) => {
+    console.log(newValue);
     const formattedTime = dayjs(newValue["$d"]).format("h:mm A");
     setInfo({ ...info, time: formattedTime });
   };

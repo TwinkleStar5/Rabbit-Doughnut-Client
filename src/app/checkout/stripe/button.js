@@ -1,15 +1,17 @@
+"use client";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/router";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { createOrder } from "@/utils/orders";
 import { Button } from "@mui/material";
+import { redirect } from "next/navigation";
+import axios from "axios";
 
 const asyncStripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const Payment_Button = ({ amount = 1, info }) => {
-  const router = useRouter();
-
-  const queryClient = useQuery();
+  // const router = useRouter();
+  const queryClient = useQueryClient();
   const { mutate } = useMutation(createOrder, {
     onSuccess: (data) => {
       alert(data.msg);
@@ -21,28 +23,37 @@ const Payment_Button = ({ amount = 1, info }) => {
   const handleSubmitInfo = (e) => {
     e.preventDefault();
     mutate(info);
+    handler();
   };
 
   const handler = async () => {
     try {
       const stripe = await asyncStripe;
-      const res = await fetch("/api/stripe/session", {
-        method: "POST",
-        body: JSON.stringify({
-          amount,
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
+      let data = {
+        amount: 123,
+      };
+      // const res = await fetch("./stripe_session", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(data),
+      // });
+
+      const res = await axios.post(
+        "http://localhost:3000/checkout/stripe/stripe_session",
+        data
+      );
+      return console.log(res);
+
       const { sessionId } = await res.json();
 
       const { error } = await stripe.redirectToCheckout({ sessionId });
       console.log(error);
       if (error) {
-        router.push("/error");
+        redirect("/error");
       }
     } catch (err) {
       console.log(err);
-      router.push("/error");
+      // redirect("/error");
     }
   };
 
@@ -58,10 +69,9 @@ const Payment_Button = ({ amount = 1, info }) => {
           color: "#041E42",
           my: 3,
         }}
-        onClick={handler}
-        disabled={isLoading}
+        // disabled={isLoading}
       >
-        {isLoading ? "Loading..." : "Payment"}
+        Payment
       </Button>
     </form>
   );

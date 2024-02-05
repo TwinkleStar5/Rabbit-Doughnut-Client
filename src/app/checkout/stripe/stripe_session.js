@@ -1,10 +1,11 @@
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
-const host = process.env.NEXT_PUBLIC_HOST;
+// const host = process.env.NEXT_PUBLIC_HOST;
 
 export default async function handler(req, res) {
   const { method, body } = req;
+  return console.log("getting here in stripe session");
   if (method === "POST") {
     try {
       const date = new Date().toISOString();
@@ -24,8 +25,8 @@ export default async function handler(req, res) {
           },
         ],
         mode: "payment",
-        cancel_url: `${host}`,
-        success_url: `${host}/success`,
+        cancel_url: `/`,
+        success_url: `/success`,
       });
 
       res.status(200).json({ sessionId: session.id });

@@ -5,14 +5,14 @@ const { google } = require("googleapis");
 const CLIENT_ID =
   "821687526755-4a7n1niuf8phj6qtes2olnmhugs46sft.apps.googleusercontent.com";
 const CLIENT_SECRET = "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";
-const REDIRECT_URI = "https://developers.google.com/oauthplayground";
+const REDIRECT_URL = "https://developers.google.com/oauthplayground";
 const REFRESH_TOKEN =
-  "1//04iXYZVCj6WdVCgYIARAAGAQSNwF-L9IrKO0jTc-vXT5yogyae2T82VZDp3jNggnfgcJwyTHnmLR3al6r4RApd1HjAcJk1CzmJPE";
+  "1//04BdJyc5k4c_GCgYIARAAGAQSNwF-L9Ir-N9rDQS-cz-irhy75jOmLG_0fJNmciflG31Of6w-CVn-Uga2c0PRQv-SOlqAhSXAtvI";
 
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
-  REDIRECT_URI
+  REDIRECT_URL
 );
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
@@ -36,7 +36,7 @@ async function sendMail() {
       from: "Mr Rabbit <rabbitdoughnuts@gmail.com>",
       to: "bethsummer05@gmail.com",
       subject: "31/01/2024 11:26pm",
-      text: "funny",
+      text: "this is text",
       html: "<h1>lala</h1>",
     };
 
@@ -50,3 +50,5 @@ async function sendMail() {
 sendMail()
   .then((result) => console.log("Email sent successfully!!", result))
   .catch((error) => console.log(error.message));
+
+export default sendMail;

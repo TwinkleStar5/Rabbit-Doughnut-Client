@@ -3,9 +3,10 @@ import Stripe from "./stripe";
 import Payment_Button from "./stripe/button";
 import { useRouter } from "next/router";
 import "../globals.css";
-function Payment({ info, selectedOption }) {
-  const router = useRouter();
-  console.log(info);
+import PreviewPage from "./button2_stripe";
+function Payment({ info, selectedOption, flatMappedData }) {
+  // const router = useRouter();
+  // console.log(info);
   return (
     <>
       <Grid
@@ -69,7 +70,7 @@ function Payment({ info, selectedOption }) {
               <TextField
                 className="checkoutInput"
                 sx={{ width: "100%" }}
-                value={`${info?.email} / 0${info?.phoneNumber}`}
+                value={`0${info?.phoneNumber}`}
                 InputProps={{
                   readOnly: true,
                   disableUnderline: true,
@@ -128,8 +129,10 @@ function Payment({ info, selectedOption }) {
             justifyContent: "center",
           }}
         >
-          <Payment_Button info={info} router={router} />
+          {/* <Payment_Button info={info} /> */}
           {/* <Stripe info={info} /> */}
+          <Stripe info={info} flatMappedData={flatMappedData} />
+          {/* <PreviewPage /> */}
         </Box>
       </Grid>
     </>
