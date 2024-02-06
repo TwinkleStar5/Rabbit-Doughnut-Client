@@ -45,12 +45,6 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
   const [completed, setCompleted] = React.useState(row.status);
 
-  const handleCheckboxChange = () => {
-    const newStatus = !completed;
-    setCompleted(newStatus);
-    row.status = newStatus;
-  };
-
   return (
     <React.Fragment
       sx={{
@@ -69,7 +63,7 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell align="center" scope="row">
+        <TableCell align="left" scope="row">
           {row.email}
         </TableCell>
         <TableCell align="center">RM{row.grandTotal.toFixed(2)}</TableCell>
@@ -77,9 +71,11 @@ function Row(props) {
         <TableCell align="center">
           {row.delivery ? "Delivery" : "Pick Up"}
         </TableCell>
-        <TableCell sx={{ display: "flex" }}>
-          <Checkbox checked={completed} onChange={handleCheckboxChange} />
-          {completed ? "Completed" : "Pending"}
+        <TableCell align="center" sx={{ display: "flex" }}>
+          <Checkbox
+            checked={completed}
+            onChange={() => setCompleted(!row.status)}
+          />
         </TableCell>
       </TableRow>
       <TableRow>
@@ -129,7 +125,7 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center">Product</TableCell>
+                    <TableCell align="left">Product</TableCell>
                     <TableCell align="center">Quantity</TableCell>
                     <TableCell align="center">Subtotal</TableCell>
                   </TableRow>
@@ -137,18 +133,31 @@ function Row(props) {
                 <TableBody>
                   {row?.cart?.map((pack, idx) => (
                     <TableRow>
-                      <TableCell align="center" scope="row">
+                      <TableCell align="left" scope="row">
                         <ul>
                           {pack?.items?.map((donut) => (
                             <li>
-                              {donut.product.name} x {donut.quantity}
+                              {donut.product} x {donut.quantity}
                             </li>
                           ))}
                         </ul>
                       </TableCell>
                       <TableCell align="center">{pack?.quantity}</TableCell>
                       <TableCell align="center">
-                        {pack.items
+                        {pack?.items?.forEach((donut) => {
+                          let totalQuantities = 0;
+                          return (totalQuantities += donut.quantity);
+                        })}
+                        {/* {pack?.items.map((donut,idx) => {
+                          // const cal = donut.quantity 
+                          const cal = [...(donut[idx]?.quantity + "")].reduce(
+                            (s, e) => s + +e[0],
+                            0
+                          );
+                         
+                          console.log(cal);
+                        })} */}
+                        {/* {pack.items
                           .map((donut) => Array(donut.quantity).length)
                           .reduce((acc, val) => acc + val, 0) *
                           pack.quantity ===
@@ -166,7 +175,7 @@ function Row(props) {
                               pack.quantity ===
                             6
                           ? "RM 49.90"
-                          : null}
+                          : null} */}
                       </TableCell>
 
                       {/* <TableCell align="right">

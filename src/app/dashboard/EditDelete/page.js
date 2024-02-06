@@ -155,7 +155,7 @@ function EditDeleteProduct() {
   const { data } = useQuery("products", getProducts);
   const [editProduct, setEditProduct] = useState({});
   const [editing, setEditing] = useState(false);
-
+  const [checked, setChecked] = useState(false);
   function getIdFromUrl(url) {
     const urlObj = new URL(url);
     return urlObj.searchParams.get("id");
@@ -253,6 +253,7 @@ function EditDeleteProduct() {
   };
 
   const handleEditProduct = (e) => {
+    setChecked(!checked);
     setEditProduct({ ...editProduct, [e.target.name]: e.target.value.trim() });
     console.log(editProduct);
   };
@@ -265,11 +266,24 @@ function EditDeleteProduct() {
   return (
     <>
       <form
-        onSubmit={() => handleEditSubmit(product._id)}
+        onSubmit={() => handleEditSubmit(editProduct._id)}
         encType="multipart/form-data"
       >
-        <Grid container sx={{ px: 5, pt: 5, justifyContent: "center" }}>
-          <Grid item xs={6}>
+        <Grid
+          container
+          sx={{
+            px: 5,
+            pt: 5,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+        >
+          <Typography variant="h3" sx={{ color: "#041E42" }}>
+            EDIT...
+          </Typography>
+          <Grid item sm={6} sx={{ width: "100%", mt: 3 }}>
             <TextField
               fullWidth
               label="Doughnut Name"
@@ -286,8 +300,8 @@ function EditDeleteProduct() {
             />
           </Grid>
         </Grid>
-        <Grid container sx={{ p: 5, justifyContent: "center" }}>
-          <Grid item md={4} sx={{ margin: "auto" }}>
+        <Grid container sx={{ p: 5, justifyContent: "center" }} spacing={3}>
+          <Grid item md={4} sx={{ margin: "auto", mb: 4 }}>
             <label onClick={handleClick}>
               <Box
                 sx={{
@@ -337,7 +351,8 @@ function EditDeleteProduct() {
                       textAlign: "center",
                     }}
                   >
-                    <EditIcon sx={{ fontSize: "25px" }} /> <br /> Change Image
+                    <EditIcon sx={{ fontSize: "25px" }} /> <br /> Add Doughnut
+                    Image
                   </Typography>
                 </Box>
               </Box>
@@ -372,10 +387,21 @@ function EditDeleteProduct() {
                   onChange={handleEditProduct}
                 />
               </Grid>
-              <Grid container spacing={3}>
-                <Grid item xs={4} sx={{ mb: 3 }}>
+              <Grid
+                container
+                spacing={3}
+                sx={{ width: "100%", textAlign: "center" }}
+              >
+                <Grid item sm={4} sx={{ mb: 3, width: "100%" }}>
+                  {/* <CustomNumberInput
+                    placeholder="Quantity"
+                    sx={{
+                      "& input::placeholder": { color: "#676767" },
+                    }}
+                    name="quantity"
+                    onChange={handleChangeProduct}
+                  /> */}
                   <TextField
-                    id="outlined-number"
                     required
                     variant="outlined"
                     color="info"
@@ -388,26 +414,8 @@ function EditDeleteProduct() {
                     inputProps={{ min: 1 }}
                     sx={{ width: "100%" }}
                   />
-                  {/* <CustomNumberInput
-                    label="Quantity"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    name="quantity"
-                    // value={editProduct?.quantity}
-                    value={String(editProduct?.quantity)}
-                    sx={{
-                      "& input::placeholder": { color: "#676767" },
-                    }}
-                    onChange={(e) =>
-                      setEditProduct({
-                        ...editProduct,
-                        [e.target.name]: Number(e.target.value),
-                      })
-                    }
-                  /> */}
                 </Grid>
-                <Grid item xs={8} sx={{ mb: 3 }}>
+                <Grid item sm={8} sx={{ width: "100%", mb: 3 }}>
                   <TextField
                     name="allergens"
                     required
@@ -425,111 +433,353 @@ function EditDeleteProduct() {
                   />
                 </Grid>
               </Grid>
-              <Grid
-                item
-                xs={4}
-                sx={{ fontFamily: "Work Sans", fontSize: "30px", pl: 5 }}
-              >
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color="info"
-                      name="vegan"
-                      disableFocusRipple
-                      checked={editProduct?.vegan || false}
-                      onChange={(e) =>
-                        setEditProduct({
-                          ...editProduct,
-                          vegan: e.target.checked,
-                        })
+              <Grid item sx={{ width: "100%", mb: 3 }}>
+                <Grid container sx={{ width: "100%", textAlign: "center" }}>
+                  <Grid item sm={4} sx={{ width: "100%", margin: "auto" }}>
+                    <FormControlLabel
+                      className="FormControlLabel"
+                      control={
+                        <Checkbox
+                          color="info"
+                          name="vegan"
+                          disableFocusRipple
+                          checked={editProduct?.vegan}
+                          onChange={handleEditProduct}
+                        />
                       }
+                      label="Vegan"
                     />
-                  }
-                  label="Vegan"
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color="info"
-                      name="glutenFree"
-                      checked={editProduct?.glutenFree || false}
-                      disableFocusRipple
-                      onChange={(e) =>
-                        setEditProduct({
-                          ...editProduct,
-                          glutenFree: e.target.checked,
-                        })
+                  </Grid>
+                  <Grid item sm={4} sx={{ width: "100%", margin: "auto" }}>
+                    <FormControlLabel
+                      className="FormControlLabel"
+                      control={
+                        <Checkbox
+                          color="info"
+                          name="glutenFree"
+                          disableFocusRipple
+                          checked={editProduct?.glutenFree}
+                          onChange={handleEditProduct}
+                        />
                       }
+                      label="Gluten Free"
                     />
-                  }
-                  label="Gluten Free"
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color="info"
-                      name="isActive"
-                      checked={editProduct?.isActive || false}
-                      disableFocusRipple
-                      onChange={(e) =>
-                        setEditProduct({
-                          ...editProduct,
-                          isActive: e.target.checked,
-                        })
+                  </Grid>
+                  <Grid item sm={4} sx={{ width: "100%", margin: "auto" }}>
+                    <FormControlLabel
+                      className="FormControlLabel"
+                      control={
+                        <Checkbox
+                          color="info"
+                          name="isActive"
+                          disableFocusRipple
+                          checked={editProduct?.isActive}
+                          onChange={handleEditProduct}
+                        />
                       }
+                      label="isActive"
                     />
-                  }
-                  label="isActive"
-                />
+                  </Grid>
+                </Grid>
               </Grid>
-              <Grid
-                item
-                sx={{
-                  mt: 3,
-                  width: "100%",
-                  justifyContent: "space-around",
-                  display: "flex",
-                }}
-              >
-                <Box>
-                  <Button
-                    type="submit"
-                    variant="button"
-                    sx={{
-                      bgcolor: "#ADDFB3 !important",
-                      color: "#041E42 !important",
-                      borderRadius: "8px",
-                      width: "250px",
-                      height: "55px",
-                    }}
-                  >
-                    <EditIcon sx={{ mr: 2 }} /> Confirm Edit
-                  </Button>
-                </Box>
-                <Box>
-                  <Button
-                    variant="button"
-                    sx={{
-                      bgcolor: "#D1182E !important",
-                      borderRadius: "8px",
-                      width: "280px",
-                      height: "55px",
-                    }}
-                    onClick={() => handleDeleteProduct(editProduct._id)}
-                  >
-                    <DeleteIcon sx={{ mr: 2 }} /> Delete Doughnut
-                  </Button>
-                </Box>
+              <Grid item sx={{ mt: 3, textAlign: "center", width: "100%" }}>
+                <Grid container sx={{ width: "100%" }}>
+                  <Grid item sm={6} sx={{ width: "100%", mb: 4 }}>
+                    <Button
+                      type="submit"
+                      variant="button"
+                      sx={{
+                        bgcolor: "#ADDFB3 !important",
+                        color: "#041E42 !important",
+                        borderRadius: "8px",
+                        width: "250px",
+                        height: "55px",
+                        py: 4,
+                      }}
+                    >
+                      <EditIcon sx={{ mr: 2 }} /> Confirm Edit
+                    </Button>
+                  </Grid>
+                  <Grid item sm={6} sx={{ width: "100%", mb: 4 }}>
+                    <Button
+                      variant="button"
+                      sx={{
+                        bgcolor: "#D1182E !important",
+                        borderRadius: "8px",
+                        width: "280px",
+                        height: "55px",
+                        py: 4,
+                      }}
+                      onClick={() => handleDeleteProduct(editProduct._id)}
+                    >
+                      <DeleteIcon sx={{ mr: 2 }} /> Delete Doughnut
+                    </Button>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       </form>
     </>
+
+    // <>
+    //   <form
+    //     onSubmit={() => handleEditSubmit(product._id)}
+    //     encType="multipart/form-data"
+    //   >
+    //     <Grid container sx={{ px: 5, pt: 5, justifyContent: "center" }}>
+    //       <Grid item xs={6}>
+    //         <TextField
+    //           fullWidth
+    //           label="Doughnut Name"
+    //           InputLabelProps={{
+    //             shrink: true,
+    //           }}
+    //           variant="outlined"
+    //           name="name"
+    //           color="info"
+    //           role="name"
+    //           value={editProduct?.name}
+    //           required
+    //           onChange={handleEditProduct}
+    //         />
+    //       </Grid>
+    //     </Grid>
+    //     <Grid container sx={{ p: 5, justifyContent: "center" }}>
+    //       <Grid item md={4} sx={{ margin: "auto" }}>
+    //         <label onClick={handleClick}>
+    //           <Box
+    //             sx={{
+    //               position: "relative",
+    //               "&:hover .changeImageText": {
+    //                 visibility: "visible",
+    //                 opacity: 0.6,
+    //                 cursor: "pointer",
+    //               },
+    //             }}
+    //           >
+    //             <img
+    //               src={currentImage}
+    //               style={{
+    //                 width: "300px",
+    //                 borderRadius: "20px",
+    //                 margin: "auto",
+    //               }}
+    //             />
+    //             <Box
+    //               className="changeImageText"
+    //               sx={{
+    //                 position: "absolute",
+    //                 bgcolor: "white",
+    //                 opacity: 0,
+    //                 zIndex: 100,
+    //                 top: 0,
+    //                 bottom: 0,
+    //                 left: 0,
+    //                 right: 0,
+    //                 height: "100%",
+    //                 width: "100%",
+    //                 margin: "auto",
+    //                 transition: "0.5s ease",
+    //               }}
+    //             >
+    //               <Typography
+    //                 variant="h6"
+    //                 sx={{
+    //                   color: "black",
+    //                   fontSize: "25px",
+    //                   fontWeight: "bold",
+    //                   position: "absolute",
+    //                   top: "50%",
+    //                   left: "50%",
+    //                   transform: "translate(-50%, -50%)",
+    //                   textAlign: "center",
+    //                 }}
+    //               >
+    //                 <EditIcon sx={{ fontSize: "25px" }} /> <br /> Change Image
+    //               </Typography>
+    //             </Box>
+    //           </Box>
+    //         </label>
+    //         <input
+    //           ref={inputRef}
+    //           style={{ display: "none" }}
+    //           type="file"
+    //           onChange={handleFileChange}
+    //         />
+    //       </Grid>
+    //       <Grid
+    //         item
+    //         md={8}
+    //         sx={{ fontFamily: "Work Sans", fontSize: "30px !important" }}
+    //       >
+    //         <Grid container>
+    //           <Grid item xs={12} sx={{ mb: 3 }}>
+    //             <TextField
+    //               name="description"
+    //               required
+    //               label="Description"
+    //               InputLabelProps={{
+    //                 shrink: true,
+    //               }}
+    //               fullWidth
+    //               variant="outlined"
+    //               color="info"
+    //               role="description"
+    //               multiline
+    //               value={editProduct?.description}
+    //               onChange={handleEditProduct}
+    //             />
+    //           </Grid>
+    //           <Grid container spacing={3}>
+    //             <Grid item xs={4} sx={{ mb: 3 }}>
+    //               <TextField
+    //                 id="outlined-number"
+    //                 required
+    //                 variant="outlined"
+    //                 color="info"
+    //                 label="Quantity"
+    //                 type="number"
+    //                 name="quantity"
+    //                 InputLabelProps={{
+    //                   shrink: true,
+    //                 }}
+    //                 inputProps={{ min: 1 }}
+    //                 sx={{ width: "100%" }}
+    //               />
+    //               {/* <CustomNumberInput
+    //                 label="Quantity"
+    //                 InputLabelProps={{
+    //                   shrink: true,
+    //                 }}
+    //                 name="quantity"
+    //                 // value={editProduct?.quantity}
+    //                 value={String(editProduct?.quantity)}
+    //                 sx={{
+    //                   "& input::placeholder": { color: "#676767" },
+    //                 }}
+    //                 onChange={(e) =>
+    //                   setEditProduct({
+    //                     ...editProduct,
+    //                     [e.target.name]: Number(e.target.value),
+    //                   })
+    //                 }
+    //               /> */}
+    //             </Grid>
+    //             <Grid item xs={8} sx={{ mb: 3 }}>
+    //               <TextField
+    //                 name="allergens"
+    //                 required
+    //                 label="Allergens"
+    //                 InputLabelProps={{
+    //                   shrink: true,
+    //                 }}
+    //                 fullWidth
+    //                 autoComplete="allergens"
+    //                 variant="outlined"
+    //                 color="info"
+    //                 multiline
+    //                 value={editProduct?.allergens}
+    //                 onChange={handleEditProduct}
+    //               />
+    //             </Grid>
+    //           </Grid>
+    //           <Grid
+    //             item
+    //             xs={4}
+    //             sx={{ fontFamily: "Work Sans", fontSize: "30px", pl: 5 }}
+    //           >
+    //             <FormControlLabel
+    //               control={
+    //                 <Checkbox
+    //                   color="info"
+    //                   name="vegan"
+    //                   disableFocusRipple
+    //                   checked={editProduct?.vegan}
+    //                   onChange={handleEditProduct}
+    //                 />
+    //               }
+    //               label="Vegan"
+    //             />
+    //           </Grid>
+    //           <Grid item xs={4}>
+    //             <FormControlLabel
+    //               control={
+    //                 <Checkbox
+    //                   color="info"
+    //                   name="glutenFree"
+    //                   checked={editProduct?.glutenFree}
+    //                   disableFocusRipple
+    //                   onChange={handleEditProduct}
+    //                 />
+    //               }
+    //               label="Gluten Free"
+    //             />
+    //           </Grid>
+    //           <Grid item xs={4}>
+    //             <FormControlLabel
+    //               control={
+    //                 <Checkbox
+    //                   color="info"
+    //                   name="isActive"
+    //                   checked={editProduct?.isActive || false}
+    //                   disableFocusRipple
+    //                   onChange={(e) =>
+    //                     setEditProduct({
+    //                       ...editProduct,
+    //                       isActive: e.target.checked,
+    //                     })
+    //                   }
+    //                 />
+    //               }
+    //               label="isActive"
+    //             />
+    //           </Grid>
+    //           <Grid
+    //             item
+    //             sx={{
+    //               mt: 3,
+    //               width: "100%",
+    //               justifyContent: "space-around",
+    //               display: "flex",
+    //             }}
+    //           >
+    //             <Box>
+    //               <Button
+    //                 type="submit"
+    //                 variant="button"
+    //                 sx={{
+    //                   bgcolor: "#ADDFB3 !important",
+    //                   color: "#041E42 !important",
+    //                   borderRadius: "8px",
+    //                   width: "250px",
+    //                   height: "55px",
+    //                 }}
+    //               >
+    //                 <EditIcon sx={{ mr: 2 }} /> Confirm Edit
+    //               </Button>
+    //             </Box>
+    //             <Box>
+    //               <Button
+    //                 variant="button"
+    //                 sx={{
+    //                   bgcolor: "#D1182E !important",
+    //                   borderRadius: "8px",
+    //                   width: "280px",
+    //                   height: "55px",
+    //                 }}
+    //                 onClick={() => handleDeleteProduct(editProduct._id)}
+    //               >
+    //                 <DeleteIcon sx={{ mr: 2 }} /> Delete Doughnut
+    //               </Button>
+    //             </Box>
+    //           </Grid>
+    //         </Grid>
+    //       </Grid>
+    //     </Grid>
+    //   </form>
+    // </>
   );
 }
 

@@ -169,7 +169,12 @@ function CreateProduct() {
     onSuccess: () => queryClient.invalidateQueries(["products"]),
     onError: (e) => alert(e.response.data.msg),
   });
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState({
+    vegan: false,
+    glutenFree: false,
+    isActive: true,
+  });
+
   console.log(product);
   const [currentImage, setCurrentImage] = useState(donut.src);
 
@@ -179,8 +184,6 @@ function CreateProduct() {
     inputRef.current.click();
   };
 
-  const handleDeleteProduct = () => {};
-
   const handleChangeProduct = (e) => {
     // let quantity = e.target.getAttribute("placeholder");
 
@@ -189,7 +192,8 @@ function CreateProduct() {
       [e.target.name]: e.target.value,
       // [quantity === "Quantity" ? "quantity" : null]: e.target.value,
     });
-    console.log(currentImage);
+    // console.log(currentImage);
+    console.log(product);
   };
 
   const handleSubmitProduct = (e) => {
@@ -218,8 +222,21 @@ function CreateProduct() {
   return (
     <>
       <form onSubmit={handleSubmitProduct} encType="multipart/form-data">
-        <Grid container sx={{ px: 5, pt: 5, justifyContent: "center" }}>
-          <Grid item xs={6}>
+        <Grid
+          container
+          sx={{
+            px: 5,
+            pt: 5,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+        >
+          <Typography variant="h3" sx={{ color: "#041E42" }}>
+            CREATE !
+          </Typography>
+          <Grid item sm={6} sx={{ width: "100%", mt: 3 }}>
             <TextField
               fullWidth
               variant="outlined"
@@ -232,8 +249,8 @@ function CreateProduct() {
             />
           </Grid>
         </Grid>
-        <Grid container sx={{ p: 5, justifyContent: "center" }}>
-          <Grid item md={4} sx={{ margin: "auto" }}>
+        <Grid container sx={{ p: 5, justifyContent: "center" }} spacing={3}>
+          <Grid item md={4} sx={{ margin: "auto", mb: 4 }}>
             <label onClick={handleClick}>
               <Box
                 sx={{
@@ -315,8 +332,12 @@ function CreateProduct() {
                   onChange={handleChangeProduct}
                 />
               </Grid>
-              <Grid container spacing={3}>
-                <Grid item xs={6} sx={{ mb: 3 }}>
+              <Grid
+                container
+                spacing={3}
+                sx={{ width: "100%", textAlign: "center" }}
+              >
+                <Grid item sm={4} sx={{ mb: 3, width: "100%" }}>
                   {/* <CustomNumberInput
                     placeholder="Quantity"
                     sx={{
@@ -337,10 +358,12 @@ function CreateProduct() {
                     }}
                     inputProps={{ min: 1 }}
                     sx={{ width: "100%" }}
+                    onChange={handleChangeProduct}
                   />
                 </Grid>
-                <Grid item xs={6} sx={{ mb: 3 }}>
+                <Grid item sm={8} sx={{ width: "100%", mb: 3 }}>
                   <TextField
+                    required
                     name="allergens"
                     label="Add Allergens"
                     fullWidth
@@ -352,109 +375,90 @@ function CreateProduct() {
                   />
                 </Grid>
               </Grid>
-              <Grid
-                item
-                xs={4}
-                sx={{ fontFamily: "Work Sans", fontSize: "30px", pl: 5 }}
-              >
-                <FormControlLabel
-                  className="FormControlLabel"
-                  control={
-                    <Checkbox
-                      color="info"
-                      name="vegan"
-                      disableFocusRipple
-                      checked={product?.vegan || false}
-                      onChange={(e) =>
-                        setProduct({
-                          ...product,
-                          vegan: e.target.checked,
-                        })
+              <Grid item sx={{ width: "100%", mb: 3 }}>
+                <Grid container sx={{ width: "100%", textAlign: "center" }}>
+                  <Grid item sm={4} sx={{ width: "100%", margin: "auto" }}>
+                    <FormControlLabel
+                      className="FormControlLabel"
+                      control={
+                        <Checkbox
+                          color="info"
+                          name="vegan"
+                          disableFocusRipple
+                          checked={product?.vegan}
+                          onChange={handleChangeProduct}
+                        />
                       }
+                      label="Vegan"
                     />
-                  }
-                  label="Vegan"
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <FormControlLabel
-                  className="FormControlLabel"
-                  control={
-                    <Checkbox
-                      color="info"
-                      name="glutenFree"
-                      disableFocusRipple
-                      checked={product?.glutenFree || false}
-                      onChange={(e) =>
-                        setProduct({
-                          ...product,
-                          glutenFree: e.target.checked,
-                        })
+                  </Grid>
+                  <Grid item sm={4} sx={{ width: "100%", margin: "auto" }}>
+                    <FormControlLabel
+                      className="FormControlLabel"
+                      control={
+                        <Checkbox
+                          color="info"
+                          name="glutenFree"
+                          disableFocusRipple
+                          checked={product?.glutenFree}
+                          onChange={handleChangeProduct}
+                        />
                       }
+                      label="Gluten Free"
                     />
-                  }
-                  label="Gluten Free"
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <FormControlLabel
-                  className="FormControlLabel"
-                  control={
-                    <Checkbox
-                      color="info"
-                      name="isActive"
-                      disableFocusRipple
-                      checked={product?.isActive || false}
-                      onChange={(e) =>
-                        setProduct({
-                          ...product,
-                          isActive: e.target.checked,
-                        })
+                  </Grid>
+                  <Grid item sm={4} sx={{ width: "100%", margin: "auto" }}>
+                    <FormControlLabel
+                      className="FormControlLabel"
+                      control={
+                        <Checkbox
+                          color="info"
+                          name="isActive"
+                          disableFocusRipple
+                          checked={product?.isActive}
+                          onChange={handleChangeProduct}
+                        />
                       }
+                      label="isActive"
                     />
-                  }
-                  label="isActive"
-                />
+                  </Grid>
+                </Grid>
               </Grid>
-              <Grid
-                item
-                sx={{
-                  mt: 3,
-                  width: "100%",
-                  justifyContent: "space-around",
-                  display: "flex",
-                }}
-              >
-                <Box>
-                  <Button
-                    variant="button"
-                    sx={{
-                      bgcolor: "#FAE89E !important",
-                      color: "#041E42 !important",
-                      borderRadius: "8px",
-                      width: "250px",
-                      height: "55px",
-                    }}
-                  >
-                    <EditIcon sx={{ mr: 2 }} /> Edit
-                  </Button>
-                </Box>
-                <Box>
-                  <Button
-                    variant="button"
-                    type="submit"
-                    sx={{
-                      bgcolor: "#ffc8dd !important",
-                      color: "#041E42 !important",
-                      borderRadius: "8px",
-                      width: "300px",
-                      height: "55px",
-                    }}
-                    onClick={() => handleDeleteProduct}
-                  >
-                    <CelebrationIcon sx={{ mr: 2 }} /> Publish Doughnut
-                  </Button>
-                </Box>
+              <Grid item sx={{ mt: 3, textAlign: "center", width: "100%" }}>
+                <Grid container sx={{ width: "100%" }}>
+                  <Grid item sm={6} sx={{ width: "100%", mb: 4 }}>
+                    <Button
+                      variant="button"
+                      sx={{
+                        bgcolor: "#FAE89E !important",
+                        color: "#041E42 !important",
+                        borderRadius: "8px",
+                        width: "250px",
+                        height: "55px",
+                        py: 4,
+                      }}
+                    >
+                      <EditIcon sx={{ mr: 2 }} /> Edit
+                    </Button>
+                  </Grid>
+                  <Grid item sm={6} sx={{ width: "100%", mb: 4 }}>
+                    <Button
+                      variant="button"
+                      type="submit"
+                      sx={{
+                        bgcolor: "#ffc8dd !important",
+                        color: "#041E42 !important",
+                        borderRadius: "8px",
+                        width: "300px",
+                        height: "55px",
+                        py: 4,
+                      }}
+                      onClick={() => handleDeleteProduct}
+                    >
+                      <CelebrationIcon sx={{ mr: 2 }} /> Publish Doughnut
+                    </Button>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
