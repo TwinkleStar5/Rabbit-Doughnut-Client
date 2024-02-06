@@ -21,7 +21,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import CelebrationIcon from "@mui/icons-material/Celebration";
 import "../../globals.css";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { addProducts } from "@/utils/products";
+import { addProducts, editProduct } from "@/utils/products";
+import { toast } from "react-toastify";
 
 const StyledInputRoot = styled("div")(
   `
@@ -121,18 +122,24 @@ const CustomNumberInput = React.forwardRef(function CustomNumberInput(
 ) {
   return (
     <BaseNumberInput
+      name="quantity"
       slots={{
         root: StyledInputRoot,
         input: StyledInputElement,
         incrementButton: StyledButton,
         decrementButton: StyledButton,
+        type: "button",
+        name: "quantity",
       }}
       slotProps={{
+        name: "quantity",
         incrementButton: {
           children: "▴",
+          type: "button",
         },
         decrementButton: {
           children: "▾",
+          type: "button",
         },
       }}
       {...props}
@@ -144,11 +151,26 @@ const CustomNumberInput = React.forwardRef(function CustomNumberInput(
 
 function CreateProduct() {
   const queryClient = useQueryClient();
-  const { mutate } = useMutation(addProducts, {
+  const { mutate: mutateAdd } = useMutation(addProducts, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["products"]);
+      toast.success(data.msg, {
+        position: "bottom-right",
+        autoClose: 2500,
+        pauseOnHover: false,
+        theme: "light",
+      });
+    },
+    onError: (error) => {
+      alert(`Oops, unable to edit ${editProduct.name}`);
+    },
+  });
+  const { mutate: mutateEdit } = useMutation(editProduct, {
     onSuccess: () => queryClient.invalidateQueries(["products"]),
     onError: (e) => alert(e.response.data.msg),
   });
-  const [product, setProduct] = React.useState({});
+  const [product, setProduct] = useState({});
+  console.log(product);
   const [currentImage, setCurrentImage] = useState(donut.src);
 
   const inputRef = useRef(null);
@@ -160,30 +182,32 @@ function CreateProduct() {
   const handleDeleteProduct = () => {};
 
   const handleChangeProduct = (e) => {
+    // let quantity = e.target.getAttribute("placeholder");
+
     setProduct({
       ...product,
       [e.target.name]: e.target.value,
-      image: currentImage,
+      // [quantity === "Quantity" ? "quantity" : null]: e.target.value,
     });
     console.log(currentImage);
   };
 
   const handleSubmitProduct = (e) => {
     e.preventDefault();
-    mutate(product);
+    mutateAdd(product);
     alert("Successfully added");
   };
 
   const handleFileChange = (event) => {
     const fileObj = event.target.files && event.target.files[0];
-
+    console.log(fileObj);
     if (fileObj) {
       const reader = new FileReader();
-
+      console.log(reader);
       reader.onloadend = () => {
         setCurrentImage(reader.result);
       };
-
+      setProduct({ ...product, image: fileObj });
       reader.readAsDataURL(fileObj);
     }
 
@@ -193,7 +217,7 @@ function CreateProduct() {
 
   return (
     <>
-      <form onSubmit={handleSubmitProduct}>
+      <form onSubmit={handleSubmitProduct} encType="multipart/form-data">
         <Grid container sx={{ px: 5, pt: 5, justifyContent: "center" }}>
           <Grid item xs={6}>
             <TextField
@@ -293,11 +317,26 @@ function CreateProduct() {
               </Grid>
               <Grid container spacing={3}>
                 <Grid item xs={6} sx={{ mb: 3 }}>
-                  <CustomNumberInput
+                  {/* <CustomNumberInput
                     placeholder="Quantity"
                     sx={{
                       "& input::placeholder": { color: "#676767" },
                     }}
+                    name="quantity"
+                    onChange={handleChangeProduct}
+                  /> */}
+                  <TextField
+                    required
+                    variant="outlined"
+                    color="info"
+                    placeholder="Quantity"
+                    type="number"
+                    name="quantity"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    inputProps={{ min: 1 }}
+                    sx={{ width: "100%" }}
                   />
                 </Grid>
                 <Grid item xs={6} sx={{ mb: 3 }}>
@@ -324,9 +363,14 @@ function CreateProduct() {
                     <Checkbox
                       color="info"
                       name="vegan"
-                      value="yes"
                       disableFocusRipple
-                      onChange={handleChangeProduct}
+                      checked={product?.vegan || false}
+                      onChange={(e) =>
+                        setProduct({
+                          ...product,
+                          vegan: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Vegan"
@@ -339,9 +383,14 @@ function CreateProduct() {
                     <Checkbox
                       color="info"
                       name="glutenFree"
-                      value="yes"
                       disableFocusRipple
-                      onChange={handleChangeProduct}
+                      checked={product?.glutenFree || false}
+                      onChange={(e) =>
+                        setProduct({
+                          ...product,
+                          glutenFree: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Gluten Free"
@@ -354,9 +403,14 @@ function CreateProduct() {
                     <Checkbox
                       color="info"
                       name="isActive"
-                      value="yes"
                       disableFocusRipple
-                      onChange={handleChangeProduct}
+                      checked={product?.isActive || false}
+                      onChange={(e) =>
+                        setProduct({
+                          ...product,
+                          isActive: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="isActive"

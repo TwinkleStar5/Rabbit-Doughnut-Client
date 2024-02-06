@@ -218,15 +218,15 @@ EnhancedTableToolbar.propTypes = {
 };
 
 function ProductTable() {
+  const { data, isLoading } = useQuery("products", getProducts);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  const [active, setActive] = React.useState(data?.isActive);
   //SHOW ALL PRODUCTS
-  const { data, isLoading } = useQuery("products", getProducts);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -357,7 +357,6 @@ function ProductTable() {
                               checked={isItemSelected}
                               inputProps={{
                                 "aria-labelledby": labelId,
-                               
                               }}
                             />
                           </TableCell>
@@ -375,7 +374,12 @@ function ProductTable() {
                           <TableCell align="right">{row.quantity}</TableCell>
                           <TableCell align="right">
                             <FormControlLabel
-                              control={<Checkbox checked={row.isActive} />}
+                              control={
+                                <Checkbox
+                                  checked={active}
+                                  onChange={() => setActive(!active)}
+                                />
+                              }
                             />
                           </TableCell>
                         </TableRow>

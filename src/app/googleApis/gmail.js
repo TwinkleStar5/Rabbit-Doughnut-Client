@@ -1,16 +1,23 @@
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URL = process.env.REDIRECT_URL;
-const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
+// const CLIENT_ID = process.env.CLIENT_ID;
+// const CLIENT_SECRET = process.env.CLIENT_SECRET;
+// const REDIRECT_URL = process.env.REDIRECT_URL;
+// const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 
+CLIENT_ID =
+  "821687526755-4a7n1niuf8phj6qtes2olnmhugs46sft.apps.googleusercontent.com";
+CLIENT_SECRET = "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";
+REDIRECT_URL = "https://developers.google.com/oauthplayground";
+REFRESH_TOKEN =
+  "1//04QH4JTJ8hN52CgYIARAAGAQSNwF-L9Ir9jjcvT2LrBwoBmuJg3JodNEX4AXVMomZZfYj9LfrGQrx9t5w2hgwYpROHPJGRVFaLuc";
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
   REDIRECT_URL
 );
+
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
 async function sendMail() {
@@ -31,6 +38,7 @@ async function sendMail() {
 
     const mailOptions = {
       from: "rabbitdoughnuts@gmail.com",
+      // to: req.params.email,
       to: "bethsummer05@gmail.com",
       subject: "31/01/2024 11:26pm",
       text: "this is text",
@@ -40,9 +48,10 @@ async function sendMail() {
     const result = await transport.sendMail(mailOptions);
     return result;
   } catch (error) {
-    console.error("Error sending email:", error);
-    throw error; 
+    return error;
   }
 }
 
-module.exports = sendMail;
+sendMail()
+  .then((result) => console.log("Email sent...", result))
+  .catch((error) => console.log(error.message));

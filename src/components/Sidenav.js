@@ -129,7 +129,7 @@ function Sidenav() {
           </ListItemButton>
         </List>
       ) : null}
-      {!user?.isAdmin ? (
+      {token && user ? (
         <>
           <List>
             <ListItemButton

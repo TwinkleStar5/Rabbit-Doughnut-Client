@@ -15,6 +15,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useQuery } from "react-query";
 import { getOrder } from "@/utils/orders";
+import { Checkbox, Grid } from "@mui/material";
 
 function createData(name, calories, fat, carbs, protein, price) {
   return {
@@ -42,6 +43,13 @@ function createData(name, calories, fat, carbs, protein, price) {
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const [completed, setCompleted] = React.useState(row.status);
+
+  const handleCheckboxChange = () => {
+    const newStatus = !completed;
+    setCompleted(newStatus);
+    row.status = newStatus;
+  };
 
   return (
     <React.Fragment
@@ -64,56 +72,103 @@ function Row(props) {
         <TableCell align="center" scope="row">
           {row.email}
         </TableCell>
-        <TableCell align="center">RM {row.grandTotal}</TableCell>
+        <TableCell align="center">RM{row.grandTotal.toFixed(2)}</TableCell>
         <TableCell align="center">{row.purchased_date}</TableCell>
         <TableCell align="center">
           {row.delivery ? "Delivery" : "Pick Up"}
         </TableCell>
-        <TableCell align="center">Pending</TableCell>
+        <TableCell sx={{ display: "flex" }}>
+          <Checkbox checked={completed} onChange={handleCheckboxChange} />
+          {completed ? "Completed" : "Pending"}
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Order ID: {row._id}
-              </Typography>
-              <Typography variant="h6" gutterBottom component="div">
-                Customer Name: {`${row.firstName} ${row.lastName}`}
-              </Typography>
-              <Typography variant="h6" gutterBottom component="div">
-                Phone Number: {row.phoneNumber}
-              </Typography>
+              <Grid container sx={{ display: "flex" }} spacing={3}>
+                <Grid item>
+                  <Typography variant="h6" component="div">
+                    Order ID: <strong>{row._id}</strong>
+                  </Typography>
+                  <Typography variant="h6" component="div">
+                    Customer Name:{" "}
+                    <strong>{`${row.firstName} ${row.lastName}`}</strong>
+                  </Typography>
+                  <Typography variant="h6" gutterBottom component="div">
+                    Phone Number: <strong>0{row.phoneNumber}</strong>
+                  </Typography>
+                </Grid>
+                {row.delivery ? (
+                  <Grid item>
+                    <Typography variant="h6" component="div">
+                      State: <strong>{row.state}</strong>
+                    </Typography>
+                    <Typography variant="h6" component="div">
+                      Address:
+                      <strong>
+                        {` ${row.address}, ${row.city}, ${row.postalCode}, Malaysia`}
+                      </strong>
+                    </Typography>
+                    <Typography variant="h6" gutterBottom component="div">
+                      Company:{" "}
+                      <strong>{row.company ? row.company : "None"}</strong>
+                    </Typography>
+                  </Grid>
+                ) : (
+                  <Grid item>
+                    <Typography variant="h6" component="div">
+                      Pick Up Date: <strong>{row.collectDate}</strong>
+                    </Typography>
+                    <Typography variant="h6" gutterBottom component="div">
+                      Pick Up Time: <strong>{row.time}</strong>
+                    </Typography>
+                  </Grid>
+                )}
+              </Grid>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Product</TableCell>
-                    <TableCell align="right">Quantity</TableCell>
-                    <TableCell align="right">Subtotal</TableCell>
+                    <TableCell align="center">Product</TableCell>
+                    <TableCell align="center">Quantity</TableCell>
+                    <TableCell align="center">Subtotal</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {row?.cart?.map((pack, idx) => (
                     <TableRow>
-                      <TableCell component="th" scope="row">
+                      <TableCell align="center" scope="row">
                         <ul>
-                          {pack[idx]?.items?.map((donut) => (
+                          {pack?.items?.map((donut) => (
                             <li>
-                              {donut.product} x {donut.quantity}
+                              {donut.product.name} x {donut.quantity}
                             </li>
                           ))}
                         </ul>
                       </TableCell>
-                      <TableCell>{pack[idx]?.quantity}</TableCell>
-                      <TableCell align="right">
-                        {pack?.items.map((donut) =>
-                          donut?.quantity === 2
-                            ? "RM9.90"
-                            : donut?.quantity === 6
-                            ? "RM29.90"
-                            : "RM49.90"
-                        )}
+                      <TableCell align="center">{pack?.quantity}</TableCell>
+                      <TableCell align="center">
+                        {pack.items
+                          .map((donut) => Array(donut.quantity).length)
+                          .reduce((acc, val) => acc + val, 0) *
+                          pack.quantity ===
+                        2
+                          ? "RM 9.90"
+                          : pack.items
+                              .map((donut) => Array(donut.quantity).length)
+                              .reduce((acc, val) => acc + val, 0) *
+                              pack.quantity ===
+                            6
+                          ? "RM 26.90"
+                          : pack.items
+                              .map((donut) => Array(donut.quantity).length)
+                              .reduce((acc, val) => acc + val, 0) *
+                              pack.quantity ===
+                            6
+                          ? "RM 49.90"
+                          : null}
                       </TableCell>
+
                       {/* <TableCell align="right">
                         {Math.round(historyRow.amount * row.price * 100) / 100}
                       </TableCell> */}
@@ -157,9 +212,26 @@ const fonts = { fontSize: "20px", fontFamily: "Work Sans" };
 function AllOrdersTable() {
   const { data, isLoading } = useQuery("orders", getOrder);
   if (isLoading ? <h3>Loading</h3> : null) console.log(data);
-  console.log("Type of data:", typeof data);
-  console.log("Data:", data);
+  // console.log("Type of data:", typeof data);
+  // console.log("Data:", data);
   if (!Array.isArray(data)) return <p>No orders found</p>;
+  // Function to get price based on quantity
+  const getPriceByQuantity = (quantity) => {
+    if (quantity === 2) {
+      return 9.9;
+    } else if (quantity === 6) {
+      return 29.9;
+    } else {
+      return 49.9;
+    }
+  };
+  data.forEach((row) => {
+    row.cart.forEach((pack) => {
+      pack.totalPrice = pack.items.reduce((acc, donut) => {
+        return acc + donut.quantity * getPriceByQuantity(donut.quantity);
+      }, 0);
+    });
+  });
 
   return (
     <>
@@ -178,17 +250,16 @@ function AllOrdersTable() {
               <TableRow sx={fonts}>
                 <TableCell />
                 <TableCell sx={fonts}>Email</TableCell>
-                <TableCell align="right" sx={fonts}>
+                <TableCell align="center" sx={fonts}>
                   Total Amount
                 </TableCell>
-                <TableCell align="right" sx={fonts}>
+                <TableCell align="center" sx={fonts}>
                   Ordered Date
                 </TableCell>
-                <TableCell align="right" sx={fonts}>
+                <TableCell align="center" sx={fonts}>
                   Mode
                 </TableCell>
-
-                <TableCell align="right" sx={fonts}>
+                <TableCell align="center" sx={fonts}>
                   Status
                 </TableCell>
               </TableRow>

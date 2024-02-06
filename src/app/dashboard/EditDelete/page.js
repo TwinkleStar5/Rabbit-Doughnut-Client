@@ -20,9 +20,15 @@ import "../../globals.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { getProducts, editProduct, deleteOneProduct } from "@/utils/products";
+import {
+  getProducts,
+  editOneProduct,
+  deleteOneProduct,
+} from "@/utils/products";
 import { useParams } from "react-router-dom";
 import { withRouter } from "react-router-dom";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 const StyledInputRoot = styled("div")(
   `
@@ -131,9 +137,11 @@ const CustomNumberInput = React.forwardRef(function CustomNumberInput(
       slotProps={{
         incrementButton: {
           children: "▴",
+          type: "button",
         },
         decrementButton: {
           children: "▾",
+          type: "button",
         },
       }}
       {...props}
@@ -144,46 +152,63 @@ const CustomNumberInput = React.forwardRef(function CustomNumberInput(
 });
 
 function EditDeleteProduct() {
+  const { data } = useQuery("products", getProducts);
   const [editProduct, setEditProduct] = useState({});
-  // const { id } = useParams();
-  componentDidMount = () => {
-    const id = this.props.match.params.id;
-    this.fetchData(id);
-  };
-  fetchData = (id) => {
-    const { data } = useQuery("products", getProducts);
-    if (data) {
-      const productById = data.find((item) => item._id === id);
-      this.setState({ editProduct: productById });
-    }
-  };
+  const [editing, setEditing] = useState(false);
+
+  function getIdFromUrl(url) {
+    const urlObj = new URL(url);
+    return urlObj.searchParams.get("id");
+  }
+  const idFromUrl = getIdFromUrl(window.location.href);
+
+  useEffect(() => {
+    const product = data && data.find((product) => product._id === idFromUrl);
+    setEditProduct(product || {});
+  }, [data, idFromUrl]);
+
+  console.log(editProduct);
+
+  const [currentImage, setCurrentImage] = useState(editProduct?.image);
 
   const queryClient = useQueryClient();
-  const { mutate } = useMutation(editProduct, {
-    onSuccess: () => queryClient.invalidateQueries("products"),
-    onError: (e) => alert(e.response.data.msg),
-  });
-  const { mutate: deleteOneMutation } = useMutation(deleteOneProduct, {
-    onSuccess: () => queryClient.invalidateQueries("products"),
-    onError: (e) => alert(e.response.data.msg),
+  const { mutate } = useMutation(editOneProduct, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("products");
+      toast.success(data.msg, {
+        position: "bottom-right",
+        autoClose: 2500,
+        pauseOnHover: false,
+        theme: "light",
+      });
+    },
+    onError: (error) => {
+      alert(`Oops, unable to edit ${editProduct.name}`);
+    },
   });
 
-  const [currentImage, setCurrentImage] = useState(donut.src);
+  const { mutate: deleteOneMutation } = useMutation(deleteOneProduct, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("products");
+      toast.success(data.msg, {
+        position: "bottom-right",
+        autoClose: 2500,
+        pauseOnHover: false,
+        theme: "light",
+      });
+    },
+    onError: (error) => {
+      alert(`Oops, unable to delete ${editProduct.name}`);
+    },
+  });
+
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    if (data) {
-      const productById = data.find((item) => item._id === id);
-      setEditProduct(productById);
-      console.log(editProduct);
-    }
-  }, [data, id]);
-
-  useEffect(() => {
-    if (editProduct) {
-      setCurrentImage(editProduct.image);
-    }
-  }, [editProduct]);
+  // useEffect(() => {
+  //   if (editProduct) {
+  //     setCurrentImage(editProduct.image);
+  //   }
+  // }, [editProduct]);
 
   const handleClick = () => {
     inputRef.current.click();
@@ -191,14 +216,14 @@ function EditDeleteProduct() {
 
   const handleFileChange = (event) => {
     const fileObj = event.target.files && event.target.files[0];
-
+    console.log(fileObj);
     if (fileObj) {
       const reader = new FileReader();
-
+      console.log(reader);
       reader.onloadend = () => {
         setCurrentImage(reader.result);
       };
-
+      setEditProduct({ ...editProduct, image: fileObj });
       reader.readAsDataURL(fileObj);
     }
 
@@ -206,33 +231,56 @@ function EditDeleteProduct() {
     event.target.value = null;
   };
 
-  const handleDeleteProduct = (id) => {
-    e.preventDefault();
+  const handleDeleteProduct = (e, id) => {
+    Swal.fire({
+      title: `Are you sure you want to delete ${editProduct.name}?`,
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your doughnut has been deleted.",
+          icon: "success",
+        });
+      }
+    });
     deleteOneMutation(id);
   };
 
   const handleEditProduct = (e) => {
-    setEditProduct({ ...editProduct, [e.target.name]: e.target.value });
+    setEditProduct({ ...editProduct, [e.target.name]: e.target.value.trim() });
     console.log(editProduct);
   };
 
   const handleEditSubmit = (e) => {
     e.preventDefault();
-    mutate(products);
+    mutate(editProduct);
   };
 
   return (
     <>
-      <form onSubmit={handleEditSubmit}>
+      <form
+        onSubmit={() => handleEditSubmit(product._id)}
+        encType="multipart/form-data"
+      >
         <Grid container sx={{ px: 5, pt: 5, justifyContent: "center" }}>
           <Grid item xs={6}>
             <TextField
               fullWidth
+              label="Doughnut Name"
+              InputLabelProps={{
+                shrink: true,
+              }}
               variant="outlined"
               name="name"
               color="info"
               role="name"
-              label={editProduct?.name}
+              value={editProduct?.name}
               required
               onChange={handleEditProduct}
             />
@@ -310,34 +358,69 @@ function EditDeleteProduct() {
               <Grid item xs={12} sx={{ mb: 3 }}>
                 <TextField
                   name="description"
+                  required
+                  label="Description"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   fullWidth
                   variant="outlined"
                   color="info"
                   role="description"
                   multiline
-                  label={editProduct?.description}
+                  value={editProduct?.description}
                   onChange={handleEditProduct}
                 />
               </Grid>
               <Grid container spacing={3}>
-                <Grid item xs={6} sx={{ mb: 3 }}>
-                  <CustomNumberInput
-                    placeholder="Quantity"
+                <Grid item xs={4} sx={{ mb: 3 }}>
+                  <TextField
+                    id="outlined-number"
+                    required
+                    variant="outlined"
+                    color="info"
+                    label="Quantity"
+                    type="number"
+                    name="quantity"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    inputProps={{ min: 1 }}
+                    sx={{ width: "100%" }}
+                  />
+                  {/* <CustomNumberInput
+                    label="Quantity"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    name="quantity"
+                    // value={editProduct?.quantity}
+                    value={String(editProduct?.quantity)}
                     sx={{
                       "& input::placeholder": { color: "#676767" },
                     }}
-                    onChange={handleEditProduct}
-                  />
+                    onChange={(e) =>
+                      setEditProduct({
+                        ...editProduct,
+                        [e.target.name]: Number(e.target.value),
+                      })
+                    }
+                  /> */}
                 </Grid>
-                <Grid item xs={6} sx={{ mb: 3 }}>
+                <Grid item xs={8} sx={{ mb: 3 }}>
                   <TextField
                     name="allergens"
+                    required
+                    label="Allergens"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     fullWidth
                     autoComplete="allergens"
                     variant="outlined"
                     color="info"
                     multiline
-                    label={editProduct?.allergens}
+                    value={editProduct?.allergens}
                     onChange={handleEditProduct}
                   />
                 </Grid>
@@ -352,9 +435,14 @@ function EditDeleteProduct() {
                     <Checkbox
                       color="info"
                       name="vegan"
-                      value={editProduct?.vegans ? "yes" : "no"}
                       disableFocusRipple
-                      onChange={handleEditProduct}
+                      checked={editProduct?.vegan || false}
+                      onChange={(e) =>
+                        setEditProduct({
+                          ...editProduct,
+                          vegan: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Vegan"
@@ -366,9 +454,14 @@ function EditDeleteProduct() {
                     <Checkbox
                       color="info"
                       name="glutenFree"
-                      value={editProduct?.glutenFree ? "yes" : "no"}
+                      checked={editProduct?.glutenFree || false}
                       disableFocusRipple
-                      onChange={handleEditProduct}
+                      onChange={(e) =>
+                        setEditProduct({
+                          ...editProduct,
+                          glutenFree: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Gluten Free"
@@ -380,9 +473,14 @@ function EditDeleteProduct() {
                     <Checkbox
                       color="info"
                       name="isActive"
-                      value={editProduct?.isActive ? "yes" : "no"}
+                      checked={editProduct?.isActive || false}
                       disableFocusRipple
-                      onChange={handleEditProduct}
+                      onChange={(e) =>
+                        setEditProduct({
+                          ...editProduct,
+                          isActive: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="isActive"
@@ -421,7 +519,7 @@ function EditDeleteProduct() {
                       width: "280px",
                       height: "55px",
                     }}
-                    onClick={() => handleDeleteProduct(id)}
+                    onClick={() => handleDeleteProduct(editProduct._id)}
                   >
                     <DeleteIcon sx={{ mr: 2 }} /> Delete Doughnut
                   </Button>
