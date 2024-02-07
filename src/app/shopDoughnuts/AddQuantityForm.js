@@ -143,7 +143,7 @@ function AddQuantityForm({ product, handlePackChange }) {
         <Button
           onClick={() => handleAddToPlaceholder()}
           variant="button"
-          sx={{ mt: 3, width: "180px", borderRadius: "13px" }}
+          sx={{ mt: 3, width: "100%", borderRadius: "13px" }}
         >
           ADD
         </Button>

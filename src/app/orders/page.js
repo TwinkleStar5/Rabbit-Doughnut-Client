@@ -48,13 +48,18 @@ function Orders() {
               </Grid>
             </Box>
           ) : (
-            <Grid item sx={{ width: "800px", margin: "auto", mb: 5 }}>
-              <Typography
-                variant="h2"
-                sx={{ textAlign: "center", margin: "auto", my: 3 }}
-              >
-                Order History
-              </Typography>
+            <Grid
+              item
+              sx={{
+                width: "800px",
+                margin: "auto",
+                mb: 5,
+                height: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
               <OrderTable />
             </Grid>
           )}

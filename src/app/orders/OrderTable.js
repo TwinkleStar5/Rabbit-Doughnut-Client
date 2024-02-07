@@ -15,8 +15,9 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useQuery } from "react-query";
 import { getSingleOrder } from "@/utils/orders";
-import { Checkbox, Grid } from "@mui/material";
+import { Button, Checkbox, Grid } from "@mui/material";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 
 function Row(props) {
   const { row } = props;
@@ -42,20 +43,23 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell align="left" scope="row">
-          {row?.email}
-        </TableCell>
-        <TableCell align="center">RM{row.grandTotal.toFixed(2)}</TableCell>
-        <TableCell align="center">
           {moment(row.purchased_date).format("DD/MM/YYYY, h:mmA")}
         </TableCell>
+        <TableCell align="center">RM{row.grandTotal.toFixed(2)}</TableCell>
+        {/* <TableCell align="center">
+          {row?.cart?.map((pack, idx) =>
+            pack.items.reduce((acc, innerItem) => acc + innerItem.quantity, 0)
+          )}
+        </TableCell> */}
         <TableCell align="center">
           {row.delivery ? "Delivery" : "Pick Up"}
         </TableCell>
         <TableCell align="center" sx={{ display: "flex" }}>
-          <Checkbox
+          {row.status ? "Completed" : "Pending"}
+          {/* <Checkbox
             checked={completed}
             onChange={() => setCompleted(!row.status)}
-          />
+          /> */}
         </TableCell>
       </TableRow>
       <TableRow>
@@ -141,6 +145,7 @@ function Row(props) {
 const fonts = { fontSize: "20px", fontFamily: "Work Sans" };
 function ClientOrder() {
   const { data, isLoading } = useQuery("order", getSingleOrder);
+  const { push } = useRouter();
   console.log(data);
   if (isLoading ? <h3>Loading</h3> : null) console.log(data);
   // console.log("Type of data:", typeof data);
@@ -154,41 +159,71 @@ function ClientOrder() {
           IS LOADING...
         </Typography>
       ) : data?.length ? (
-        <TableContainer
-          component={Paper}
-          sx={{ bgcolor: "#f1e3fc", borderRadius: "20px" }}
-          elevation={3}
-        >
-          <Table>
-            <TableHead>
-              <TableRow sx={fonts}>
-                <TableCell />
-                <TableCell sx={fonts}>Ordered Date</TableCell>
-                <TableCell align="center" sx={fonts}>
-                  Total Amount
-                </TableCell>
-                <TableCell align="center" sx={fonts}>
+        <>
+          <Typography
+            variant="h2"
+            sx={{ textAlign: "center", margin: "auto", my: 3 }}
+          >
+            Order History
+          </Typography>
+          <TableContainer
+            component={Paper}
+            sx={{ bgcolor: "#f1e3fc", borderRadius: "20px" }}
+            elevation={3}
+          >
+            <Table>
+              <TableHead>
+                <TableRow sx={fonts}>
+                  <TableCell />
+                  <TableCell sx={fonts}>Ordered Date</TableCell>
+                  <TableCell align="center" sx={fonts}>
+                    Total Amount
+                  </TableCell>
+                  {/* <TableCell align="center" sx={fonts}>
                   Ordered Date
-                </TableCell>
-                <TableCell align="center" sx={fonts}>
-                  Mode
-                </TableCell>
-                <TableCell align="center" sx={fonts}>
-                  Status
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody sx={fonts}>
-              {data?.map((row) => (
-                <Row key={row.name} row={row} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                </TableCell> */}
+                  <TableCell align="center" sx={fonts}>
+                    Mode
+                  </TableCell>
+                  <TableCell align="center" sx={fonts}>
+                    Status
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody sx={fonts}>
+                {data?.map((row) => (
+                  <Row key={row.name} row={row} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
       ) : (
-        <Typography variant="h2" sx={{ textAlign: "center" }}>
-          NO ORDERS TO SHOW
-        </Typography>
+        <Box
+          sx={{
+            textAlign: "center",
+            height: "100vh",
+            justifyContent: "center",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Typography variant="h2">NO ORDERS TO SHOW</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mt: 4,
+            }}
+          >
+            <Button
+              sx={{ color: "white", borderRadius: "13px" }}
+              onClick={() => push("/shopDoughnuts")}
+            >
+              Shop For Doughnuts Now!
+            </Button>
+          </Box>
+        </Box>
       )}
     </>
   );

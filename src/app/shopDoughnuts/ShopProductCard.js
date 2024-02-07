@@ -65,7 +65,6 @@ function ShopProductCard({ product, handlePackChange }) {
         >
           <Box sx={{ position: "relative" }}>
             <CardMedia
-              height="130"
               component="img"
               image={`http://localhost:8000/${product.image}`}
             />

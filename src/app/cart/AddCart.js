@@ -11,7 +11,12 @@ import {
 import build from "../../img/build_placeholder.webp";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { addToMainCart, getCart, deleteSingleCartItem } from "@/utils/cart";
+import {
+  addToMainCart,
+  getCart,
+  deleteSingleCartItem,
+  deleteAllItems,
+} from "@/utils/cart";
 import { useQuery } from "react-query";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useMutation, useQueryClient } from "react-query";
@@ -172,7 +177,7 @@ function AddCart({ pack, handlePackChange }) {
       ? data?.items
           ?.flatMap((donut) => Array(donut.quantity).fill(donut))
           .map((donut, i) => (
-            <Grid item md={4} key={i} sx={{ p: 1 }}>
+            <Grid item xs={4} key={i} sx={{ p: 1 }}>
               <Box sx={{ position: "relative" }}>
                 <img
                   src={`http://localhost:8000/${donut.product.image}`}
@@ -199,7 +204,7 @@ function AddCart({ pack, handlePackChange }) {
               _,
               i // Assuming there are 3 placeholder images
             ) => (
-              <Grid item key={i} md={4} sx={{ p: 1 }}>
+              <Grid item key={i} xs={4} sx={{ p: 1 }}>
                 <img
                   src={build.src}
                   style={{
@@ -234,31 +239,39 @@ function AddCart({ pack, handlePackChange }) {
             item
             sx={{
               display: "flex",
-              justifyCcontent: "space-around",
+              justifyContent: "space-around",
               width: "100%",
             }}
           >
-            <Button
-              sx={toggleButton}
-              onClick={() => handlePackChange(2)}
-              style={donutCount <= 2 ? selectedPack : null}
-            >
-              2 Pack
-            </Button>
-            <Button
-              sx={toggleButton}
-              onClick={() => handlePackChange(6)}
-              style={donutCount >= 3 && donutCount <= 6 ? selectedPack : null}
-            >
-              6 Pack
-            </Button>
-            <Button
-              sx={toggleButton}
-              onClick={() => handlePackChange(12)}
-              style={donutCount >= 7 && donutCount <= 12 ? selectedPack : null}
-            >
-              12 Pack
-            </Button>
+            <Grid item>
+              <Button
+                sx={toggleButton}
+                onClick={() => handlePackChange(2)}
+                style={donutCount <= 2 ? selectedPack : null}
+              >
+                2 Pack
+              </Button>
+            </Grid>{" "}
+            <Grid item>
+              <Button
+                sx={toggleButton}
+                onClick={() => handlePackChange(6)}
+                style={donutCount >= 3 && donutCount <= 6 ? selectedPack : null}
+              >
+                6 Packs
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                sx={toggleButton}
+                onClick={() => handlePackChange(12)}
+                style={
+                  donutCount >= 7 && donutCount <= 12 ? selectedPack : null
+                }
+              >
+                12 Pack
+              </Button>
+            </Grid>
           </Grid>
           <Grid
             container
@@ -272,38 +285,37 @@ function AddCart({ pack, handlePackChange }) {
             {showDonuts}
             {showPlaceHolder}
           </Grid>
-          <Grid item md={12}>
-            <Grid
+          <Grid item md={12} sx={{ width: "100%" }}>
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor:
+                  data && data.items && data.items.length > 0
+                    ? "#D1182E !important"
+                    : "#F2F2F2 !important",
+                color:
+                  data && data.items && data.items.length > 0
+                    ? "white !important"
+                    : null,
+                borderRadius: "13px",
+                width: "50%",
+                mb: 1,
+                p: 2,
+              }}
+              disableElevation
+              onClick={() => handleRemoveAll()}
+            >
+              CLEAR ALL
+            </Button>
+            <Typography variant="subtitle1" sx={{ color: "#B5B5B5" }}>
+              Remove your selected doughnuts
+            </Typography>
+
+            {/* <Grid
               container
-              sx={{ display: "flex", justifyContent: "space-around" }}
+              sx={{ display: "flex", alignItems: "center" }}
               spacing={2}
             >
-              <Grid item md={6}>
-                <Button
-                  variant="contained"
-                  sx={{
-                    bgcolor:
-                      data && data.items && data.items.length > 0
-                        ? "#D1182E !important"
-                        : "#F2F2F2 !important",
-                    color:
-                      data && data.items && data.items.length > 0
-                        ? "white !important"
-                        : null,
-                    borderRadius: "13px",
-                    width: "100%",
-                    mb: 1,
-                    p: 2,
-                  }}
-                  disableElevation
-                  onClick={() => handleRemoveAll()}
-                >
-                  CLEAR ALL
-                </Button>
-                <Typography variant="subtitle1" sx={{ color: "#B5B5B5" }}>
-                  Remove your selected doughnuts
-                </Typography>
-              </Grid>
               <Grid item md={6}>
                 <Button
                   variant="button"
@@ -320,7 +332,7 @@ function AddCart({ pack, handlePackChange }) {
                   Can't decide? Let us choose!
                 </Typography>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Grid>
         {donutCount === 2 || donutCount === 6 || donutCount === 12 ? (

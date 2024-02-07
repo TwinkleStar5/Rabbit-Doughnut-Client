@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
-import { Box, Grid, useTheme } from "@mui/material";
+import { Box, Grid, useTheme, useMediaQuery } from "@mui/material";
 import { useQuery } from "react-query";
 import { getProducts } from "@/utils/products";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -19,7 +19,7 @@ function ColorToggleButton({ handleCategory }) {
   const theme = useTheme();
   const toggleStyle = {
     bgcolor: "white !important",
-    width: "150px",
+    width: "100%",
     height: "60px",
     textAlign: "center",
     borderRadius: "12px",
@@ -105,7 +105,7 @@ function ColorToggleButton({ handleCategory }) {
             },
           }}
         >
-          Vegan & Gluten Free
+          VG & Gf
         </Typography>
       </ToggleButton>
     </ToggleButtonGroup>
@@ -143,7 +143,12 @@ function ShopProducts() {
 
   return (
     <>
-      <Box sx={{ p: 5, bgcolor: "#F2F2F2" }}>
+      <Box
+        sx={{
+          p: 5,
+          bgcolor: "#F2F2F2",
+        }}
+      >
         <Grid container spacing={3}>
           <Grid item md={8}>
             <Box sx={{ mb: 4 }}>
