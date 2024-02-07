@@ -13,36 +13,24 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-
-function createData(name, calories, fat, carbs, protein, price) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  };
-}
+import { useQuery } from "react-query";
+import { getSingleOrder } from "@/utils/orders";
+import { Checkbox, Grid } from "@mui/material";
+import moment from "moment";
 
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
-
+  const [completed, setCompleted] = React.useState(row.status);
+  console.log(row);
   return (
-    <React.Fragment>
+    <React.Fragment
+      sx={{
+        bgcolor: "#A7D3D4",
+        borderRadius: "20px",
+        fontFamily: "Work Sans",
+      }}
+    >
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
           <IconButton
@@ -53,41 +41,91 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
+        <TableCell align="left" scope="row">
+          {row?.email}
         </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
+        <TableCell align="center">RM{row.grandTotal.toFixed(2)}</TableCell>
+        <TableCell align="center">
+          {moment(row.purchased_date).format("DD/MM/YYYY, h:mmA")}
+        </TableCell>
+        <TableCell align="center">
+          {row.delivery ? "Delivery" : "Pick Up"}
+        </TableCell>
+        <TableCell align="center" sx={{ display: "flex" }}>
+          <Checkbox
+            checked={completed}
+            onChange={() => setCompleted(!row.status)}
+          />
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Order Id: #839248
-              </Typography>
+              <Grid container sx={{ display: "flex" }} spacing={3}>
+                <Grid item>
+                  <Typography variant="h6" component="div">
+                    Order ID: <strong>{row._id}</strong>
+                  </Typography>
+                  <Typography variant="h6" component="div">
+                    Customer Name:{" "}
+                    <strong>{`${row.firstName} ${row.lastName}`}</strong>
+                  </Typography>
+                  <Typography variant="h6" gutterBottom component="div">
+                    Phone Number: <strong>0{row.phoneNumber}</strong>
+                  </Typography>
+                </Grid>
+                {row.delivery ? (
+                  <Grid item>
+                    <Typography variant="h6" component="div">
+                      State: <strong>{row.state}</strong>
+                    </Typography>
+                    <Typography variant="h6" component="div">
+                      Address:
+                      <strong>
+                        {` ${row.address}, ${row.city}, ${row.postalCode}, Malaysia`}
+                      </strong>
+                    </Typography>
+                    <Typography variant="h6" gutterBottom component="div">
+                      Company:{" "}
+                      <strong>{row.company ? row.company : "None"}</strong>
+                    </Typography>
+                  </Grid>
+                ) : (
+                  <Grid item>
+                    <Typography variant="h6" component="div">
+                      Pick Up Date: <strong>{row.collectDate}</strong>
+                    </Typography>
+                    <Typography variant="h6" gutterBottom component="div">
+                      Pick Up Time: <strong>{row.time}</strong>
+                    </Typography>
+                  </Grid>
+                )}
+              </Grid>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Product</TableCell>
-                    <TableCell align="right">Quantity</TableCell>
-                    <TableCell align="right">Subtotal</TableCell>
+                    <TableCell align="left">Product</TableCell>
+                    <TableCell align="center">Quantity</TableCell>
+                    {/* <TableCell align="center">Subtotal</TableCell> */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
+                  {row?.cart?.map((pack, idx) => (
+                    <TableRow>
+                      <TableCell align="left" scope="row">
+                        <ul>
+                          {pack?.items?.map((donut) => {
+                            console.log(donut?.product?.name);
+                            return (
+                              <li>
+                                {donut?.product?.name} x {donut.quantity}
+                              </li>
+                            );
+                          })}
+                        </ul>
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
+                      <TableCell align="center">{pack?.quantity}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -100,58 +138,60 @@ function Row(props) {
   );
 }
 
-Row.propTypes = {
-  row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
-  }).isRequired,
-};
-
-const rows = [
-  createData("#839248", "134.50", "12/2/2024", "Pending"),
-  createData("#100244", "84.40", "8/12/2023", "Delivered"),
-  createData("#482023", "23.30", "6/9/2023", "Delivered"),
-];
-
 const fonts = { fontSize: "20px", fontFamily: "Work Sans" };
-function OrderTable() {
+function ClientOrder() {
+  const { data, isLoading } = useQuery("order", getSingleOrder);
+  console.log(data);
+  if (isLoading ? <h3>Loading</h3> : null) console.log(data);
+  // console.log("Type of data:", typeof data);
+  // console.log("Data:", data);
+  if (!Array.isArray(data)) return <p>No orders found</p>;
+
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow sx={fonts}>
-            <TableCell />
-            <TableCell sx={fonts}>Order Id</TableCell>
-            <TableCell align="right" sx={fonts}>
-              Total Amount
-            </TableCell>
-            <TableCell align="right" sx={fonts}>
-              Ordered Date
-            </TableCell>
-            <TableCell align="right" sx={fonts}>
-              Status
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody sx={fonts}>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {isLoading ? (
+        <Typography variant="h2" sx={{ textAlign: "center" }}>
+          IS LOADING...
+        </Typography>
+      ) : data?.length ? (
+        <TableContainer
+          component={Paper}
+          sx={{ bgcolor: "#f1e3fc", borderRadius: "20px" }}
+          elevation={3}
+        >
+          <Table>
+            <TableHead>
+              <TableRow sx={fonts}>
+                <TableCell />
+                <TableCell sx={fonts}>Ordered Date</TableCell>
+                <TableCell align="center" sx={fonts}>
+                  Total Amount
+                </TableCell>
+                <TableCell align="center" sx={fonts}>
+                  Ordered Date
+                </TableCell>
+                <TableCell align="center" sx={fonts}>
+                  Mode
+                </TableCell>
+                <TableCell align="center" sx={fonts}>
+                  Status
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody sx={fonts}>
+              {data?.map((row) => (
+                <Row key={row.name} row={row} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography variant="h2" sx={{ textAlign: "center" }}>
+          NO ORDERS TO SHOW
+        </Typography>
+      )}
+    </>
   );
 }
 
-export default OrderTable;
+export default ClientOrder;

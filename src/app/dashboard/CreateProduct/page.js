@@ -23,6 +23,7 @@ import "../../globals.css";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { addProducts, editProduct } from "@/utils/products";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const StyledInputRoot = styled("div")(
   `
@@ -154,12 +155,6 @@ function CreateProduct() {
   const { mutate: mutateAdd } = useMutation(addProducts, {
     onSuccess: () => {
       queryClient.invalidateQueries(["products"]);
-      toast.success(data.msg, {
-        position: "bottom-right",
-        autoClose: 2500,
-        pauseOnHover: false,
-        theme: "light",
-      });
     },
     onError: (error) => {
       alert(`Oops, unable to edit ${editProduct.name}`);
@@ -172,10 +167,10 @@ function CreateProduct() {
   const [product, setProduct] = useState({
     vegan: false,
     glutenFree: false,
-    isActive: true,
+    isActive: false,
   });
 
-  console.log(product);
+  // console.log(product);
   const [currentImage, setCurrentImage] = useState(donut.src);
 
   const inputRef = useRef(null);
@@ -186,20 +181,27 @@ function CreateProduct() {
 
   const handleChangeProduct = (e) => {
     // let quantity = e.target.getAttribute("placeholder");
+    // if (e.target.checked) {
+    //   setProduct({ ...product, [e.target.name]: !product[e.target.name] });
+    // } else {
+    setProduct({ ...product, [e.target.name]: e.target.value });
+    // }
+    // console.log(product);
+    // [quantity === "Quantity" ? "quantity" : null]: e.target.value,
 
-    setProduct({
-      ...product,
-      [e.target.name]: e.target.value,
-      // [quantity === "Quantity" ? "quantity" : null]: e.target.value,
-    });
     // console.log(currentImage);
-    console.log(product);
+    // console.log(product);
   };
 
   const handleSubmitProduct = (e) => {
     e.preventDefault();
     mutateAdd(product);
-    alert("Successfully added");
+    Swal.fire({
+      icon: "success",
+      title: `${product.name} has been published!`,
+      showConfirmButton: false,
+      timer: 1500,
+    });
   };
 
   const handleFileChange = (event) => {
@@ -385,8 +387,10 @@ function CreateProduct() {
                           color="info"
                           name="vegan"
                           disableFocusRipple
-                          checked={product?.vegan}
-                          onChange={handleChangeProduct}
+                          checked={product.vegan}
+                          onChange={() =>
+                            setProduct({ ...product, vegan: !product.vegan })
+                          }
                         />
                       }
                       label="Vegan"
@@ -400,14 +404,20 @@ function CreateProduct() {
                           color="info"
                           name="glutenFree"
                           disableFocusRipple
-                          checked={product?.glutenFree}
-                          onChange={handleChangeProduct}
+                          checked={product.glutenFree}
+                          onChange={() =>
+                            setProduct({
+                              ...product,
+                              glutenFree: !product.glutenFree,
+                            })
+                          }
                         />
                       }
                       label="Gluten Free"
                     />
                   </Grid>
                   <Grid item sm={4} sx={{ width: "100%", margin: "auto" }}>
+                    {/* {product.isActive ? "true" : "false"} */}
                     <FormControlLabel
                       className="FormControlLabel"
                       control={
@@ -415,8 +425,13 @@ function CreateProduct() {
                           color="info"
                           name="isActive"
                           disableFocusRipple
-                          checked={product?.isActive}
-                          onChange={handleChangeProduct}
+                          checked={product.isActive}
+                          onChange={() =>
+                            setProduct({
+                              ...product,
+                              isActive: !product.isActive,
+                            })
+                          }
                         />
                       }
                       label="isActive"
@@ -425,8 +440,7 @@ function CreateProduct() {
                 </Grid>
               </Grid>
               <Grid item sx={{ mt: 3, textAlign: "center", width: "100%" }}>
-                <Grid container sx={{ width: "100%" }}>
-                  <Grid item sm={6} sx={{ width: "100%", mb: 4 }}>
+                {/* <Grid item sm={6} sx={{ width: "100%", mb: 4 }}>
                     <Button
                       variant="button"
                       sx={{
@@ -440,25 +454,22 @@ function CreateProduct() {
                     >
                       <EditIcon sx={{ mr: 2 }} /> Edit
                     </Button>
-                  </Grid>
-                  <Grid item sm={6} sx={{ width: "100%", mb: 4 }}>
-                    <Button
-                      variant="button"
-                      type="submit"
-                      sx={{
-                        bgcolor: "#ffc8dd !important",
-                        color: "#041E42 !important",
-                        borderRadius: "8px",
-                        width: "300px",
-                        height: "55px",
-                        py: 4,
-                      }}
-                      onClick={() => handleDeleteProduct}
-                    >
-                      <CelebrationIcon sx={{ mr: 2 }} /> Publish Doughnut
-                    </Button>
-                  </Grid>
-                </Grid>
+                  </Grid> */}
+
+                <Button
+                  variant="button"
+                  type="submit"
+                  sx={{
+                    bgcolor: "#ffc8dd !important",
+                    color: "#041E42 !important",
+                    borderRadius: "8px",
+                    width: "300px",
+                    height: "55px",
+                    py: 4,
+                  }}
+                >
+                  <CelebrationIcon sx={{ mr: 2 }} /> Publish Doughnut
+                </Button>
               </Grid>
             </Grid>
           </Grid>

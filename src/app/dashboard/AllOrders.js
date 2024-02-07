@@ -16,29 +16,30 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useQuery } from "react-query";
 import { getOrder } from "@/utils/orders";
 import { Checkbox, Grid } from "@mui/material";
+import moment from "moment";
 
-function createData(name, calories, fat, carbs, protein, price) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  };
-}
+// function createData(name, calories, fat, carbs, protein, price) {
+//   return {
+//     name,
+//     calories,
+//     fat,
+//     carbs,
+//     protein,
+//     price,
+//     history: [
+//       {
+//         date: "2020-01-05",
+//         customerId: "11091700",
+//         amount: 3,
+//       },
+//       {
+//         date: "2020-01-02",
+//         customerId: "Anonymous",
+//         amount: 1,
+//       },
+//     ],
+//   };
+// }
 
 function Row(props) {
   const { row } = props;
@@ -67,7 +68,9 @@ function Row(props) {
           {row.email}
         </TableCell>
         <TableCell align="center">RM{row.grandTotal.toFixed(2)}</TableCell>
-        <TableCell align="center">{row.purchased_date}</TableCell>
+        <TableCell align="center">
+          {moment(row.purchased_date).format("DD/MM/YYYY, h:mmA")}
+        </TableCell>
         <TableCell align="center">
           {row.delivery ? "Delivery" : "Pick Up"}
         </TableCell>
@@ -127,7 +130,7 @@ function Row(props) {
                   <TableRow>
                     <TableCell align="left">Product</TableCell>
                     <TableCell align="center">Quantity</TableCell>
-                    <TableCell align="center">Subtotal</TableCell>
+                    {/* <TableCell align="center">Subtotal</TableCell> */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -135,20 +138,23 @@ function Row(props) {
                     <TableRow>
                       <TableCell align="left" scope="row">
                         <ul>
-                          {pack?.items?.map((donut) => (
-                            <li>
-                              {donut.product} x {donut.quantity}
-                            </li>
-                          ))}
+                          {pack?.items?.map((donut) => {
+                            console.log(donut?.product?.name);
+                            return (
+                              <li>
+                                {donut?.product?.name} x {donut.quantity}
+                              </li>
+                            );
+                          })}
                         </ul>
                       </TableCell>
                       <TableCell align="center">{pack?.quantity}</TableCell>
-                      <TableCell align="center">
+                      {/* <TableCell align="center">
                         {pack?.items?.forEach((donut) => {
                           let totalQuantities = 0;
                           return (totalQuantities += donut.quantity);
                         })}
-                        {/* {pack?.items.map((donut,idx) => {
+                        {pack?.items.map((donut,idx) => {
                           // const cal = donut.quantity 
                           const cal = [...(donut[idx]?.quantity + "")].reduce(
                             (s, e) => s + +e[0],
@@ -156,8 +162,8 @@ function Row(props) {
                           );
                          
                           console.log(cal);
-                        })} */}
-                        {/* {pack.items
+                        })}
+                        {pack.items
                           .map((donut) => Array(donut.quantity).length)
                           .reduce((acc, val) => acc + val, 0) *
                           pack.quantity ===
@@ -175,8 +181,8 @@ function Row(props) {
                               pack.quantity ===
                             6
                           ? "RM 49.90"
-                          : null} */}
-                      </TableCell>
+                          : null}
+                      </TableCell> */}
 
                       {/* <TableCell align="right">
                         {Math.round(historyRow.amount * row.price * 100) / 100}
@@ -193,55 +199,37 @@ function Row(props) {
   );
 }
 
-Row.propTypes = {
-  row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
-  }).isRequired,
-};
+// Row.propTypes = {
+//   row: PropTypes.shape({
+//     calories: PropTypes.number.isRequired,
+//     carbs: PropTypes.number.isRequired,
+//     fat: PropTypes.number.isRequired,
+//     history: PropTypes.arrayOf(
+//       PropTypes.shape({
+//         amount: PropTypes.number.isRequired,
+//         customerId: PropTypes.string.isRequired,
+//         date: PropTypes.string.isRequired,
+//       })
+//     ).isRequired,
+//     name: PropTypes.string.isRequired,
+//     price: PropTypes.number.isRequired,
+//     protein: PropTypes.number.isRequired,
+//   }).isRequired,
+// };
 
-const rows = [
-  createData("#839248", "134.50", "12/2/2024", "Pending"),
-  createData("#100244", "84.40", "8/12/2023", "Delivered"),
-  createData("#482023", "23.30", "6/9/2023", "Delivered"),
-];
+// const rows = [
+//   createData("#839248", "134.50", "12/2/2024", "Pending"),
+//   createData("#100244", "84.40", "8/12/2023", "Delivered"),
+//   createData("#482023", "23.30", "6/9/2023", "Delivered"),
+// ];
 
 const fonts = { fontSize: "20px", fontFamily: "Work Sans" };
 function AllOrdersTable() {
   const { data, isLoading } = useQuery("orders", getOrder);
-  if (isLoading ? <h3>Loading</h3> : null) console.log(data);
   // console.log("Type of data:", typeof data);
   // console.log("Data:", data);
   if (!Array.isArray(data)) return <p>No orders found</p>;
-  // Function to get price based on quantity
-  const getPriceByQuantity = (quantity) => {
-    if (quantity === 2) {
-      return 9.9;
-    } else if (quantity === 6) {
-      return 29.9;
-    } else {
-      return 49.9;
-    }
-  };
-  data.forEach((row) => {
-    row.cart.forEach((pack) => {
-      pack.totalPrice = pack.items.reduce((acc, donut) => {
-        return acc + donut.quantity * getPriceByQuantity(donut.quantity);
-      }, 0);
-    });
-  });
-
+  console.log(data);
   return (
     <>
       {isLoading ? (

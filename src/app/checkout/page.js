@@ -147,7 +147,7 @@ function Checkout() {
 
   return (
     <>
-      <Grid container>
+      <Grid container className="checkOutPage">
         <Grid
           container
           md={7}

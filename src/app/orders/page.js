@@ -16,7 +16,7 @@ function Orders() {
         <Typography variant="h2">Is Loading</Typography>
       ) : (
         <Grid container>
-          {data ? (
+          {!data ? (
             <Box sx={{ display: "flex", height: "100vh", width: "100%" }}>
               <Grid
                 item

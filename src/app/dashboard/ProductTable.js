@@ -281,26 +281,27 @@ function ProductTable() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
-  // function stableSort(array, comparator) {
-  //   const stabilizedThis = array.map((el, index) => [el, index]);
-  //   stabilizedThis.sort((a, b) => {
-  //     const order = comparator(a[0], b[0]);
-  //     if (order !== 0) {
-  //       return order;
-  //     }
-  //     return a[1] - b[1];
-  //   });
-  //   return stabilizedThis.map((el) => el[0]);
-  // }
+  function stableSort(array, comparator) {
+    // console.log(array);
+    const stabilizedThis = array?.map((el, index) => [el, index]);
+    stabilizedThis?.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) {
+        return order;
+      }
+      return a[1] - b[1];
+    });
+    return stabilizedThis?.map((el) => el[0]);
+  }
 
-  // const visibleRows = React.useMemo(
-  //   () =>
-  //     stableSort(data, getComparator(order, orderBy)).slice(
-  //       page * rowsPerPage,
-  //       page * rowsPerPage + rowsPerPage
-  //     ),
-  //   [data, order, orderBy, page, rowsPerPage]
-  // );
+  const visibleRows = React.useMemo(
+    () =>
+      stableSort(data, getComparator(order, orderBy))?.slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage
+      ),
+    [data, order, orderBy, page, rowsPerPage]
+  );
 
   return (
     <>
@@ -336,7 +337,7 @@ function ProductTable() {
                     rowCount={data.length}
                   />
                   <TableBody>
-                    {data.map((row, index) => {
+                    {visibleRows.map((row, index) => {
                       const isItemSelected = isSelected(row.id);
                       const labelId = `enhanced-table-checkbox-${index}`;
 

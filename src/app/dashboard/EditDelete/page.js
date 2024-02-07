@@ -15,7 +15,6 @@ import {
   numberInputClasses,
 } from "@mui/base/Unstable_NumberInput";
 import { styled } from "@mui/system";
-import donut from "../../../img/millie.webp";
 import "../../globals.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -25,11 +24,8 @@ import {
   editOneProduct,
   deleteOneProduct,
 } from "@/utils/products";
-import { useParams } from "react-router-dom";
-import { withRouter } from "react-router-dom";
 import Swal from "sweetalert2";
-import { toast } from "react-toastify";
-
+import { useRouter } from "next/navigation";
 const StyledInputRoot = styled("div")(
   `
   font-family: 'Work Sans';
@@ -154,8 +150,7 @@ const CustomNumberInput = React.forwardRef(function CustomNumberInput(
 function EditDeleteProduct() {
   const { data } = useQuery("products", getProducts);
   const [editProduct, setEditProduct] = useState({});
-  const [editing, setEditing] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const router = useRouter();
   function getIdFromUrl(url) {
     const urlObj = new URL(url);
     return urlObj.searchParams.get("id");
@@ -167,56 +162,37 @@ function EditDeleteProduct() {
     setEditProduct(product || {});
   }, [data, idFromUrl]);
 
-  console.log(editProduct);
-
   const [currentImage, setCurrentImage] = useState(editProduct?.image);
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation(editOneProduct, {
     onSuccess: () => {
-      queryClient.invalidateQueries("products");
-      toast.success(data.msg, {
-        position: "bottom-right",
-        autoClose: 2500,
-        pauseOnHover: false,
-        theme: "light",
-      });
+      queryClient.invalidateQueries(["products"]);
     },
     onError: (error) => {
-      alert(`Oops, unable to edit ${editProduct.name}`);
+      alert(`Oops, unable to edit ${editProduct.name}`, e.response.data.msg);
     },
   });
 
   const { mutate: deleteOneMutation } = useMutation(deleteOneProduct, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("products");
-      toast.success(data.msg, {
-        position: "bottom-right",
-        autoClose: 2500,
-        pauseOnHover: false,
-        theme: "light",
-      });
+    onSuccess: async () => {
+      queryClient.invalidateQueries(["products"]);
+      router.push("/dashboard");
     },
     onError: (error) => {
-      alert(`Oops, unable to delete ${editProduct.name}`);
+      alert(`Oops, unable to delete ${editProduct.name}`, e.response.data.msg);
     },
   });
 
   const inputRef = useRef(null);
 
-  // useEffect(() => {
-  //   if (editProduct) {
-  //     setCurrentImage(editProduct.image);
-  //   }
-  // }, [editProduct]);
-
+  console.log(editProduct);
   const handleClick = () => {
     inputRef.current.click();
   };
 
   const handleFileChange = (event) => {
     const fileObj = event.target.files && event.target.files[0];
-    console.log(fileObj);
     if (fileObj) {
       const reader = new FileReader();
       console.log(reader);
@@ -230,8 +206,7 @@ function EditDeleteProduct() {
     // Reset the input value to allow selecting the same file again
     event.target.value = null;
   };
-
-  const handleDeleteProduct = (e, id) => {
+  const handleDeleteProduct = (id) => {
     Swal.fire({
       title: `Are you sure you want to delete ${editProduct.name}?`,
       text: "You won't be able to revert this!",
@@ -253,7 +228,6 @@ function EditDeleteProduct() {
   };
 
   const handleEditProduct = (e) => {
-    setChecked(!checked);
     setEditProduct({ ...editProduct, [e.target.name]: e.target.value.trim() });
     console.log(editProduct);
   };
@@ -261,14 +235,17 @@ function EditDeleteProduct() {
   const handleEditSubmit = (e) => {
     e.preventDefault();
     mutate(editProduct);
+    Swal.fire({
+      icon: "success",
+      title: `${editProduct.name} has been updated!`,
+      showConfirmButton: false,
+      timer: 1500,
+    });
   };
 
   return (
     <>
-      <form
-        onSubmit={() => handleEditSubmit(editProduct._id)}
-        encType="multipart/form-data"
-      >
+      <form onSubmit={handleEditSubmit} encType="multipart/form-data">
         <Grid
           container
           sx={{
@@ -314,7 +291,12 @@ function EditDeleteProduct() {
                 }}
               >
                 <img
-                  src={currentImage}
+                  src={
+                    !currentImage
+                      ? `http://localhost:8000/${editProduct.image}`
+                      : currentImage
+                  }
+                  // src={editProduct?.image}
                   style={{
                     width: "300px",
                     borderRadius: "20px",
@@ -408,6 +390,8 @@ function EditDeleteProduct() {
                     label="Quantity"
                     type="number"
                     name="quantity"
+                    value={editProduct?.quantity}
+                    onChange={handleEditProduct}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -443,8 +427,13 @@ function EditDeleteProduct() {
                           color="info"
                           name="vegan"
                           disableFocusRipple
-                          checked={editProduct?.vegan}
-                          onChange={handleEditProduct}
+                          checked={editProduct.vegan ? true : false}
+                          onChange={() =>
+                            setEditProduct({
+                              ...editProduct,
+                              vegan: !editProduct.vegan,
+                            })
+                          }
                         />
                       }
                       label="Vegan"
@@ -458,8 +447,13 @@ function EditDeleteProduct() {
                           color="info"
                           name="glutenFree"
                           disableFocusRipple
-                          checked={editProduct?.glutenFree}
-                          onChange={handleEditProduct}
+                          checked={editProduct.glutenFree ? true : false}
+                          onChange={() =>
+                            setEditProduct({
+                              ...editProduct,
+                              glutenFree: !editProduct.glutenFree,
+                            })
+                          }
                         />
                       }
                       label="Gluten Free"
@@ -473,8 +467,13 @@ function EditDeleteProduct() {
                           color="info"
                           name="isActive"
                           disableFocusRipple
-                          checked={editProduct?.isActive}
-                          onChange={handleEditProduct}
+                          checked={editProduct.isActive ? true : false}
+                          onChange={() =>
+                            setEditProduct({
+                              ...editProduct,
+                              isActive: !editProduct.isActive,
+                            })
+                          }
                         />
                       }
                       label="isActive"

@@ -10,16 +10,22 @@ body {
 }
 
 /* TopNav */
-.TopNav {
+/* .TopNav {
   display: none;
-}
+} */
 
 @media (max-width: 500px) {
   .logo {
     height: 50px !important;
   }
 }
+.TopNav {
+  display: block;
+}
 
+.checkout-page .TopNav {
+  display: none;
+}
 /* SIDENAV */
 .sideNavText {
   font-size: 20px;

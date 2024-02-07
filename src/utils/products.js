@@ -8,9 +8,10 @@ export async function addProducts(product) {
   formData.append("quantity", product.quantity);
   formData.append("allergens", product.allergens);
   formData.append("image", product.image);
+  formData.append("isActive", product.isActive);
   formData.append("glutenFree", product.glutenFree);
   formData.append("vegan", product.vegan);
- 
+
   const res = await axios.post("http://localhost:8000/products", formData, {
     headers: {
       "x-auth-token": localStorage.getItem("token"),
@@ -28,7 +29,7 @@ export async function getProducts() {
   return res.data;
 }
 
-export async function editOneProduct({ editedProduct }) {
+export async function editOneProduct(editedProduct) {
   const formData = new FormData();
   formData.append("name", editedProduct.name);
   formData.append("description", editedProduct.description);
@@ -37,6 +38,7 @@ export async function editOneProduct({ editedProduct }) {
   formData.append("image", editedProduct.image);
   formData.append("glutenFree", editedProduct.glutenFree);
   formData.append("vegan", editedProduct.vegan);
+  formData.append("isActive", editedProduct.isActive);
 
   const res = await axios.put(
     `http://localhost:8000/products/${editedProduct._id}`,
@@ -51,7 +53,7 @@ export async function editOneProduct({ editedProduct }) {
 }
 
 export async function deleteOneProduct(id) {
-  return console.log(id);
+
   const res = await axios.delete(`http://localhost:8000/products/${id}`, {
     headers: {
       "x-auth-token": localStorage.getItem("token"),
