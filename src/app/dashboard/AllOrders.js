@@ -69,6 +69,7 @@ function Row(props) {
         </TableCell>
         <TableCell align="center">RM{row.grandTotal.toFixed(2)}</TableCell>
         <TableCell align="center">
+          {/* {row?.purchased_date} */}
           {moment(row.purchased_date).format("DD/MM/YYYY, h:mmA")}
         </TableCell>
         <TableCell align="center">
