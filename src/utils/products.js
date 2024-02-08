@@ -53,7 +53,6 @@ export async function editOneProduct(editedProduct) {
 }
 
 export async function deleteOneProduct(id) {
-
   const res = await axios.delete(`http://localhost:8000/products/${id}`, {
     headers: {
       "x-auth-token": localStorage.getItem("token"),
@@ -70,3 +69,11 @@ export async function deleteAllProducts() {
   });
   return res.data;
 }
+
+export const editProductStatus = async (id) => {
+  // return console.log(id);
+  const res = await axios.patch(`http://localhost:8000/products/${id}`, {
+    headers: { "x-auth-token": localStorage.getItem("token") },
+  });
+  return res.data;
+};

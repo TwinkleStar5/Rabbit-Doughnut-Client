@@ -19,6 +19,7 @@ export async function getOrder() {
   });
   return res.data;
 }
+
 export async function getSingleOrder() {
   const res = await axios.get("http://localhost:8000/orders", {
     headers: {
@@ -27,3 +28,15 @@ export async function getSingleOrder() {
   });
   return res.data;
 }
+
+export const editSingleOrder = async (id, newOrder) => {
+  // return console.log(id);
+  const res = await axios.patch(
+    `http://localhost:8000/orders/${id}`,
+    newOrder,
+    {
+      headers: { "x-auth-token": localStorage.getItem("token") },
+    }
+  );
+  return res.data;
+};

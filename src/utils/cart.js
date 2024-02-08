@@ -35,6 +35,7 @@ export async function deleteAllItems() {
   });
   return res.data;
 }
+
 export async function deleteSingleCartItem(id) {
   const res = await axios.delete(`http://localhost:8000/cart/${id}`, {
     headers: {

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
@@ -13,8 +14,8 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { useQuery } from "react-query";
-import { getOrder } from "@/utils/orders";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { getOrder, editSingleOrder } from "@/utils/orders";
 import { Checkbox, Grid } from "@mui/material";
 import moment from "moment";
 
@@ -42,9 +43,30 @@ import moment from "moment";
 // }
 
 function Row(props) {
-  const { row } = props;
+  const { row, mutate, editOrder, setEditOrder } = props;
   const [open, setOpen] = React.useState(false);
   const [completed, setCompleted] = React.useState(row.status);
+
+  const handleEditOrder = (id) => {
+    // console.log(id);
+    const updatedOrder = { ...row, status: !completed }; // Toggle the status
+    mutate({ id, ...updatedOrder }); // Mutate the specific order using react-query's useMutation
+    setCompleted(!completed); // Update the local state to reflect the new status
+  };
+
+  // const handleEditOrder = () => {
+  //   const updatedOrder = { ...row, status: !row.status }; // Create a new object with updated status
+  //   mutate(updatedOrder, {
+  //     onSuccess: () => {
+  //       // Update the UI after mutation succeeds
+  //       props.setEditOrder(updatedOrder);
+  //     },
+  //     onError: (error) => {
+  //       // Handle error if mutation fails
+  //       console.error("Mutation failed:", error);
+  //     },
+  //   });
+  // };
 
   return (
     <React.Fragment
@@ -78,7 +100,11 @@ function Row(props) {
         <TableCell align="center" sx={{ display: "flex" }}>
           <Checkbox
             checked={completed}
-            onChange={() => setCompleted(!row.status)}
+            // onChange={()=> }
+            onChange={() => handleEditOrder(row._id)}
+            // onChange={() =>
+            //   props.setEditOrder({ ...props.editOrder, status: !row.status })
+            // }
           />
         </TableCell>
       </TableRow>
@@ -140,7 +166,7 @@ function Row(props) {
                       <TableCell align="left" scope="row">
                         <ul>
                           {pack?.items?.map((donut) => {
-                            console.log(donut?.product?.name);
+                            // console.log(donut?.product?.name);
                             return (
                               <li>
                                 {donut?.product?.name} x {donut.quantity}
@@ -227,10 +253,29 @@ function Row(props) {
 const fonts = { fontSize: "20px", fontFamily: "Work Sans" };
 function AllOrdersTable() {
   const { data, isLoading } = useQuery("orders", getOrder);
+  const [editOrder, setEditOrder] = useState(null);
+
+  useEffect(() => {
+    // Update editOrder state only when data is available, unless you have onChange
+    if (data) {
+      setEditOrder(data);
+    }
+  }, [data]);
+
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(editSingleOrder, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["orders"]);
+    },
+    onError: (e) => {
+      alert(e.response.data.msg);
+    },
+  });
+
   // console.log("Type of data:", typeof data);
   // console.log("Data:", data);
   if (!Array.isArray(data)) return <p>No orders found</p>;
-  console.log(data);
+  // console.log(data);
   return (
     <>
       {isLoading ? (
@@ -264,7 +309,13 @@ function AllOrdersTable() {
             </TableHead>
             <TableBody sx={fonts}>
               {data?.map((row) => (
-                <Row key={row.name} row={row} />
+                <Row
+                  key={row.name}
+                  row={row}
+                  editOrder={editOrder}
+                  setEditOrder={setEditOrder}
+                  mutate={mutate}
+                />
               ))}
             </TableBody>
           </Table>
