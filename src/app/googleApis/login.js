@@ -20,7 +20,7 @@ function Login({ setUser }) {
     };
 
     if (!localStorage.getItem("user")) {
-      setFirstLogin(true);
+      // setFirstLogin(true);
       localStorage.setItem("user", JSON.stringify(userData));
 
       //sendMail(userData.email, "Welcome!", "Welcome to our platform!");

@@ -223,7 +223,6 @@ function AddCart({ pack, handlePackChange }) {
       <form onSubmit={handleSubmit}>
         <Grid
           container
-          md={12}
           sx={{
             bgcolor: "white",
             borderRadius: "20px",
@@ -251,7 +250,7 @@ function AddCart({ pack, handlePackChange }) {
               >
                 2 Pack
               </Button>
-            </Grid>{" "}
+            </Grid>
             <Grid item>
               <Button
                 sx={toggleButton}

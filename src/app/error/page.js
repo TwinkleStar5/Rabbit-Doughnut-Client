@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import Head from "next/head";
 
 const Error = () => {
@@ -7,7 +8,7 @@ const Error = () => {
         <title>Error Page</title>
       </Head>
       <div className="h-screen flex justify-center items-center">
-        <h1 className="text-white text-4xl">Error</h1>
+        <Typography variant="h2">Error</Typography>
       </div>
     </>
   );

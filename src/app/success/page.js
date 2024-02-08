@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import Head from "next/head";
 
 const Success = () => {
@@ -7,7 +8,7 @@ const Success = () => {
         <title>Success Page</title>
       </Head>
       <div className="h-screen flex justify-center items-center">
-        <h1 className="text-white text-4xl">Success</h1>
+        <Typography variant="h2">Payment Successful !</Typography>
       </div>
     </>
   );
